@@ -42,11 +42,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fkTrial.variable} antialiased`}>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="relative">
-          <div className="flex min-h-screen mx-auto flex-col max-w-[90rem] bg-background px-4 md:px-6">
+          {/* <div className="flex min-h-screen mx-auto flex-col max-w-[90rem] bg-background px-4 md:px-6"> */}
             {children}
-          </div>
+          {/* </div> */}
         </div>
         <Footer />
       </body>
