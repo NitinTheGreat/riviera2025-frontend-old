@@ -17,6 +17,7 @@ export default {
       },
       fontFamily: {
         "fk-trial": ["var(--fk-trial)"],
+        "editorial": ["var(--editorial)"],
       },
     },
   },

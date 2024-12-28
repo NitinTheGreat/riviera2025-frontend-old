@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Navbar, Footer } from "../components";
+import { Footer } from "../components";
 
 //todo: change default font's using next/font once we get the font files
 const fkTrial = localFont({
@@ -27,6 +27,43 @@ const fkTrial = localFont({
   ],
   variable: "--fk-trial",
 });
+
+const editorial = localFont({
+  src: [
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-Italic-BF644b214fb0c0a.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-Regular-BF644b214ff145f.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-Ultrabold-BF644b21500840c.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-UltraboldItalic-BF644b214faef01.otf",
+      weight: "700",
+      style: "italic",
+    },
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-Ultralight-BF644b21500d0c0.otf",
+      weight: "200",
+      style: "normal",
+    },
+    {
+      path: "../fonts/PPEditorialNew/PPEditorialNew-UltralightItalic-BF644b214ff1e9b.otf",
+      weight: "200",
+      style: "italic",
+    },
+  ],
+  variable: "--editorial",
+});
+
 
 export const metadata: Metadata = {
   title: "Riviera 2025",
