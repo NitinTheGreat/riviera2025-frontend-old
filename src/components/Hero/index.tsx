@@ -60,7 +60,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Updated Countdown section with improved responsiveness */}
+        {/* Updated Countdown section with improved responsiveness and text positioning */}
         <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-20 md:left-auto md:right-4 lg:right-8 xl:right-12 md:translate-x-0 flex items-center">
           <div className="relative h-[120px] w-[120px] sm:h-[140px] sm:w-[140px] md:h-[160px] md:w-[160px] lg:h-[180px] lg:w-[180px]
             -translate-x-[-45%] -translate-y-[-20%] z-30">
@@ -76,12 +76,12 @@ export default function Hero() {
             <div 
               className="bg-[#7C3AED] flex items-center justify-center p-4 sm:p-6 md:p-8"
               style={{
-                clipPath: 'polygon(56% 51%, 56% 57%, 90% 46%, 91% 99%, 0 98%, 26% 61%)',
+                clipPath:'polygon(51% 61%, 85% 45%, 84% 67%, 82% 100%, 0 100%, 11% 67%, 51% 54%)',
                 width: 'clamp(240px, 50vw, 453px)',
                 height: 'clamp(100px, 20vw, 193px)'
               }}
             >
-              <span className="text-white mt-28 text-lg sm:text-sm md:text-2xl lg:text-3xl font-bold font-['FK_Screamer_Trial'] ">
+              <span className="text-white absolute bottom-[10%] text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold font-['FK_Screamer_Trial'] whitespace-nowrap">
                 {daysToGo} DAYS TO GO!!
               </span>
             </div>
