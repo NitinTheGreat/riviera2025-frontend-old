@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Footer } from "../components";
+import Navbar from "@/components/Navbar";
 
 //todo: change default font's using next/font once we get the font files
 const fkTrial = localFont({
@@ -78,8 +79,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fkTrial.variable} antialiased`}>
-        {/* <Navbar /> */}
+      <body className={`${fkTrial.variable} ${editorial.variable} antialiased`}>
+        <Navbar />
         <div className="relative">
           {/* <div className="flex min-h-screen mx-auto flex-col max-w-[90rem] bg-background px-4 md:px-6"> */}
             {children}
