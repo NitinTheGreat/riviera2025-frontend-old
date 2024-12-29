@@ -1,4 +1,4 @@
-export interface Events {
+export type Events = {
   category: string;
   club: string;
   description: string;
@@ -15,7 +15,7 @@ export interface Events {
   venues: string[];
 }
 
-export interface EventsResponse {
+export type EventsResponse = {
   events: Events[];
   total_pages: number;
 }

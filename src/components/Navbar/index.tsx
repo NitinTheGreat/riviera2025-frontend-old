@@ -79,7 +79,7 @@ const Navbar = () => {
   const menuVariants = {
     initial: { height: 0 },
     animate: { 
-      height: "100vh",
+      height: "100dvh",
       transition: {
         duration: 0.5,
         ease: "easeOut"
