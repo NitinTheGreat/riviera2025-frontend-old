@@ -72,7 +72,7 @@ export default function Hero() {
             transition={{ duration: 1, delay: 0.2 }}
           >
             <Image
-              src="/images/riviera.png"
+              src="/images/riviera.svg"
               alt="Riviera"
               fill
               className="object-contain object-center md:object-left"
@@ -98,34 +98,32 @@ export default function Hero() {
           </motion.div>
         </div>
 
-           {/* Updated Countdown section with improved responsiveness and text positioning */}
-    <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] md:left-auto md:right-[-5vw] md:bottom-[10vh] md:translate-x-0 flex items-center justify-center md:w-auto">
-      <div className="relative h-[120px] w-[120px] sm:h-[140px] sm:w-[140px] md:h-[160px] md:w-[160px] lg:h-[180px] lg:w-[180px] xl:h-[200px] xl:w-[200px]
-        -translate-x-[-44%] -translate-y-[-20%] z-30">
-        <Image
-          src="/images/rivieralogowhite.png"
-          alt="Countdown Logo"
-          fill
-          className="object-contain"
-          quality={100}
-        />
-      </div>
-      <div className="relative -ml-[10%]">
-        <div
-          className="bg-primary flex items-center justify-center p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8"
-          style={{
-            clipPath: 'polygon(49% 42%, 49% 51%, 80% 44%, 79% 100%, 0 100%, 8% 70%, 15% 51%)',
-            width: 'clamp(240px, 45vw, 480px)',
-            height: 'clamp(100px, 19vw, 204px)'
-          }}
-        >
-          <span className="text-primary-foreground absolute bottom-[15%] left-[20%] text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-['FK_Screamer_Trial'] whitespace-nowrap">
-            {daysToGo} DAYS TO GO!!
-          </span>
+        {/* Updated Countdown section */}
+        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[-5vw] md:bottom-[10vh] lg:bottom-[30px] md:translate-x-0 flex items-center justify-center md:w-auto">
+          <div className="relative h-[100px] w-[100px] sm:h-[120px] sm:w-[120px] md:h-[140px] md:w-[140px] lg:h-[160px] lg:w-[160px] xl:h-[180px] xl:w-[180px] -translate-x-[-44%] -translate-y-[-20%] z-30">
+            <Image
+              src="/images/rivieralogowhite.png"
+              alt="Countdown Logo"
+              fill
+              className="object-contain"
+              quality={100}
+            />
+          </div>
+          <div className="relative -ml-[10%]">
+            <div
+              className="bg-primary flex items-center justify-center p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8"
+              style={{
+                clipPath: 'polygon(49% 42%, 49% 51%, 80% 44%, 79% 100%, 0 100%, 8% 70%, 15% 51%)',
+                width: 'clamp(200px, 40vw, 400px)',
+                height: 'clamp(80px, 17vw, 170px)'
+              }}
+            >
+              <span className="text-primary-foreground absolute bottom-[15%] left-[20%] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold font-['FK_Screamer_Trial'] whitespace-nowrap">
+                {daysToGo} DAYS TO GO!!
+              </span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-
 
         {/* Sponsors */}
         <motion.div 
