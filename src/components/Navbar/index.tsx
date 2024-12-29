@@ -115,9 +115,9 @@ const Navbar = () => {
         transition={{ duration: 1, delay: 2 }} 
         className='fixed top-0 left-0 right-0 flex justify-between w-full px-4 md:px-6 py-4 z-[101] items-center'
       >
-        <div className={`flex flex-row w-auto ${menu ? 'invisible' : 'visible'} transition-all delay-500`}>
-          <Image src="/images/nav-vit-og.svg" alt='vit logo' width="134" height="52" />
-          <Image src="/images/nav-vit-40.svg" alt='vit logo' width="96" height="52" />
+        <div className={`flex flex-row w-auto ${menu ? 'invisible' : 'visible'} transition-all sm:delay-500`}>
+          <Image src="/images/nav-vit-og.svg" alt='vit logo' width="134" height="52" className='w-1/2'/>
+          <Image src="/images/nav-vit-40.svg" alt='vit logo' width="96" height="52" className='w-1/4'/>
         </div>
         <motion.button 
           onClick={() => { setMenu(!menu)}} 
@@ -140,8 +140,8 @@ const Navbar = () => {
             animate="animate"
             exit="exit"
           >
-            <div className='flex m-6'>
-              <div className='w-[50vw] overflow-hidden overlay-content'>
+            <div className='flex m-6 flex-col-reverse sm:flex-row'>
+              <div className='lg:w-[50vw] w-[100vw] invisible lg:visible  overlay-content'>
                 <motion.div
                   variants={imageVariants}
                   initial="initial"
@@ -153,18 +153,18 @@ const Navbar = () => {
                     alt="display image" 
                     width="100" 
                     height="100" 
-                    className='w-auto h-full'
+                    className='-translate-x-5 w-auto h-full'
                   />
                 </motion.div>
               </div>
-              <div className="flex flex-col justify-between items-center w-[50vw] overflow-hidden overlay-content">
+              <div className="flex flex-col justify-between items-center lg:w-[50vw] w-[100vw] min-h-screen pb-8 overflow-hidden overlay-content">
                 <div className='self-start'>
                   <Image 
                     src="/images/nav-support.svg" 
                     alt='image here' 
                     width="100" 
                     height="100" 
-                    className='w-96 h-16'
+                    className='sm:w-96 sm:h-16 w-52'
                   />
                 </div>
                 <motion.div 
