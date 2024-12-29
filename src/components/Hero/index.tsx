@@ -25,7 +25,7 @@ export default function Hero() {
   const daysToGo = calculateDaysToEvent()
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-background">
+    <div className=" w-full h-screen overflow-hidden bg-background">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -36,7 +36,7 @@ export default function Hero() {
           src="/images/heroimg.png"
           alt="Hero Background"
           fill
-          className="object-cover"
+          className="object-cover absolute"
           quality={100}
           priority
         />
@@ -83,16 +83,16 @@ export default function Hero() {
 
           {/* Text content */}
           <motion.div 
-            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 lg:ml-40"
+            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 "
             initial="hidden"
             animate="visible"
             variants={slideUp}
             transition={{ duration: 1, delay: 0.4 }}
           >
-            <h1 className="text-primary-foreground text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-medium uppercase tracking-wide font-['FK Screamer Trial']">
+            <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-4xl font-medium uppercase tracking-wide font-fk-trial lg:ml-40">
               RAISE THE CRAZE
             </h1>
-            <h2 className="text-primary-foreground text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl font-normal font-['PP Editorial New']">
+            <h2 className="text-primary-foreground text-xl sm:text-base md:text-lg lg:text-lg xl:text-xl font-normal font-editorial lg:ml-20">
               Get ready to move, groove and shine
             </h2>
           </motion.div>
