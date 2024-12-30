@@ -112,15 +112,27 @@ const Navbar = () => {
       <motion.div 
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
-        transition={{ duration: 1, delay: 2 }} 
-        className='fixed top-0 left-0 right-0 flex justify-between w-full px-4 md:px-6 py-4 z-[101] items-center'
+        transition={{ duration: 1 }} 
+        className='fixed top-0 left-0 right-0 flex justify-between items-center w-full h-16 z-[101] p-3'
       >
-        <div className={`flex flex-row w-auto ${menu ? 'invisible' : 'visible'} transition-all sm:delay-500`}>
-          <Image src="/images/nav-vit-og.svg" alt='vit logo' width="134" height="52" className='w-1/2'/>
-          <Image src="/images/nav-vit-40.svg" alt='vit logo' width="96" height="52" className='w-1/4'/>
+        <div className='flex items-center h-full w-auto'>
+          <Image 
+            src="/images/nav-vit-og.svg" 
+            alt='vit logo' 
+            width={1} 
+            height={1} 
+            className='w-auto h-full object-contain'
+          />
+          <Image 
+            src="/images/nav-vit-40.svg" 
+            alt='vit logo' 
+            width={1} 
+            height={1} 
+            className='w-auto h-full object-contain'
+          />
         </div>
         <motion.button 
-          onClick={() => { setMenu(!menu)}} 
+          onClick={() => { setMenu(!menu) }} 
           className='font-fk-trial font-bold text-3xl'
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -128,20 +140,21 @@ const Navbar = () => {
           {menu ? "Close" : "Menu"}
         </motion.button>
       </motion.div>
+
       
       {/* Menu overlay */}
       <AnimatePresence mode="wait">
         {menu && (
           <motion.div 
             id="myNav"
-            className="fixed inset-0 flex-col flex overlay z-[100]"
+            className="fixed inset-0 flex-col w-full flex z-[100] bg-background overflow-y-hidden"
             variants={menuVariants}
             initial="initial"
             animate="animate"
             exit="exit"
           >
-            <div className='flex m-6 flex-col-reverse sm:flex-row'>
-              <div className='lg:w-[50vw] w-[100vw] invisible lg:visible  overlay-content'>
+            <div className='flex m-6 flex-row'>
+              <div className='lg:flex flex-col justify-center lg:w-[50vw] hidden '>
                 <motion.div
                   variants={imageVariants}
                   initial="initial"
@@ -157,14 +170,14 @@ const Navbar = () => {
                   />
                 </motion.div>
               </div>
-              <div className="flex flex-col justify-between items-center lg:w-[50vw] w-[100vw] min-h-screen pb-8 overflow-hidden overlay-content">
+              <div className="flex flex-col justify-between items-center lg:w-[50vw] w-[100vw] h-dvh pb-8 overflow-hidden ">
                 <div className='self-start'>
                   <Image 
                     src="/images/nav-support.svg" 
                     alt='image here' 
                     width="100" 
                     height="100" 
-                    className='sm:w-96 sm:h-16 w-52'
+                    className='sm:w-96 sm:h-16 invisible sm:visible'
                   />
                 </div>
                 <motion.div 
@@ -194,7 +207,7 @@ const Navbar = () => {
                     </motion.div>
                   ))}
                 </motion.div>
-                <div className='text-center'>
+                <div className='text-center mb-5'>
                   <h1 className='font-fk-trial text-4xl font-bold'>RAISE THE CRAZE.</h1>
                   <h1 className='font-editorial'>Get ready to move, groove and shine. </h1>
                 </div>
