@@ -19,3 +19,29 @@ export type EventsResponse = {
   events: Events[];
   total_pages: number;
 }
+
+export type slots = {
+  end_date: string;
+  start_date: string;
+  venue: string;
+};
+
+export type EventDetail = {
+  category: string;
+  club: string;
+  description: string;
+  featured: boolean;
+  image: string;
+  judgement_criteria: string;
+  name: string;
+  number_of_participants: string;
+  pid: string;
+  points: string;
+  price_per_ticket: number;
+  prizes: string;
+  slot_details: slots[];
+  rules: string;
+  short_description: string;
+  is_a_team_event: boolean;
+  event_type: string;
+}

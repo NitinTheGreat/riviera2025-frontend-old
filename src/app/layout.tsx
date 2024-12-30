@@ -44,7 +44,7 @@ const editorial = localFont({
     {
       path: "../fonts/PPEditorialNew/PPEditorialNew-Ultrabold-BF644b21500840c.otf",
       weight: "700",
-      style: "normal",
+      style: "ultrabold",
     },
     {
       path: "../fonts/PPEditorialNew/PPEditorialNew-UltraboldItalic-BF644b214faef01.otf",
@@ -54,7 +54,7 @@ const editorial = localFont({
     {
       path: "../fonts/PPEditorialNew/PPEditorialNew-Ultralight-BF644b21500d0c0.otf",
       weight: "200",
-      style: "normal",
+      style: "extralight",
     },
     {
       path: "../fonts/PPEditorialNew/PPEditorialNew-UltralightItalic-BF644b214ff1e9b.otf",
