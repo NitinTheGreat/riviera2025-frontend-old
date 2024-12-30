@@ -1,106 +1,143 @@
-"use client"
-import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import EventsList from "@/components/EventList";
-import axios from "axios";
-import dotenv from "dotenv";
-import { Events as Event }  from "@/types";
+import { EventCard } from '@/components/EventCard'
+import { Pagination } from '@/components/Pagination'
+import { Events, EventsResponse } from '@/types/events'
 
-export default function Index() {
+// Dummy data for demonstration
+const dummyEvents: Events[] = [
+  {
+    category: "Non Technical",
+    club: "VIT Dance Club",
+    description: "Rhythm of Roots is a celebration of India's rich cultural heritage through the vibrant art of folk dance. This competition invites talented performers to showcase their skills and passion for traditional dance forms from across the nation.",
+    end_date: "1st Mar",
+    featured: true,
+    image: "/placeholder.svg?height=400&width=400",
+    name: "RHYTHM OF ROOTS-FOLK DANCE COMPETITION",
+    on_hold: false,
+    pid: "1",
+    price_per_ticket: 1000,
+    start_date: "29th Feb",
+    team_size: "2-4",
+    total_prize: "1,00,000",
+    venues: ["Multiple Slots"]
+  },
+  {
+    category: "Technical",
+    club: "VIT Coding Club",
+    description: "Join us for an exciting hackathon where you can showcase your coding skills and innovative ideas. Solve real-world problems and compete with the best minds in the field.",
+    end_date: "3rd Mar",
+    featured: true,
+    image: "/placeholder.svg?height=400&width=400",
+    name: "CODE FUSION HACKATHON",
+    on_hold: false,
+    pid: "2",
+    price_per_ticket: 500,
+    start_date: "1st Mar",
+    team_size: "3-5",
+    total_prize: "2,00,000",
+    venues: ["Main Auditorium"]
+  }
+]
 
-  dotenv.config();
+// This would typically be an API call
+async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+  let filteredEvents = dummyEvents
 
-  const [width, setWidth] = useState("100%");
-  const [events, setEvents] = useState<Event[]>([]);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("");
+  if (category && category !== 'all') {
+    filteredEvents = filteredEvents.filter(event => event.category.toLowerCase() === category.toLowerCase())
+  }
 
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      getEvents();
-    }, 300);
+  if (search) {
+    filteredEvents = filteredEvents.filter(event => 
+      event.name.toLowerCase().includes(search.toLowerCase()) ||
+      event.description.toLowerCase().includes(search.toLowerCase())
+    )
+  }
 
-    return () => clearTimeout(delayDebounceFn);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  const eventsPerPage = 2
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
+  const startIndex = (page - 1) * eventsPerPage
+  const paginatedEvents = filteredEvents.slice(startIndex, startIndex + eventsPerPage)
 
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  const getEvents = async () => {
-    try {
-      const response = await axios.get(`${baseURL}events/?event=${search}`);
-      setEvents(response.data.events);
-      console.log(events);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  return {
+    events: paginatedEvents,
+    total_pages: totalPages
+  }
+}
 
-  useEffect(() => {
-    const updateProgressBar = () => {
-      const scrollTotal =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const width = `${(1 - window.scrollY / scrollTotal) * 100}%`;
-      setWidth(width);
-    };
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1
+  const category = typeof searchParams.category === 'string' ? searchParams.category : 'all'
+  const search = typeof searchParams.search === 'string' ? searchParams.search : ''
 
-    window.addEventListener("scroll", updateProgressBar);
+  const { events, total_pages } = await getEvents(page, category, search)
 
-    return () => {
-      window.removeEventListener("scroll", updateProgressBar);
-    };
-  }, []);
+  const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
-    <>
-      <Head>
-        <title>Riviera &apos;24 | Events</title>
-      </Head>
-      <div className="w-full md:mt-40 mt-24 lg:px-[5rem] md:px-6 sm:px-8 px-4 flex flex-col items-center relative bg-[#111111]">
-        <h1 className="text-white uppercase font-oddval text-[2.5rem] w-auto md:max-w-[50vw] md:text-[3.5rem] font-bold md:mt-0 mt-10 flex flex-row self-center justify-center text-center">
-          <img
-            src="/lightning bolt.svg"
-            className="w-[10%] p-1 mx-0 md:mx-4"
-            alt="Lightning bolt"
-          />
-          <p className="whitespace-nowrap">all events</p>
-          <img
-            src="/lightning bolt.svg"
-            className="w-[10%] p-1 mx-0 md:mx-4"
-            alt="lightning bolt"
-          />
+    <div className="min-h-screen bg-[#1E1E1E] px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-[#853BFF] mb-12 font-editorial">
+          EVENTS
         </h1>
-        <div className="w-full mt-[2rem] flex flex-row justify-between items-center">
-          <div className="flex flex-row justify-start items-center bg-[#1E1E1E] text-white w-[50%] md:w-[25%] h-auto border border-[#ffffff] rounded-none">
-            <img
-              className="h-max-[60%] m-4 w-auto"
-              alt="search"
-              src="/search.svg"
-            />
+        
+        {/* Filters */}
+        <form className="flex flex-col md:flex-row justify-between gap-4 mb-8">
+          <select
+            name="category"
+            defaultValue={category}
+            className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2"
+          >
+            <option value="all">All Events</option>
+            <option value="technical">Technical</option>
+            <option value="non-technical">Non Technical</option>
+          </select>
+          
+          <div className="relative">
             <input
-              type="search"
+              type="text"
+              name="search"
               placeholder="Search Event"
-              className="bg-[#1E1E1E] text-white w-full text-[1.375rem] pr-4 h-10 focus:outline-none"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              defaultValue={search}
+              className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2 pl-10"
             />
-          </div>
-          {/* <div className="h-[100%] m-0 border border-[#ffffff] rounded-none w-[25%] md:w-[15%] p-0">
-            <select
-              name="filter"
-              id="filter"
-              className={`bg-[#1E1E1E] text-white text-[1.375rem] h-[100%] w-full m-0 p-4 ${styles.select}`}
+            <svg
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#853BFF] h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <option value="All">All</option>
-              <option value="Technical">Technical</option>
-              <option value="Non Technical">Non Technical</option>
-            </select>
-          </div> */}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <button type="submit" className="sr-only">Search</button>
+        </form>
+        
+        {/* Events List */}
+        <div className="space-y-8">
+          {events.map((event) => (
+            <EventCard key={event.pid} event={event} />
+          ))}
         </div>
-        <div className="w-full m-16 flex flex-col gap-5">
-          {/* <EventsList /> */}
-          <EventsList events={events} />
-        </div>
+        
+        {/* Pagination */}
+        <Pagination
+          currentPage={page}
+          totalPages={total_pages}
+          baseUrl={baseUrl}
+        />
       </div>
-    </>
-  );
+    </div>
+  )
 }
+

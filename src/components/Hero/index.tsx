@@ -99,7 +99,7 @@ export default function Hero() {
         </div>
 
         {/* Updated Countdown section */}
-        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[-5vw] md:bottom-[10vh] lg:bottom-[30px] md:translate-x-0 flex items-center justify-center md:w-auto">
+        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[0vw] md:bottom-[10vh] lg:bottom-[30px] md:translate-x-0 flex items-center justify-center md:w-auto">
           <div className="relative h-[100px] w-[100px] sm:h-[120px] sm:w-[120px] md:h-[140px] md:w-[140px] lg:h-[160px] lg:w-[160px] xl:h-[180px] xl:w-[180px] -translate-x-[-44%] -translate-y-[-20%] z-30">
             <Image
               src="/images/rivieralogowhite.png"
