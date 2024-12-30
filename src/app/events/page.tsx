@@ -1,5 +1,8 @@
+import { Suspense } from 'react'
 import { EventCard } from '@/components/EventCard'
 import { Pagination } from '@/components/Pagination'
+import { EventCardSkeleton } from '@/components/EventCardSkeleton'
+import { PaginationSkeleton } from '@/components/PaginationSkeleton'
 import { Events, EventsResponse } from '@/types/events'
 
 // Dummy data for demonstration
@@ -40,6 +43,9 @@ const dummyEvents: Events[] = [
 
 // This would typically be an API call
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 1000))
+
   let filteredEvents = dummyEvents
 
   if (category && category !== 'all') {
@@ -72,8 +78,6 @@ export default async function EventsPage({
   const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1
   const category = typeof searchParams.category === 'string' ? searchParams.category : 'all'
   const search = typeof searchParams.search === 'string' ? searchParams.search : ''
-
-  const { events, total_pages } = await getEvents(page, category, search)
 
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
@@ -124,20 +128,45 @@ export default async function EventsPage({
         </form>
         
         {/* Events List */}
-        <div className="space-y-8">
-          {events.map((event) => (
-            <EventCard key={event.pid} event={event} />
-          ))}
-        </div>
+        <Suspense fallback={
+          <>
+            <EventCardSkeleton />
+            <EventCardSkeleton />
+          </>
+        }>
+          <EventsList page={page} category={category} search={search} />
+        </Suspense>
         
         {/* Pagination */}
-        <Pagination
-          currentPage={page}
-          totalPages={total_pages}
-          baseUrl={baseUrl}
-        />
+        <Suspense fallback={<PaginationSkeleton />}>
+          <PaginationWrapper page={page} category={category} search={search} baseUrl={baseUrl} />
+        </Suspense>
       </div>
     </div>
+  )
+}
+
+async function EventsList({ page, category, search }: { page: number, category: string, search: string }) {
+  const { events } = await getEvents(page, category, search)
+  
+  return (
+    <div className="space-y-8">
+      {events.map((event) => (
+        <EventCard key={event.pid} event={event} />
+      ))}
+    </div>
+  )
+}
+
+async function PaginationWrapper({ page, category, search, baseUrl }: { page: number, category: string, search: string, baseUrl: string }) {
+  const { total_pages } = await getEvents(page, category, search)
+  
+  return (
+    <Pagination
+      currentPage={page}
+      totalPages={total_pages}
+      baseUrl={baseUrl}
+    />
   )
 }
 
