@@ -152,7 +152,7 @@ async function EventsList({ page, category, search }: { page: number, category: 
   return (
     <div className="space-y-8">
       {events.map((event) => (
-        <EventCard key={event.pid} event={event} isExpanded={false} />
+        <EventCard key={event.pid} event={event} />
       ))}
     </div>
   )
