@@ -119,8 +119,8 @@ const Navbar = () => {
           <Image 
             src="/images/nav-vit-og.svg" 
             alt='vit logo' 
-            width={1} 
-            height={1} 
+            width={100}
+            height={100} 
             className='w-auto h-full object-contain'
           />
           <Image 
