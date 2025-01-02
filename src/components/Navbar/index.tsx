@@ -8,9 +8,9 @@ const Navbar = () => {
   const [menu, setMenu] = useState(false)
   
   const navLinks = [
-    { href: "#", text: "HOME" },
+    { href: "/", text: "HOME" },
     { href: "#", text: "ABOUT" },
-    { href: "#", text: "EVENTS" },
+    { href: "/events", text: "EVENTS" },
     { href: "#", text: "TEAM" },
     { href: "#", text: "FAQs" }
   ];
@@ -200,6 +200,7 @@ const Navbar = () => {
                         <Link 
                           href={link.href} 
                           className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
+                          onClick={()=>{setMenu(false)}}
                         >
                           {link.text}
                         </Link>
