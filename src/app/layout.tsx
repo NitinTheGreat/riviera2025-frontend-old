@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-// import { Footer } from "../components";
+// import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner"
+
 
 //todo: change default font's using next/font once we get the font files
 const fkTrial = localFont({

@@ -14,6 +14,7 @@ export default {
         primary: "var(--primary)",
         "primary-foreground": "var(--primary-foreground)",
         secondary: "var(--secondary)",
+        footer: "var(--footer)",
       },
       fontFamily: {
         "fk-trial": ["var(--fk-trial)"],
