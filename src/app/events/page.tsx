@@ -10,9 +10,9 @@ async function getEvents(page: number, category: string, search: string): Promis
   const limit = 10
   const offset = (page - 1) * limit
   const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
-  
+
   let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
-  
+
   if (category && category !== 'all') {
     url += `&category=${category}`
   }
@@ -23,13 +23,13 @@ async function getEvents(page: number, category: string, search: string): Promis
   }
 
   const data = await response.json()
-  
+
   // Client-side filtering for more accurate results
   let filteredEvents = data.events
   if (search && search.length >= 3) {
     const searchLower = search.toLowerCase()
-    filteredEvents = data.events.filter((event: Events) => 
-      event.name.toLowerCase().includes(searchLower) || 
+    filteredEvents = data.events.filter((event: Events) =>
+      event.name.toLowerCase().includes(searchLower) ||
       event.description.toLowerCase().includes(searchLower)
     ).sort((a: Events, b: Events) => {
       const aTitle = a.name.toLowerCase().includes(searchLower)
@@ -55,9 +55,14 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1
-  const category = (searchParams.category as string) || 'all'
-  const search = (searchParams.search as string) || ''
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) 
+  })
+  // Getting error here if not awaiting searchParams so followed this approach
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
@@ -69,23 +74,32 @@ export default async function EventsPage({
         <h1 className="text-5xl md:text-7xl font-bold text-center text-[#853BFF] mb-12 font-editorial">
           EVENTS
         </h1>
-        
+
         <SearchForm defaultCategory={category} defaultSearch={search} />
-        
-        <div className="space-y-8">
-          {events.map((event, index) => (
-            <EventCard key={event.pid} event={event} index={index} />
-          ))}
-        </div>
-        
-        <Pagination
-          currentPage={page}
-          totalPages={total_pages}
-          totalEvents={total_events}
-          baseUrl={baseUrl}
-        />
+
+        <Suspense fallback={
+          <div className="space-y-8">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <EventCardSkeleton key={index} />
+            ))}
+          </div>
+        }>
+          <div className="space-y-8">
+            {events.map((event, index) => (
+              <EventCard key={event.pid} event={event} index={index} />
+            ))}
+          </div>
+        </Suspense>
+
+        <Suspense fallback={<PaginationSkeleton />}>
+          <Pagination
+            currentPage={page}
+            totalPages={total_pages}
+            totalEvents={total_events}
+            baseUrl={baseUrl}
+          />
+        </Suspense>
       </div>
     </div>
   )
 }
-

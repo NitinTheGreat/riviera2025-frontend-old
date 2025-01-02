@@ -25,7 +25,7 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
         }
       } else {
         let start = Math.max(1, currentPage - 2)
-        let end = Math.min(start + maxVisible - 1, totalPages)
+        const end = Math.min(start + maxVisible - 1, totalPages)
 
         if (end - start < maxVisible - 1) {
           start = Math.max(1, end - maxVisible + 1)
