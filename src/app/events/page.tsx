@@ -3,88 +3,50 @@ import { EventCard } from '@/components/EventCard'
 import { Pagination } from '@/components/Pagination'
 import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
-import { Events, EventsResponse } from '@/types/events'
 import { SearchForm } from '@/components/Search-form'
-
-// Dummy data
-const dummyEvents: Events[] = [
-  {
-    category: "Non Technical",
-    club: "VIT Dance Club",
-    description: "Rhythm of Roots is a celebration of India's rich cultural heritage through the vibrant art of folk dance. This competition invites talented performers to showcase their skills and passion for traditional dance forms from across the nation.",
-    end_date: "1st Mar",
-    featured: true,
-    image: "/placeholder.svg?height=400&width=400",
-    name: "RHYTHM OF ROOTS-FOLK DANCE COMPETITION",
-    on_hold: false,
-    pid: "1",
-    price_per_ticket: 1000,
-    start_date: "29th Feb",
-    team_size: "2-4",
-    total_prize: "1,00,000",
-    venues: ["Multiple Slots"]
-  },
-  {
-    category: "Technical",
-    club: "VIT Coding Club",
-    description: "Join us for an exciting hackathon where you can showcase your coding skills and innovative ideas. Solve real-world problems and compete with the best minds in the field.",
-    end_date: "3rd Mar",
-    featured: true,
-    image: "/placeholder.svg?height=400&width=400",
-    name: "CODE FUSION HACKATHON",
-    on_hold: false,
-    pid: "2",
-    price_per_ticket: 500,
-    start_date: "1st Mar",
-    team_size: "3-5",
-    total_prize: "2,00,000",
-    venues: ["Main Auditorium"]
-  }
-]
+import { Events, EventsResponse } from '@/types/events'
 
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
-  'use server'
+  const limit = 10
+  const offset = (page - 1) * limit
+  const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
   
-  await new Promise(resolve => setTimeout(resolve, 500))
-
-  let filteredEvents = [...dummyEvents]
-
+  let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
+  
   if (category && category !== 'all') {
-    filteredEvents = filteredEvents.filter(event => 
-      event.category.toLowerCase().replace(' ', '-') === category.toLowerCase()
-    )
+    url += `&category=${category}`
   }
 
-  if (search) {
+  const response = await fetch(url, { cache: 'no-store' })
+  if (!response.ok) {
+    throw new Error('Failed to fetch events')
+  }
+
+  const data = await response.json()
+  
+  // Client-side filtering for more accurate results
+  let filteredEvents = data.events
+  if (search && search.length >= 3) {
     const searchLower = search.toLowerCase()
-    filteredEvents = filteredEvents.sort((a, b) => {
-      const aTitleMatch = a.name.toLowerCase().includes(searchLower)
-      const bTitleMatch = b.name.toLowerCase().includes(searchLower)
-      
-      if (aTitleMatch && !bTitleMatch) return -1
-      if (!aTitleMatch && bTitleMatch) return 1
-      
-      const aDescMatch = a.description.toLowerCase().includes(searchLower)
-      const bDescMatch = b.description.toLowerCase().includes(searchLower)
-      
-      if (aDescMatch && !bDescMatch) return -1
-      if (!aDescMatch && bDescMatch) return 1
-      
-      return 0
-    }).filter(event => 
-      event.name.toLowerCase().includes(searchLower) ||
+    filteredEvents = data.events.filter((event: Events) => 
+      event.name.toLowerCase().includes(searchLower) || 
       event.description.toLowerCase().includes(searchLower)
-    )
+    ).sort((a: Events, b: Events) => {
+      const aTitle = a.name.toLowerCase().includes(searchLower)
+      const bTitle = b.name.toLowerCase().includes(searchLower)
+      if (aTitle && !bTitle) return -1
+      if (!aTitle && bTitle) return 1
+      return 0
+    })
   }
 
-  const eventsPerPage = 2
-  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage)
-  const startIndex = (page - 1) * eventsPerPage
-  const paginatedEvents = filteredEvents.slice(startIndex, startIndex + eventsPerPage)
+  // Apply pagination to filtered results
+  const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
   return {
     events: paginatedEvents,
-    total_pages: totalPages
+    total_pages: Math.ceil(filteredEvents.length / limit),
+    total_events: filteredEvents.length
   }
 }
 
@@ -93,10 +55,11 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const params = await searchParams
-  const page = typeof params.page === 'string' ? parseInt(params.page, 10) : 1
-  const category = typeof params.category === 'string' ? params.category : 'all'
-  const search = typeof params.search === 'string' ? params.search : ''
+  const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1
+  const category = (searchParams.category as string) || 'all'
+  const search = (searchParams.search as string) || ''
+
+  const { events, total_pages, total_events } = await getEvents(page, category, search)
 
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
@@ -109,57 +72,20 @@ export default async function EventsPage({
         
         <SearchForm defaultCategory={category} defaultSearch={search} />
         
-        <Suspense fallback={
-          <>
-            <EventCardSkeleton />
-            <EventCardSkeleton />
-          </>
-        }>
-          <EventsList page={page} category={category} search={search} />
-        </Suspense>
+        <div className="space-y-8">
+          {events.map((event, index) => (
+            <EventCard key={event.pid} event={event} index={index} />
+          ))}
+        </div>
         
-        <Suspense fallback={<PaginationSkeleton />}>
-          <PaginationWrapper page={page} category={category} search={search} baseUrl={baseUrl} />
-        </Suspense>
+        <Pagination
+          currentPage={page}
+          totalPages={total_pages}
+          totalEvents={total_events}
+          baseUrl={baseUrl}
+        />
       </div>
     </div>
-  )
-}
-
-async function EventsList({ page, category, search }: { 
-  page: number
-  category: string
-  search: string 
-}) {
-  const { events } = await getEvents(page, category, search)
-  
-  return (
-    <div className="space-y-8">
-      {events.map((event) => (
-        <EventCard 
-          key={event.pid} 
-          event={event} 
-          searchTerm={search}
-        />
-      ))}
-    </div>
-  )
-}
-
-async function PaginationWrapper({ page, category, search, baseUrl }: { 
-  page: number
-  category: string
-  search: string
-  baseUrl: string 
-}) {
-  const { total_pages } = await getEvents(page, category, search)
-  
-  return (
-    <Pagination
-      currentPage={page}
-      totalPages={total_pages}
-      baseUrl={baseUrl}
-    />
   )
 }
 

@@ -5,20 +5,33 @@ import { Users, Calendar, MapPin, IndianRupee } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useState } from 'react'
-import { highlightText } from '../../../utils/highlight-text'
+import { useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 
-interface EventCardProps {
-  event: Events
-  searchTerm?: string
-}
-
-export function EventCard({ event, searchTerm }: EventCardProps) {
+export function EventCard({ event, index }: { event: Events; index: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
   const [isExpanded, setIsExpanded] = useState(false)
+  const searchParams = useSearchParams()
+  const searchTerm = searchParams.get('search') || ''
 
   const description = event.description
   const shortDescription = description.slice(0, 150) + (description.length > 150 ? '...' : '')
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
+
+  const highlightText = (text: string, highlight: string) => {
+    if (!highlight.trim()) {
+      return text
+    }
+    const regex = new RegExp(`(${highlight})`, 'gi')
+    return text.split(regex).map((part, i) => 
+      regex.test(part) ? <mark key={i} className="bg-yellow-200 text-black">{part}</mark> : part
+    )
+  }
 
   return (
     <motion.div
@@ -60,14 +73,18 @@ export function EventCard({ event, searchTerm }: EventCardProps) {
       <div className="relative grid grid-cols-1 md:grid-cols-[300px,1fr] gap-6 bg-[#1E1E1E] p-6 rounded-lg border border-zinc-800">
         {/* Image section */}
         <motion.div 
-          className="relative aspect-square rounded-full overflow-hidden bg-gradient-to-b from-blue-900 to-blue-950 p-8"
+          className="relative aspect-square rounded-full overflow-hidden"
           whileHover={{ scale: 1.05 }}
           transition={{ duration: 0.2 }}
         >
-          <img
+          <Image
             src={event.image}
             alt={event.name}
+            width={300}
+            height={300}
             className="w-full h-full object-contain"
+            loading={index === 0 ? "eager" : "lazy"}
+            priority={index === 0}
           />
         </motion.div>
 
@@ -77,7 +94,7 @@ export function EventCard({ event, searchTerm }: EventCardProps) {
             {/* Title and club */}
             <div>
               <h3 className="text-3xl font-bold text-white font-editorial">
-                {searchTerm ? highlightText(event.name, searchTerm) : event.name}
+                {highlightText(event.name, searchTerm)}
               </h3>
               <p className="text-xl text-zinc-400">{event.club}</p>
             </div>
@@ -99,10 +116,7 @@ export function EventCard({ event, searchTerm }: EventCardProps) {
               className="text-zinc-300"
             >
               <p>
-                {searchTerm 
-                  ? highlightText(isExpanded ? description : shortDescription, searchTerm)
-                  : (isExpanded ? description : shortDescription)
-                }
+                {highlightText(isExpanded ? description : shortDescription, searchTerm)}
                 {description.length > 150 && (
                   <button 
                     onClick={() => setIsExpanded(!isExpanded)}
@@ -131,7 +145,7 @@ export function EventCard({ event, searchTerm }: EventCardProps) {
               transition={{ duration: 0.2 }}
             >
               <Calendar className="w-4 h-4" />
-              <span>{event.start_date} - {event.end_date}</span>
+              <span>{formatDate(event.start_date)} - {formatDate(event.end_date)}</span>
             </motion.div>
             <motion.div 
               className="flex items-center gap-2"
@@ -139,7 +153,7 @@ export function EventCard({ event, searchTerm }: EventCardProps) {
               transition={{ duration: 0.2 }}
             >
               <Users className="w-4 h-4" />
-              <span>{event.team_size} Members</span>
+              <span>{event.team_size}</span>
             </motion.div>
             <motion.div 
               className="flex items-center gap-2"

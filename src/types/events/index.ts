@@ -13,12 +13,16 @@ export type Events = {
   team_size: string;
   total_prize: string;
   venues: string[];
+  searchTerm: string
 }
 
-export type EventsResponse = {
-  events: Events[];
-  total_pages: number;
+export interface EventsResponse {
+  events: Events[]
+  total_pages: number
+  total_events: number
 }
+
+
 
 export type slots = {
   end_date: string;

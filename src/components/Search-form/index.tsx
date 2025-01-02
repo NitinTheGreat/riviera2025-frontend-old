@@ -1,9 +1,7 @@
-
-
 'use client'
 
-import { useSearchParams, useRouter, usePathname } from 'next/navigation'
-import { useCallback } from 'react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useState, useEffect } from 'react'
 import debounce from 'lodash/debounce'
 
 interface SearchFormProps {
@@ -13,40 +11,43 @@ interface SearchFormProps {
 
 export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) {
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const [search, setSearch] = useState(defaultSearch)
+  const [category, setCategory] = useState(defaultCategory)
 
   const createQueryString = useCallback((name: string, value: string) => {
-    const params = new URLSearchParams(searchParams)
+    const params = new URLSearchParams({ category, search })
     params.set(name, value)
-    if (name === 'search' || name === 'category') {
-      params.set('page', '1') // Reset to first page on new search/filter
-    }
+    params.set('page', '1') // Reset to first page on new search/filter
     return params.toString()
-  }, [searchParams])
+  }, [category, search])
 
   const debouncedSearch = useCallback(
     debounce((term: string) => {
-      router.push(pathname + '?' + createQueryString('search', term))
+      if (term.length >= 3 || term.length === 0) {
+        router.push(`/events?${createQueryString('search', term)}`)
+      }
     }, 300),
-    [createQueryString, pathname, router]
+    [createQueryString, router]
   )
 
+  useEffect(() => {
+    debouncedSearch(search)
+  }, [search, debouncedSearch])
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value
-    if (term.length >= 3 || term.length === 0) {
-      debouncedSearch(term)
-    }
+    setSearch(e.target.value)
   }
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    router.push(pathname + '?' + createQueryString('category', e.target.value))
+    const newCategory = e.target.value
+    setCategory(newCategory)
+    router.push(`/events?${createQueryString('category', newCategory)}`)
   }
 
   return (
     <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
       <select
-        defaultValue={defaultCategory}
+        value={category}
         onChange={handleCategoryChange}
         className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2"
       >
@@ -58,7 +59,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
       <div className="relative">
         <input
           type="text"
-          defaultValue={defaultSearch}
+          value={search}
           onChange={handleSearch}
           placeholder="Search Event"
           className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2 pl-10"
