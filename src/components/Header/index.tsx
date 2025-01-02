@@ -22,13 +22,22 @@ export default function BufferSection({
   description,
 }: BufferSectionProps) {
   return (
-    <section className="relative w-full h-screen">
+    <section className="absolute inset-0 w-full h-screen ">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
+        // style={{
+        //   backgroundImage: `url(${backgroundImage})`,
+        // }}
+
       >
+        <Image
+          src={backgroundImage}
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 mix-blend-multiply" />
       </div>
 

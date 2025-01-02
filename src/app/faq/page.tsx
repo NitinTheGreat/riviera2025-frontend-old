@@ -34,7 +34,7 @@ const faqItems = [
 ]
 
 const bufferProps = {
-  backgroundImage: "/concert-background.jpg",
+  backgroundImage: "/images/heroimg.png",
   title: "Frequently Asked Questions",
   sponsorImages: [
     {
@@ -59,8 +59,10 @@ const bufferProps = {
 
 export default function Page() {
   return (
-    <main className="absolute inset-0">
+    <main className=" bg-background">
+     
       <BufferSection {...bufferProps} />
+      <div className="h-screen"></div>
       <FAQSection items={faqItems} />
     </main>
   )
