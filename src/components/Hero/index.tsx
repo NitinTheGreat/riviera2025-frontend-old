@@ -118,7 +118,7 @@ export default function Hero() {
                 height: 'clamp(80px, 17vw, 170px)'
               }}
             >
-              <span className="text-primary-foreground absolute bottom-[15%] left-[20%] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold font-['FK_Screamer_Trial'] whitespace-nowrap">
+              <span className="text-primary-foreground absolute bottom-[15%] left-[20%] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold font-fk-trial whitespace-nowrap">
                 {daysToGo} DAYS TO GO!!
               </span>
             </div>

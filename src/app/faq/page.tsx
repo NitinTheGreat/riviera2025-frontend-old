@@ -59,7 +59,7 @@ const bufferProps = {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-background px-4 ">
+    <main className="absolute inset-0">
       <BufferSection {...bufferProps} />
       <FAQSection items={faqItems} />
     </main>

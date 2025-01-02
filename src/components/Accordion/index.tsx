@@ -46,8 +46,8 @@ export default function Accordion({ items }: AccordionProps) {
             transition={{ duration: 0.2 }}
           >
             <span 
-              className="text-xl md:text-2xl font-medium"
-              style={{ fontFamily: "var(--font-fk-screamer)" }}
+              className="text-xl md:text-2xl font-medium font-editorial"
+              
             >
               {item.question}
             </span>
@@ -101,8 +101,8 @@ export default function Accordion({ items }: AccordionProps) {
                 >
                   <div className="bg-primary p-6 rounded-lg">
                     <p 
-                      className="text-primary-foreground text-lg"
-                      style={{ fontFamily: "var(--font-pp-editorial)" }}
+                      className="text-primary-foreground text-lg font-editorial"
+                      
                     >
                       {item.answer}
                     </p>
