@@ -41,7 +41,7 @@ export default function BufferSection({
               duration: 0.8,
               ease: [0.76, 0, 0.24, 1]
             }}
-            className="text-[clamp(40px,10vw,180px)] text-white text-center tracking-tighter leading-none uppercase"
+            className="text-[clamp(40px,10vw,180px)] text-primary-foreground text-center tracking-tighter leading-none uppercase"
             style={{ 
               fontFamily: "var(--font-fk-screamer)",
               lineHeight: "0.9"
@@ -92,7 +92,7 @@ export default function BufferSection({
             delay: 0.6,
             ease: [0.76, 0, 0.24, 1]
           }}
-          className="text-white text-center max-w-4xl absolute bottom-[4vh] mx-auto px-4 break-words"
+          className="text-primary-foreground text-center max-w-4xl absolute bottom-[4vh] mx-auto px-4 break-words"
           style={{ 
             fontFamily: "var(--font-pp-editorial)",
             fontSize: "clamp(20px, 3vw, 36px)",

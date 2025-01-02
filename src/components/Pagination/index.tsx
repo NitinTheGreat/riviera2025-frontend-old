@@ -102,7 +102,7 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
                   href={`${baseUrl}page=${page}`}
                   className={`w-10 h-10 rounded-lg text-sm flex items-center justify-center transition-colors ${
                     currentPage === page
-                      ? 'bg-[#853BFF] text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : 'border border-zinc-700 hover:bg-zinc-800'
                   }`}
                 >

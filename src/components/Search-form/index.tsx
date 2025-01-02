@@ -49,7 +49,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
       <select
         value={category}
         onChange={handleCategoryChange}
-        className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2"
+        className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-primary-foreground rounded-lg px-3 py-2"
       >
         <option value="all">All Events</option>
         <option value="technical">Technical</option>
@@ -62,10 +62,10 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
           value={search}
           onChange={handleSearch}
           placeholder="Search Event"
-          className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2 pl-10"
+          className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-primary-foreground rounded-lg px-3 py-2 pl-10"
         />
         <svg
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#853BFF] h-4 w-4"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-4 w-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

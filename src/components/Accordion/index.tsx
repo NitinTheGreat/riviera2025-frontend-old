@@ -41,7 +41,7 @@ export default function Accordion({ items }: AccordionProps) {
         >
           <motion.button
             onClick={() => setOpenItem(openItem === item.id ? null : item.id)}
-            className="w-full flex items-center justify-between py-6 text-left text-white group"
+            className="w-full flex items-center justify-between py-6 text-left text-primary-foreground group"
             whileHover={{ x: 4 }}
             transition={{ duration: 0.2 }}
           >
@@ -54,7 +54,7 @@ export default function Accordion({ items }: AccordionProps) {
             <motion.div
               animate={{ rotate: openItem === item.id ? 180 : 0 }}
               transition={{ duration: 0.3, ease: "anticipate" }}
-              className="ml-4 shrink-0 text-purple-400"
+              className="ml-4 shrink-0 text-primary"
             >
               <ChevronDown className="h-6 w-6" />
             </motion.div>
@@ -99,9 +99,9 @@ export default function Accordion({ items }: AccordionProps) {
                   exit={{ y: -20 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-purple-900/80 p-6 rounded-lg">
+                  <div className="bg-primary p-6 rounded-lg">
                     <p 
-                      className="text-white text-lg"
+                      className="text-primary-foreground text-lg"
                       style={{ fontFamily: "var(--font-pp-editorial)" }}
                     >
                       {item.answer}

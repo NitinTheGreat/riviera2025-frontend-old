@@ -59,7 +59,7 @@ const bufferProps = {
 
 export default function Page() {
   return (
-    <main className="w-full">
+    <main className="min-h-screen bg-background px-4 ">
       <BufferSection {...bufferProps} />
       <FAQSection items={faqItems} />
     </main>

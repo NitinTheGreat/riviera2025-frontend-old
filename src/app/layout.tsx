@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { Footer } from "../components";
+// import { Footer } from "../components";
 import Navbar from "@/components/Navbar";
 
 //todo: change default font's using next/font once we get the font files
@@ -86,7 +86,7 @@ export default function RootLayout({
             {children}
           </div>
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );

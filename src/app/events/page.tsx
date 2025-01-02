@@ -55,10 +55,10 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
+
   const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
     setTimeout(() => resolve(searchParams), 100) 
-  })
-  // Getting error here if not awaiting searchParams so followed this approach
+  })  // getting error if not making async therefore had to make async
 
   const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
   const category = (asyncSearchParams.category as string) || 'all'
@@ -68,10 +68,11 @@ export default async function EventsPage({
 
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
+
   return (
-    <div className="min-h-screen bg-[#1E1E1E] px-4 py-8">
+    <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold text-center text-[#853BFF] mb-12 font-editorial">
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary mb-12 font-editorial">
           EVENTS
         </h1>
 

@@ -93,7 +93,7 @@ export function EventCard({ event, index }: { event: Events; index: number }) {
           <div className="space-y-4">
             {/* Title and club */}
             <div>
-              <h3 className="text-3xl font-bold text-white font-editorial">
+              <h3 className="text-3xl font-bold text-primary-foreground font-editorial">
                 {highlightText(event.name, searchTerm)}
               </h3>
               <p className="text-xl text-zinc-400">{event.club}</p>
@@ -105,22 +105,22 @@ export function EventCard({ event, index }: { event: Events; index: number }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <IndianRupee className="w-4 h-4 text-white" />
-              <span className="text-white font-medium">{event.total_prize}</span>
+              <IndianRupee className="w-4 h-4 text-primary-foreground" />
+              <span className="text-primary-foreground font-medium">{event.total_prize}</span>
             </motion.div>
 
             {/* Description */}
             <motion.div
               initial={{ height: 'auto' }}
               animate={{ height: 'auto' }}
-              className="text-zinc-300"
+              className="text-primary-foreground"
             >
               <p>
                 {highlightText(isExpanded ? description : shortDescription, searchTerm)}
                 {description.length > 150 && (
                   <button 
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="text-[#853BFF] ml-2 hover:underline focus:outline-none focus:ring-2 focus:ring-[#853BFF] focus:ring-offset-2 focus:ring-offset-[#1E1E1E] rounded"
+                    className="text-primary ml-2 hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#1E1E1E] rounded"
                   >
                     {isExpanded ? 'Show less' : 'Read more.....'}
                   </button>
@@ -130,7 +130,7 @@ export function EventCard({ event, index }: { event: Events; index: number }) {
           </div>
 
           {/* Footer info */}
-          <div className="flex flex-wrap items-center gap-4 mt-4 text-zinc-300">
+          <div className="flex flex-wrap items-center gap-4 mt-4 text-primary-foreground">
             <motion.div 
               className="flex items-center gap-2"
               whileHover={{ scale: 1.05 }}
