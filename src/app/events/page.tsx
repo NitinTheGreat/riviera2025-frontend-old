@@ -4,8 +4,9 @@ import { Pagination } from '@/components/Pagination'
 import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
 import { Events, EventsResponse } from '@/types/events'
+import { SearchForm } from '@/components/Search-form'
 
-// Dummy data for demonstration
+// Dummy data
 const dummyEvents: Events[] = [
   {
     category: "Non Technical",
@@ -41,21 +42,38 @@ const dummyEvents: Events[] = [
   }
 ]
 
-// This would typically be an API call
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000))
+  'use server'
+  
+  await new Promise(resolve => setTimeout(resolve, 500))
 
-  let filteredEvents = dummyEvents
+  let filteredEvents = [...dummyEvents]
 
   if (category && category !== 'all') {
-    filteredEvents = filteredEvents.filter(event => event.category.toLowerCase() === category.toLowerCase())
+    filteredEvents = filteredEvents.filter(event => 
+      event.category.toLowerCase().replace(' ', '-') === category.toLowerCase()
+    )
   }
 
   if (search) {
-    filteredEvents = filteredEvents.filter(event => 
-      event.name.toLowerCase().includes(search.toLowerCase()) ||
-      event.description.toLowerCase().includes(search.toLowerCase())
+    const searchLower = search.toLowerCase()
+    filteredEvents = filteredEvents.sort((a, b) => {
+      const aTitleMatch = a.name.toLowerCase().includes(searchLower)
+      const bTitleMatch = b.name.toLowerCase().includes(searchLower)
+      
+      if (aTitleMatch && !bTitleMatch) return -1
+      if (!aTitleMatch && bTitleMatch) return 1
+      
+      const aDescMatch = a.description.toLowerCase().includes(searchLower)
+      const bDescMatch = b.description.toLowerCase().includes(searchLower)
+      
+      if (aDescMatch && !bDescMatch) return -1
+      if (!aDescMatch && bDescMatch) return 1
+      
+      return 0
+    }).filter(event => 
+      event.name.toLowerCase().includes(searchLower) ||
+      event.description.toLowerCase().includes(searchLower)
     )
   }
 
@@ -75,59 +93,22 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = typeof searchParams.page === 'string' ? parseInt(searchParams.page, 10) : 1
-  const category = typeof searchParams.category === 'string' ? searchParams.category : 'all'
-  const search = typeof searchParams.search === 'string' ? searchParams.search : ''
+  const params = await searchParams
+  const page = typeof params.page === 'string' ? parseInt(params.page, 10) : 1
+  const category = typeof params.category === 'string' ? params.category : 'all'
+  const search = typeof params.search === 'string' ? params.search : ''
 
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
     <div className="min-h-screen bg-[#1E1E1E] px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <h1 className="text-5xl md:text-7xl font-bold text-center text-[#853BFF] mb-12 font-editorial">
           EVENTS
         </h1>
         
-        {/* Filters */}
-        <form className="flex flex-col md:flex-row justify-between gap-4 mb-8">
-          <select
-            name="category"
-            defaultValue={category}
-            className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2"
-          >
-            <option value="all">All Events</option>
-            <option value="technical">Technical</option>
-            <option value="non-technical">Non Technical</option>
-          </select>
-          
-          <div className="relative">
-            <input
-              type="text"
-              name="search"
-              placeholder="Search Event"
-              defaultValue={search}
-              className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-zinc-100 rounded-lg px-3 py-2 pl-10"
-            />
-            <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-[#853BFF] h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-          <button type="submit" className="sr-only">Search</button>
-        </form>
+        <SearchForm defaultCategory={category} defaultSearch={search} />
         
-        {/* Events List */}
         <Suspense fallback={
           <>
             <EventCardSkeleton />
@@ -137,7 +118,6 @@ export default async function EventsPage({
           <EventsList page={page} category={category} search={search} />
         </Suspense>
         
-        {/* Pagination */}
         <Suspense fallback={<PaginationSkeleton />}>
           <PaginationWrapper page={page} category={category} search={search} baseUrl={baseUrl} />
         </Suspense>
@@ -146,19 +126,32 @@ export default async function EventsPage({
   )
 }
 
-async function EventsList({ page, category, search }: { page: number, category: string, search: string }) {
+async function EventsList({ page, category, search }: { 
+  page: number
+  category: string
+  search: string 
+}) {
   const { events } = await getEvents(page, category, search)
   
   return (
     <div className="space-y-8">
       {events.map((event) => (
-        <EventCard key={event.pid} event={event} />
+        <EventCard 
+          key={event.pid} 
+          event={event} 
+          searchTerm={search}
+        />
       ))}
     </div>
   )
 }
 
-async function PaginationWrapper({ page, category, search, baseUrl }: { page: number, category: string, search: string, baseUrl: string }) {
+async function PaginationWrapper({ page, category, search, baseUrl }: { 
+  page: number
+  category: string
+  search: string
+  baseUrl: string 
+}) {
   const { total_pages } = await getEvents(page, category, search)
   
   return (

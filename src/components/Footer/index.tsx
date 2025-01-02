@@ -1,3 +1,4 @@
+import BufferSection from "../Header";
 function Footer() {
   return (
     <footer className="bg-background text-white text-sm">
