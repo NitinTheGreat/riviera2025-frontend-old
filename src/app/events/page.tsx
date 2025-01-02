@@ -53,21 +53,15 @@ async function getEvents(page: number, category: string, search: string): Promis
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams?: { [key: string]: string | string[] | undefined }
 }) {
-
-  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
-    setTimeout(() => resolve(searchParams), 100) 
-  })  // getting error if not making async therefore had to make async
-
-  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
-  const category = (asyncSearchParams.category as string) || 'all'
-  const search = (asyncSearchParams.search as string) || ''
+  const page = searchParams?.page ? parseInt(searchParams.page as string, 10) : 1
+  const category = (searchParams?.category as string) || 'all'
+  const search = (searchParams?.search as string) || ''
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
-
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
@@ -104,3 +98,4 @@ export default async function EventsPage({
     </div>
   )
 }
+
