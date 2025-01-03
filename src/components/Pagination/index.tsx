@@ -54,13 +54,13 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
 
   return (
     <div className="flex flex-col items-center justify-between gap-4 mt-8">
-      <div className="text-zinc-400 text-sm">
+      <div className="text-zinc-400 text-sm text-center">
         Showing {Math.min((currentPage - 1) * 10 + 1, totalEvents)} - {Math.min(currentPage * 10, totalEvents)} of {totalEvents} events
       </div>
-      <div className="flex items-center justify-between gap-4 w-full">
+      <div className="flex flex-wrap items-center justify-between sm:flex-nowrap sm:gap-4 w-full ">
         <Link
           href={`${baseUrl}page=${Math.max(1, currentPage - 1)}`}
-          className={`px-6 py-2 border border-zinc-700 rounded-lg transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
+          className={`order-1 mb-6 lg:mb-0 sm:order-none px-4 py-2 border border-zinc-700 rounded-lg  transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
             currentPage === 1 ? 'pointer-events-none opacity-50' : ''
           }`}
         >
@@ -77,18 +77,18 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          Previous
+          <span className="hidden sm:inline">Previous</span>
         </Link>
         
         <motion.div 
-          className="flex gap-2"
+          className="flex flex-wrap justify-center gap-2 order-3 sm:order-none w-full sm:w-auto sm:mx-auto"
           initial={false}
         >
           {visiblePages.map((page, i) => (
             page === '...' ? (
               <span
                 key={`ellipsis-${i}`}
-                className="w-10 h-10 rounded-lg text-sm flex items-center justify-center text-zinc-400"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-sm flex items-center justify-center text-zinc-400"
               >
                 ...
               </span>
@@ -100,7 +100,7 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
               >
                 <Link
                   href={`${baseUrl}page=${page}`}
-                  className={`w-10 h-10 rounded-lg text-sm flex items-center justify-center transition-colors ${
+                  className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-sm flex items-center justify-center transition-colors ${
                     currentPage === page
                       ? 'bg-primary text-primary-foreground'
                       : 'border border-zinc-700 hover:bg-zinc-800'
@@ -115,11 +115,11 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
 
         <Link
           href={`${baseUrl}page=${Math.min(totalPages, currentPage + 1)}`}
-          className={`px-6 py-2 border border-zinc-700 rounded-lg transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
+          className={`order-2 mb-6 lg:mb-0 sm:order-none px-4 py-2 border border-zinc-700 rounded-lg transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
             currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
           }`}
         >
-          Next
+          <span className="hidden sm:inline">Next</span>
           <svg
             className="w-5 h-5"
             fill="none"
@@ -138,4 +138,3 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
     </div>
   )
 }
-

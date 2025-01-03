@@ -52,8 +52,8 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
         className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-primary-foreground rounded-lg px-3 py-2"
       >
         <option value="all">All Events</option>
-        <option value="technical">Technical</option>
-        <option value="non-technical">Non Technical</option>
+        <option value="premium">Premium</option>
+        <option value="external">External</option>
       </select>
       
       <div className="relative">

@@ -30,12 +30,22 @@ async function getEvents(page: number, category: string, search: string): Promis
     const searchLower = search.toLowerCase()
     filteredEvents = data.events.filter((event: Events) =>
       event.name.toLowerCase().includes(searchLower) ||
-      event.description.toLowerCase().includes(searchLower)
+      event.description.toLowerCase().includes(searchLower) ||
+      event.club.toLowerCase().includes(searchLower)
     ).sort((a: Events, b: Events) => {
       const aTitle = a.name.toLowerCase().includes(searchLower)
       const bTitle = b.name.toLowerCase().includes(searchLower)
+      const aDescription = a.description.toLowerCase().includes(searchLower)
+      const bDescription = b.description.toLowerCase().includes(searchLower)
+      const aClub = a.club.toLowerCase().includes(searchLower)
+      const bClub = b.club.toLowerCase().includes(searchLower)
+
       if (aTitle && !bTitle) return -1
       if (!aTitle && bTitle) return 1
+      if (aDescription && !bDescription) return -1
+      if (!aDescription && bDescription) return 1
+      if (aClub && !bClub) return -1
+      if (!aClub && bClub) return 1
       return 0
     })
   }
@@ -53,7 +63,7 @@ async function getEvents(page: number, category: string, search: string): Promis
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const page = searchParams?.page ? parseInt(searchParams.page as string, 10) : 1
   const category = (searchParams?.category as string) || 'all'
@@ -66,7 +76,7 @@ export default async function EventsPage({
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary mb-12 font-editorial">
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary mb-12 font-fk-trial">
           EVENTS
         </h1>
 

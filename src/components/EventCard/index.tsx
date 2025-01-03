@@ -39,7 +39,7 @@ export function EventCard({ event, index }: { event: Events; index: number }) {
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="relative"
+      className="relative cursor-pointer"
     >
       {/* Decorative border pattern */}
       <div className="absolute inset-0 bg-[#1E1E1E]">
