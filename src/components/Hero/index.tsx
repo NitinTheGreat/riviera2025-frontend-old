@@ -1,28 +1,28 @@
-'use client'
+"use client";
 
-import Image from "next/image"
-import { motion } from "framer-motion"
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 function calculateDaysToEvent() {
-  const eventDate = new Date('2025-02-23')
-  const today = new Date()
-  const diffTime = eventDate.getTime() - today.getTime()
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-  return diffDays
+  const eventDate = new Date("2025-02-23");
+  const today = new Date();
+  const diffTime = eventDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
 }
 
 const fadeIn = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-}
+  visible: { opacity: 1 },
+};
 
 const slideUp = {
   hidden: { y: 50, opacity: 0 },
-  visible: { y: 0, opacity: 1 }
-}
+  visible: { y: 0, opacity: 1 },
+};
 
 export default function Hero() {
-  const daysToGo = calculateDaysToEvent()
+  const daysToGo = calculateDaysToEvent();
 
   return (
     <div className=" w-full h-screen overflow-hidden bg-background">
@@ -46,7 +46,7 @@ export default function Hero() {
         {/* Main content area */}
         <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 sm:px-6 md:px-12 lg:px-24">
           {/* Background logo (rivieralogolight.png) */}
-          <motion.div 
+          <motion.div
             className="absolute inset-0 z-0"
             initial="hidden"
             animate="visible"
@@ -64,7 +64,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Main logo (riviera.png) */}
-          <motion.div 
+          <motion.div
             className="relative z-10 w-full max-w-[95%] md:max-w-[54%] lg:max-w-[60%] xl:max-w-[54%] aspect-[3/1] mb-4"
             initial="hidden"
             animate="visible"
@@ -82,7 +82,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Text content */}
-          <motion.div 
+          <motion.div
             className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 "
             initial="hidden"
             animate="visible"
@@ -100,7 +100,7 @@ export default function Hero() {
 
         {/* Updated Countdown section */}
         <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[0vw] md:bottom-[10vh] lg:bottom-[30px] md:translate-x-0 flex items-center justify-center md:w-auto">
-          <div className="relative h-[100px] w-[100px] sm:h-[120px] sm:w-[120px] md:h-[140px] md:w-[140px] lg:h-[160px] lg:w-[160px] xl:h-[180px] xl:w-[180px] -translate-x-[-44%] -translate-y-[-20%] z-30">
+          <div className="relative h-[160px] w-[160px] -translate-x-[-44%] -translate-y-[-20%] z-30">
             <Image
               src="/images/rivieralogowhite.png"
               alt="Countdown Logo"
@@ -111,14 +111,15 @@ export default function Hero() {
           </div>
           <div className="relative -ml-[10%]">
             <div
-              className="bg-primary flex items-center justify-center p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8"
+              className="bg-primary flex items-center justify-center w-64 md:w-80"
               style={{
-                clipPath: 'polygon(49% 42%, 49% 51%, 80% 44%, 79% 100%, 0 100%, 8% 70%, 15% 51%)',
-                width: 'clamp(200px, 40vw, 400px)',
-                height: 'clamp(80px, 17vw, 170px)'
+                clipPath:
+                  "polygon(49% 42%, 49% 51%, 80% 44%, 79% 100%, 0 100%, 8% 70%, 15% 51%)",
+                // width: "400px",
+                height: "170px",
               }}
             >
-              <span className="text-primary-foreground absolute bottom-[15%] left-[20%] text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold font-fk-trial whitespace-nowrap">
+              <span className="text-primary-foreground absolute bottom-[15%] left-[25%] text-xl md:text-3xl tracking-wider font-fk-trial whitespace-nowrap">
                 {daysToGo} DAYS TO GO!!
               </span>
             </div>
@@ -126,7 +127,7 @@ export default function Hero() {
         </div>
 
         {/* Sponsors */}
-        <motion.div 
+        {/* <motion.div 
           className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-full px-4"
           initial="hidden"
           animate="visible"
@@ -167,11 +168,10 @@ export default function Hero() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </div>
-  )
+  );
 }
 
-export { Hero }
-
+export { Hero };

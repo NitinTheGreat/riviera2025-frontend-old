@@ -66,7 +66,7 @@ export default function Page() {
   });
 
   return (
-    <div className="flex flex-col mt-16">
+    <div className="flex flex-col mt-24">
       <div className="flex flex-col sm:flex-row sm:justify-start sm:gap-12 gap-2">
         <div className="flex flex-col items-start gap-2 h-auto sm:min-w-[25rem] relative">
           <Image
@@ -102,21 +102,20 @@ export default function Page() {
           <p className="my-3 font-editorial">{data.short_description}</p>
           <p className="my-3 font-editorial">{data.description}</p>
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
-                <div className="flex flex-col">
-                  <h3 className="font-fk-trial text-2xl font-bold text-primary">
-                    VENUE
-                  </h3>
-                  <h3 className="font-editorial">None</h3>
-                </div>
-                <div className="flex flex-col sm:col-span-3">
-                <h3 className="font-fk-trial text-2xl font-bold text-primary">
-                  TOTAL PARTICIPANTS
-                </h3>
-                <h3 className="font-editorial">
-                  {data.number_of_participants}
-                </h3>
-                </div>
-                <div className="flex flex-col">
+            <div className="flex flex-col">
+              <h3 className="font-fk-trial text-2xl font-bold text-primary">
+                VENUE
+              </h3>
+              <h3 className="font-editorial">None</h3>
+            </div>
+            <div className="flex flex-col sm:col-span-3">
+              <h3 className="font-fk-trial text-2xl font-bold text-primary">
+                TOTAL PARTICIPANTS
+              </h3>
+              <h3 className="font-editorial">{data.number_of_participants}</h3>
+            </div>
+            {data.prizes && (
+              <div className="flex flex-col">
                 <h3 className="font-fk-trial text-2xl font-bold text-primary">
                   PRIZE POOL
                 </h3>
@@ -124,15 +123,20 @@ export default function Page() {
                   <IndianRupee />
                   {` ${numberWithCommas(Number(data.prizes))} `}
                 </div>
-                </div>
-                <div className="flex flex-col">
+              </div>
+            )}
+            {data.points && (
+              <div className="flex flex-col">
                 <h3 className="font-fk-trial text-2xl font-bold text-primary">
                   POINTS
                 </h3>
                 <h3 className="font-editorial">{data.points || "None"}</h3>
-                </div>
+              </div>
+            )}
           </div>
-          <h1 className="font-fk-trial text-2xl font-bold text-primary my-3">Slots</h1>
+          <h1 className="font-fk-trial text-2xl font-bold text-primary my-3">
+            Slots
+          </h1>
           <div className="grid grid-cols-2">
             {data.slot_details.map((slot, index) => {
               const startTime = new Date(slot.start_date);
@@ -214,49 +218,45 @@ export default function Page() {
         </div>
       </div> */}
       <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
-      <div className="h-full w-full max-w-[70vw] md:max-w-7xl mx-auto flex flex-row border-2 border-foreground bg-background ">
-        <div className="hidden md:flex flex-col justify-center items-start pl-4 w-1/4 border-r-2 border-foreground">
-          <h1 className="font-bold text-lg text-foreground truncate">
-            {data?.name}
-          </h1>
-          <p className="text-sm text-primary truncate">
-            {data?.club}
-          </p>
-        </div>
+        <div className="h-full w-full max-w-[70vw] md:max-w-7xl mx-auto flex flex-row border-2 border-foreground bg-background ">
+          <div className="hidden md:flex flex-col justify-center items-start pl-4 w-1/4 border-r-2 border-foreground">
+            <h1 className="font-bold text-lg text-foreground truncate">
+              {data?.name}
+            </h1>
+            <p className="text-sm text-primary truncate">{data?.club}</p>
+          </div>
 
-        <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-          <Calendar className="text-primary" size={20} />
-          <p className="text-foreground">
-            {firstStartDate}
-          </p>
-        </div>
+          <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
+            <Calendar className="text-primary" size={20} />
+            <p className="text-foreground leading-none">{firstStartDate}</p>
+          </div>
 
-        <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-          <Clock className="text-primary" size={20} />
-          <p className="text-foreground">
-            {firstStartTimeString} - {firstEndTimeString}
-          </p>
-        </div>
+          <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
+            <Clock className="text-primary" size={20} />
+            <p className="text-foreground">
+              {firstStartTimeString} - {firstEndTimeString}
+            </p>
+          </div>
 
-        <div className="flex items-center justify-center w-1/2 md:w-1/5 border-r-2 border-foreground gap-2">
-          <IndianRupee className="text-primary" size={20} />
-          <p className="text-foreground">
-            {numberWithCommas(data.price_per_ticket)}/-
-          </p>
-        </div>
+          <div className="flex items-center justify-center w-1/2 md:w-1/5 border-r-2 border-foreground gap-2">
+            <IndianRupee className="text-primary" size={20} />
+            <p className="text-foreground">
+              {numberWithCommas(data.price_per_ticket)}/-
+            </p>
+          </div>
 
-        <Link
-          href={`${
-            data?.event_type === "internal"
-              ? "https://web.vit.ac.in/rivierainternal"
-              : "https://web.vit.ac.in/riviera"
-          }`}
-          className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
-        >
-          REGISTER &gt;
-        </Link>
+          <Link
+            href={`${
+              data?.event_type === "internal"
+                ? "https://web.vit.ac.in/rivierainternal"
+                : "https://web.vit.ac.in/riviera"
+            }`}
+            className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
+          >
+            REGISTER &gt;
+          </Link>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
