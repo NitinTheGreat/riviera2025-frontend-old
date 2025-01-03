@@ -1,22 +1,116 @@
-import { getAllEvents } from "@/services/events.services";
+import { Suspense } from 'react'
+import { EventCard } from '@/components/EventCard'
+import { Pagination } from '@/components/Pagination'
+import { EventCardSkeleton } from '@/components/EventCardSkeleton'
+import { PaginationSkeleton } from '@/components/PaginationSkeleton'
+import { SearchForm } from '@/components/Search-form'
+import { Events, EventsResponse } from '@/types/events'
 
-export default async function EventsPage() {
-  const eventsResp = await getAllEvents("something");
-  const events = eventsResp.events;
+async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+  const limit = 10
+  const offset = (page - 1) * limit
+  const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
+
+  let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
+
+  if (category && category !== 'all') {
+    url += `&category=${category}`
+  }
+
+  const response = await fetch(url, { cache: 'no-store' })
+  if (!response.ok) {
+    throw new Error('Failed to fetch events')
+  }
+
+  const data = await response.json()
+
+  // Client-side filtering for more accurate results
+  let filteredEvents = data.events
+  if (search && search.length >= 3) {
+    const searchLower = search.toLowerCase()
+    filteredEvents = data.events.filter((event: Events) =>
+      event.name.toLowerCase().includes(searchLower) ||
+      event.description.toLowerCase().includes(searchLower) ||
+      event.club.toLowerCase().includes(searchLower)
+    ).sort((a: Events, b: Events) => {
+      const aTitle = a.name.toLowerCase().includes(searchLower)
+      const bTitle = b.name.toLowerCase().includes(searchLower)
+      const aDescription = a.description.toLowerCase().includes(searchLower)
+      const bDescription = b.description.toLowerCase().includes(searchLower)
+      const aClub = a.club.toLowerCase().includes(searchLower)
+      const bClub = b.club.toLowerCase().includes(searchLower)
+
+      if (aTitle && !bTitle) return -1
+      if (!aTitle && bTitle) return 1
+      if (aDescription && !bDescription) return -1
+      if (!aDescription && bDescription) return 1
+      if (aClub && !bClub) return -1
+      if (!aClub && bClub) return 1
+      return 0
+    })
+  }
+
+  // Apply pagination to filtered results
+  const paginatedEvents = filteredEvents.slice(offset, offset + limit)
+
+  return {
+    events: paginatedEvents,
+    total_pages: Math.ceil(filteredEvents.length / limit),
+    total_events: filteredEvents.length
+  }
+}
+
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  // Simulating async derivation of searchParams
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) // Example async delay
+  })
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
+
+  const { events, total_pages, total_events } = await getEvents(page, category, search)
+
+  const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
-    <div>
-      <p className="text-5xl mx-auto font-fk-trial font-black">
-        Riviera 2025 - Events
-      </p>
-      <div>
-        {events?.map((event) => (
-          <div key={event.pid} className="border-2 border-black p-4">
-            <p className="">{event.name}</p>
-            <p className="">{event.description}</p>
+    <div className="min-h-screen bg-background px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary m-12 font-fk-trial">
+          EVENTS
+        </h1>
+
+        <SearchForm defaultCategory={category} defaultSearch={search} />
+
+        <Suspense fallback={
+          <div className="space-y-8">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <EventCardSkeleton key={index} />
+            ))}
           </div>
-        ))}
+        }>
+          <div className="space-y-8">
+            {events.map((event, index) => (
+              <EventCard key={event.pid} event={event} index={index} />
+            ))}
+          </div>
+        </Suspense>
+
+        <Suspense fallback={<PaginationSkeleton />}>
+          <Pagination
+            currentPage={page}
+            totalPages={total_pages}
+            totalEvents={total_events}
+            baseUrl={baseUrl}
+          />
+        </Suspense>
       </div>
     </div>
-  );
+  )
 }
+

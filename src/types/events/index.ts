@@ -1,4 +1,4 @@
-export interface Events {
+export type Events = {
   category: string;
   club: string;
   description: string;
@@ -13,9 +13,39 @@ export interface Events {
   team_size: string;
   total_prize: string;
   venues: string[];
+  searchTerm: string
 }
 
 export interface EventsResponse {
-  events: Events[];
-  total_pages: number;
+  events: Events[]
+  total_pages: number
+  total_events: number
+}
+
+
+
+export type slots = {
+  end_date: string;
+  start_date: string;
+  venue: string;
+};
+
+export type EventDetail = {
+  category: string;
+  club: string;
+  description: string;
+  featured: boolean;
+  image: string;
+  judgement_criteria: string;
+  name: string;
+  number_of_participants: string;
+  pid: string;
+  points: string;
+  price_per_ticket: number;
+  prizes: string;
+  slot_details: slots[];
+  rules: string;
+  short_description: string;
+  is_a_team_event: boolean;
+  event_type: string;
 }
