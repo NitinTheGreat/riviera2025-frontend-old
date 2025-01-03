@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 function calculateDaysToEvent() {
   const eventDate = new Date("2025-02-23");
@@ -25,21 +26,25 @@ export default function Hero() {
   const daysToGo = calculateDaysToEvent();
 
   return (
-    <div className=" w-full h-screen overflow-hidden bg-background">
+    <div className="w-full h-screen overflow-hidden bg-background">
       <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        transition={{ duration: 1 }}
+        transition={{ duration: 1}}
+        className="absolute inset-0 w-full h-full"
       >
-        <Image
-          src="/images/heroimg.png"
-          alt="Hero Background"
-          fill
-          className="object-cover absolute"
-          quality={100}
-          priority
-        />
+        <div className="relative w-full h-full bg-foreground opacity-50">
+          <video
+            src="/Hero-vid-2.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute w-full h-full object-cover "
+            style={{ objectPosition: "center" }}
+          />
+        </div>
       </motion.div>
 
       <div className="absolute inset-0 flex flex-col justify-between">
@@ -51,7 +56,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={fadeIn}
-            transition={{ duration: 1.5, delay: 0.5 }}
+            transition={{ duration: 1.5, delay: 1.5 }}
           >
             <Image
               src="/images/rivieralogolight.png"
@@ -69,7 +74,7 @@ export default function Hero() {
             initial="hidden"
             animate="visible"
             variants={slideUp}
-            transition={{ duration: 1, delay: 0.2 }}
+            transition={{ duration: 1, delay: 1.2 }}
           >
             <Image
               src="/images/riviera.svg"
@@ -83,11 +88,11 @@ export default function Hero() {
 
           {/* Text content */}
           <motion.div
-            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 "
+            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3"
             initial="hidden"
             animate="visible"
             variants={slideUp}
-            transition={{ duration: 1, delay: 0.4 }}
+            transition={{ duration: 1, delay: 1.4 }}
           >
             <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-4xl font-medium uppercase tracking-wide font-fk-trial lg:ml-40">
               RAISE THE CRAZE
@@ -95,11 +100,23 @@ export default function Hero() {
             <h2 className="text-primary-foreground text-xl sm:text-base md:text-lg lg:text-lg xl:text-xl font-normal font-editorial lg:ml-20">
               Get ready to move, groove and shine
             </h2>
+            <div className="flex w-full gap-10 md:justify-end items-center lg:translate-x-10">
+              <Link href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view" target="_blank">
+                <button className="md:my-[0.5rem] w-fit justify-center rounded-xl text-foreground text-center text-[0.5rem] md:text-[1.3rem] whitespace-nowrap  font-editorial leading-[100%] bg-primary p-6 px-8">
+                  Events Brochure
+                </button>
+              </Link>
+              <Link href="https://www.youtube.com/watch?v=7Qp0XHHiU-0" target="_blank">
+                <button className="md:my-[0.5rem] w-fit justify-center rounded-xl text-foreground text-center text-[0.5rem] md:text-[1.3rem] whitespace-nowrap  font-editorial leading-[100%] bg-primary p-6 px-8">
+                  2024 Aftermovie
+                </button>
+              </Link>
+            </div>
           </motion.div>
         </div>
 
-        {/* Updated Countdown section */}
-        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[0vw] md:bottom-[10vh] lg:bottom-[30px] md:translate-x-0 flex items-center justify-center md:w-auto">
+        {/* Countdown section */}
+        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[0vw] md:bottom-[10vh] lg:bottom-[0px] overflow-hidden md:translate-x-0 flex items-center justify-center md:w-auto">
           <div className="relative h-[160px] w-[160px] -translate-x-[-44%] -translate-y-[-20%] z-30">
             <Image
               src="/images/rivieralogowhite.png"
@@ -115,60 +132,15 @@ export default function Hero() {
               style={{
                 clipPath:
                   "polygon(49% 42%, 49% 51%, 80% 44%, 79% 100%, 0 100%, 8% 70%, 15% 51%)",
-                // width: "400px",
                 height: "170px",
               }}
             >
-              <span className="text-primary-foreground absolute bottom-[15%] left-[25%] text-xl md:text-3xl tracking-wider font-fk-trial whitespace-nowrap">
+              <span className="text-primary-foreground font-bold absolute bottom-[15%] left-[25%] text-xl md:text-3xl tracking-wider font-fk-trial whitespace-nowrap">
                 {daysToGo} DAYS TO GO!!
               </span>
             </div>
           </div>
         </div>
-
-        {/* Sponsors */}
-        {/* <motion.div 
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-full px-4"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: { opacity: 0 },
-            visible: {
-              opacity: 1,
-              transition: {
-                staggerChildren: 0.2,
-              },
-            },
-          }}
-        >
-          <div className="flex justify-center gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 items-center opacity-80">
-            {[1, 2, 3, 4].map((i) => (
-              <motion.div 
-                key={i} 
-                className="relative h-3 w-10 sm:h-4 sm:w-12 md:h-5 md:w-16 lg:h-6 lg:w-20 xl:h-8 xl:w-24"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { 
-                    opacity: 1, 
-                    y: 0,
-                    transition: {
-                      type: "spring",
-                      stiffness: 100,
-                      damping: 10,
-                    }
-                  }
-                }}
-              >
-                <Image
-                  src={`/images/sponsor-${i}.png`}
-                  alt={`Sponsor ${i}`}
-                  fill
-                  className="object-contain brightness-200"
-                />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div> */}
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
 import { SearchForm } from '@/components/Search-form'
 import { Events, EventsResponse } from '@/types/events'
+import EventList from '@/components/TempComp/EventList'
 
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
@@ -94,11 +95,12 @@ export default async function EventsPage({
             ))}
           </div>
         }>
-          <div className="space-y-8">
+          {/* <div className="space-y-8">
             {events.map((event, index) => (
               <EventCard key={event.pid} event={event} index={index} />
             ))}
-          </div>
+          </div> */}
+          <EventList events={events} />
         </Suspense>
 
         <Suspense fallback={<PaginationSkeleton />}>
@@ -114,3 +116,12 @@ export default async function EventsPage({
   )
 }
 
+// import Index from "@/components/TempComp/EventPage";
+
+// function page() {
+//   return (
+//     <Index />
+//   )
+// }
+
+// export default page
