@@ -113,18 +113,11 @@ const Navbar = () => {
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
         transition={{ duration: 1 }} 
-        className='fixed top-0 left-0 right-0 flex justify-between items-center w-full h-16 z-[101] p-3'
+        className='fixed top-0 left-0 right-0 flex justify-between items-center w-full h-20 z-[101] p-4 mx-2'
       >
         <div className='flex items-center h-full w-auto'>
           <Image 
-            src="/images/nav-vit-og.svg" 
-            alt='vit logo' 
-            width={100}
-            height={100} 
-            className='w-auto h-full object-contain'
-          />
-          <Image 
-            src="/images/nav-vit-40.svg" 
+            src="/images/nav-logo-comb.svg" 
             alt='vit logo' 
             width={1} 
             height={1} 
@@ -133,11 +126,11 @@ const Navbar = () => {
         </div>
         <motion.button 
           onClick={() => { setMenu(!menu) }} 
-          className='font-fk-trial font-bold text-3xl'
+          className='font-fk-trial font-bold text-3xl mr-3'
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
-          {menu ? "Close" : "Menu"}
+          {menu ? "CLOSE" : "MENU"}
         </motion.button>
       </motion.div>
 
