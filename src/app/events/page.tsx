@@ -81,7 +81,7 @@ export default async function EventsPage({
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary mb-12 font-fk-trial">
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary m-12 font-fk-trial">
           EVENTS
         </h1>
 
