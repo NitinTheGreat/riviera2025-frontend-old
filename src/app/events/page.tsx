@@ -65,9 +65,14 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = searchParams?.page ? parseInt(searchParams.page as string, 10) : 1
-  const category = (searchParams?.category as string) || 'all'
-  const search = (searchParams?.search as string) || ''
+  // Simulating async derivation of searchParams
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) // Example async delay
+  })
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
