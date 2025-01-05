@@ -26,7 +26,7 @@ export default function Hero() {
   const daysToGo = calculateDaysToEvent();
 
   return (
-    <div className="w-full h-screen overflow-hidden bg-background">
+    <div className="w-full min-h-screen bg-background overflow-hidden">
       <motion.div
         initial="hidden"
         animate="visible"
@@ -41,8 +41,7 @@ export default function Hero() {
             muted
             loop
             playsInline
-            className="absolute w-full h-full object-cover "
-            style={{ objectPosition: "center" }}
+            className="absolute w-full h-full object-cover"
           />
         </div>
       </motion.div>
@@ -86,28 +85,28 @@ export default function Hero() {
             />
           </motion.div>
 
-          {/* Text content */}
+           {/* Text content */}
           <motion.div
-            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3"
+            className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 w-full"
             initial="hidden"
             animate="visible"
             variants={slideUp}
             transition={{ duration: 1, delay: 1.4 }}
           >
-            <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-4xl font-medium uppercase tracking-wide font-fk-trial lg:ml-40">
+            <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-6xl font-medium uppercase tracking-wide font-fk-trial md:ml-0 lg:ml-40">
               RAISE THE CRAZE
             </h1>
-            <h2 className="text-primary-foreground text-xl sm:text-base md:text-lg lg:text-lg xl:text-xl font-normal font-editorial lg:ml-20">
+            <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-3xl font-normal font-editorial md:ml-0 lg:ml-20">
               Get ready to move, groove and shine
             </h2>
-            <div className="flex w-full gap-10 md:justify-end items-center lg:translate-x-10">
+            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start  lg:translate-x-10">
               <Link href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view" target="_blank">
-                <button className="md:my-[0.5rem] w-fit justify-center rounded-xl text-foreground text-center text-[0.5rem] md:text-[1.3rem] whitespace-nowrap  font-editorial leading-[100%] bg-primary p-6 px-8">
+                <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   Events Brochure
                 </button>
               </Link>
               <Link href="https://www.youtube.com/watch?v=7Qp0XHHiU-0" target="_blank">
-                <button className="md:my-[0.5rem] w-fit justify-center rounded-xl text-foreground text-center text-[0.5rem] md:text-[1.3rem] whitespace-nowrap  font-editorial leading-[100%] bg-primary p-6 px-8">
+                <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   2024 Aftermovie
                 </button>
               </Link>
@@ -116,7 +115,7 @@ export default function Hero() {
         </div>
 
         {/* Countdown section */}
-        <div className="absolute z-20 left-1/2 -translate-x-1/2 bottom-[15vh] sm:bottom-[15vh] md:left-auto md:right-[0vw] md:bottom-[10vh] lg:bottom-[0px] overflow-hidden md:translate-x-0 flex items-center justify-center md:w-auto">
+        <div className="absolute z-20 left-[45%] -translate-x-1/2 bottom-[11vh]   lg:bottom-[4vh] md:left-auto md:right-[0vw] md:bottom-[10vh]    md:translate-x-0 flex items-center justify-center md:w-auto">
           <div className="relative h-[160px] w-[160px] -translate-x-[-44%] -translate-y-[-20%] z-30">
             <Image
               src="/images/rivieralogowhite.png"
