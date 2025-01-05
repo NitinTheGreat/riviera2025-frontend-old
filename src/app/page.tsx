@@ -1,13 +1,12 @@
-import { Hero } from "../components";
+import { Hero } from "@/components/Hero";
+import AboutSections from "@/components/About-sections";
 
 export default function Home() {
   return (
-    <>
-    <div>
+    <div className=" absolute left-0 w-full min-h-screen bg-background overflow-hidden">
       <Hero />
-      
+      <AboutSections />
     </div>
-    
-      </>
   );
 }
+

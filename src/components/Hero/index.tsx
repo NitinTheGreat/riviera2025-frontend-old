@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 function calculateDaysToEvent() {
   const eventDate = new Date("2025-02-23");
@@ -23,15 +24,23 @@ const slideUp = {
 };
 
 export default function Hero() {
-  const daysToGo = calculateDaysToEvent();
+  const [daysToGo, setDaysToGo] = useState(calculateDaysToEvent());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDaysToGo(calculateDaysToEvent());
+    }, 1000 * 60 * 60); // Update every hour
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <div className="w-full min-h-screen bg-background overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-background">
       <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        transition={{ duration: 1}}
+        transition={{ duration: 1 }}
         className="absolute inset-0 w-full h-full"
       >
         <div className="relative w-full h-full bg-foreground opacity-50">
@@ -46,9 +55,9 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <div className="absolute inset-0 flex flex-col justify-between">
+      <div className="absolute inset-0 flex flex-col justify-between w-full h-full">
         {/* Main content area */}
-        <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 sm:px-6 md:px-12 lg:px-24">
+        <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 md:px-6">
           {/* Background logo (rivieralogolight.png) */}
           <motion.div
             className="absolute inset-0 z-0"
@@ -85,7 +94,7 @@ export default function Hero() {
             />
           </motion.div>
 
-           {/* Text content */}
+          {/* Text content */}
           <motion.div
             className="relative z-10 text-center md:text-left space-y-2 md:space-y-3 w-full"
             initial="hidden"
@@ -99,7 +108,7 @@ export default function Hero() {
             <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-3xl font-normal font-editorial md:ml-0 lg:ml-20">
               Get ready to move, groove and shine
             </h2>
-            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start  lg:translate-x-10">
+            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start lg:translate-x-10">
               <Link href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view" target="_blank">
                 <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   Events Brochure
@@ -115,7 +124,7 @@ export default function Hero() {
         </div>
 
         {/* Countdown section */}
-        <div className="absolute z-20 left-[45%] -translate-x-1/2 bottom-[11vh]   lg:bottom-[4vh] md:left-auto md:right-[0vw] md:bottom-[10vh]    md:translate-x-0 flex items-center justify-center md:w-auto">
+        <div className="absolute z-20 left-[45%] -translate-x-1/2 bottom-[11vh] lg:bottom-[4vh] md:left-auto md:right-[0vw] md:bottom-[10vh] md:translate-x-0 flex items-center justify-center md:w-auto">
           <div className="relative h-[160px] w-[160px] -translate-x-[-44%] -translate-y-[-20%] z-30">
             <Image
               src="/images/rivieralogowhite.png"
@@ -146,3 +155,4 @@ export default function Hero() {
 }
 
 export { Hero };
+
