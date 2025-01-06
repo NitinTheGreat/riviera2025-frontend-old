@@ -5,15 +5,15 @@ export interface CarouselImage {
   
   export const carouselImages: CarouselImage[] = [
     {
-      src: '/images/aboutVinyl.png',
+      src: '/images/vinyl1about.jpg',
       alt: 'Riviera event highlights'
     },
     {
-      src: '/images/vinyl2.jpg',
+      src: '/images/vinyl2about.png',
       alt: 'Riviera performances'
     },
     {
-      src: '/images/vinyl3.jpg',
+      src: '/images/vinyl3about.png',
       alt: 'Riviera celebrations'
     }
   ]
