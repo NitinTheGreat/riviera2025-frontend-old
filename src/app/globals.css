@@ -12,7 +12,11 @@
     --footer:#C9C8C4;
   }
 }
-
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 body {
   color: var(--foreground);
   background: var(--background);
