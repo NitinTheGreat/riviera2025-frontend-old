@@ -36,24 +36,6 @@ const faqItems = [
 const bufferProps = {
   backgroundImage: "/images/heroimg.png",
   title: "Frequently Asked Questions",
-  sponsorImages: [
-    {
-      src: "/images/copyright.svg",
-      alt: "Copyright 2024",
-    },
-    {
-      src: "/images/creative-commons.svg",
-      alt: "Creative Commons",
-    },
-    {
-      src: "/images/block-chain.svg",
-      alt: "Blockchain",
-    },
-    {
-      src: "/images/barcode.svg",
-      alt: "Barcode",
-    },
-  ],
   description: "Advocating For Artists' Rights & New Standards For Ethical AI",
 }
 

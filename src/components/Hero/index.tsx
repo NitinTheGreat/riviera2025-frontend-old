@@ -55,9 +55,9 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <div className="absolute inset-0 flex flex-col justify-between w-full h-full">
+      <div className="absolute inset-0 flex flex-col justify-between">
         {/* Main content area */}
-        <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 md:px-6">
+        <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 sm:px-6 md:px-12 lg:px-24">
           {/* Background logo (rivieralogolight.png) */}
           <motion.div
             className="absolute inset-0 z-0"
@@ -102,10 +102,10 @@ export default function Hero() {
             variants={slideUp}
             transition={{ duration: 1, delay: 1.4 }}
           >
-            <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-6xl font-medium uppercase tracking-wide font-fk-trial md:ml-0 lg:ml-40">
+            <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-6xl font-medium uppercase tracking-wide font-fk-trial md:ml-20 lg:ml-40">
               RAISE THE CRAZE
             </h1>
-            <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-3xl font-normal font-editorial md:ml-0 lg:ml-20">
+            <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-2xl font-normal font-editorial md:ml-8 lg:ml-24">
               Get ready to move, groove and shine
             </h2>
             <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start lg:translate-x-10">
