@@ -9,7 +9,7 @@ export default function Home() {
         <Hero />
         <AboutSections />
       </div>
-      <div className="mt-[355vh] z-20 "> 
+      <div className="xl:mt-[356vh] z-20 mt-[360vh] sm:mt-[350vh] md:mt-[375vh] lg:mt-[335vh] "> 
         
        </div>
     </>

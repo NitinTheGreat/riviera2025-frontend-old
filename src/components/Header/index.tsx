@@ -44,7 +44,7 @@ export default function BufferSection({
               duration: 0.8,
               ease: [0.76, 0, 0.24, 1]
             }}
-            className="text-[clamp(40px,10vw,180px)] text-primary-foreground text-center leading-none uppercase font-fk-trial"
+            className="text-primary-foreground uppercase  ml-4 md:ml-0 font-fk-trial text-[4rem] sm:text-[5rem] md:text-[6rem] lg:text-[8rem] font-bold leading-[1.1] tracking-[1.2px] text-center"
           >
             {title}
           </motion.h1>
@@ -93,7 +93,7 @@ export default function BufferSection({
             delay: 0.6,
             ease: [0.76, 0, 0.24, 1]
           }}
-          className="text-primary-foreground text-center max-w-4xl absolute bottom-[4vh] mx-auto px-4 break-words font-editorial"
+          className="text-primary-foreground text-center  bottom-[8vh] absolute md:bottom-[4vh] mx-auto px-4 font-editorial"
           style={{ 
             fontSize: "clamp(20px, 3vw, 36px)",
             fontWeight: "400",
