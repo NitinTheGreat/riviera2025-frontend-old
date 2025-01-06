@@ -50,7 +50,7 @@ export default function AboutSections() {
       <section className="relative w-full min-h-screen bg-primary-foreground overflow-hidden py-16 md:py-24 lg:py-32">
         <div className="w-full max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-24">
-            {/* Vinyl Record Side */}
+            {/* Rotating Vinyl with Carousel */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -58,13 +58,15 @@ export default function AboutSections() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative w-full lg:w-1/2 aspect-square max-w-[400px] lg:max-w-[600px] mb-24 lg:mb-0"
             >
-              <div className="absolute inset-0 z-0">
-                <svg className="absolute top-0 left-0 w-full h-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 848 438" fill="none">
-                  <path d="M848 357.884L363.447 437.329V377.681L0 437.2V79.4442L484.553 0V59.6474L848 0.0642755V119.359L363.447 198.739V139.156L121.171 178.814V298.108L484.553 238.525V298.173L848 238.654V357.884Z" fill="#853BFF"/>
-                </svg>
-              </div>
-
-              <div className="relative h-full w-full rounded-full bg-background shadow-2xl animate-[spin_20s_linear_infinite]">
+              <div className="relative w-full h-full animate-[spin_20s_linear_infinite]">
+                <Image
+                  src="/images/aboutVinyl.png"
+                  alt="Vinyl record"
+                  fill
+                  className="object-cover rounded-full"
+                  priority
+                  sizes="(max-width: 640px) 80vw, (max-width: 1024px) 50vw, 600px"
+                />
                 <div className="absolute left-1/2 top-1/2 h-[98%] w-[98%] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-4 border-zinc-800">
                   <div className="absolute left-1/2 top-1/2 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2 transform rounded-full border border-zinc-800 overflow-hidden">
                     <Image
@@ -93,6 +95,7 @@ export default function AboutSections() {
                 >
                   <SkipBack className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-black" />
                 </button>
+                {/* Can be removed later */}
                 <button
                   onClick={togglePlayPause}
                   className="p-3 rounded-full bg-background text-primary-foreground hover:bg-gray-800 transition-colors"
@@ -103,6 +106,7 @@ export default function AboutSections() {
                     <Play className="w-5 h-5 fill-current" />
                   )}
                 </button>
+                 {/* Can be removed later */}
                 <button
                   onClick={nextImage}
                   className="p-2 rounded-full hover:bg-primary-foreground transition-colors group"
@@ -152,7 +156,6 @@ export default function AboutSections() {
                 happens in February, turning the campus into a kaleidoscope of talent and
                 celebration. Join us for an unforgettable ride where the quirky and
                 competitive collide!
-          
                 </motion.p>
               </div>
             </div>
