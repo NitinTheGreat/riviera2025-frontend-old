@@ -131,9 +131,10 @@ export default function MobileEventCard({ event }: { event: any }) {
               height={50}
             />
             <p
-              className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial`}
+              className={`text-[0.6rem] md:text-[1.25rem] text-center text-[#fff] font-editorial mt-1`}
             >
-              {startDate}
+              {/* {startDate} */}
+              TBD
               {/* - {endDate} */}
             </p>
           </div>

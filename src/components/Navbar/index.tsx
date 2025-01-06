@@ -9,10 +9,10 @@ const Navbar = () => {
   
   const navLinks = [
     { href: "/", text: "HOME" },
-    { href: "#", text: "ABOUT" },
+    { href: "#about", text: "ABOUT" },
     { href: "/events", text: "EVENTS" },
-    { href: "#", text: "TEAM" },
-    { href: "#", text: "FAQs" }
+    // { href: "#", text: "TEAM" },
+    { href: "/faq", text: "FAQs" }
   ];
 
   const containerVariants = {
@@ -124,6 +124,9 @@ const Navbar = () => {
             className='w-auto h-full object-contain'
           />
         </div>
+        <Link className='h-20 py-4' href="/">
+          <Image src="/images/nav-riviera.svg" width={1000} height={1000} alt="riviera home page " className='-translate-x-[65%] w-auto h-full object-contain hidden md:block'/>
+        </Link>
         <motion.button 
           onClick={() => { setMenu(!menu) }} 
           className='font-fk-trial font-bold text-3xl mr-3'
@@ -170,7 +173,7 @@ const Navbar = () => {
                     alt='image here' 
                     width="100" 
                     height="100" 
-                    className='sm:w-96 sm:h-16 invisible sm:visible'
+                    className='sm:w-96 sm:h-16 invisible '
                   />
                 </div>
                 <motion.div 
