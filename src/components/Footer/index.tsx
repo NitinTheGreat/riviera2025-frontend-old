@@ -10,7 +10,7 @@ import { div } from "motion/react-client";
 
 const Footer = () => {
   return (
-    <div className="absolute -z-10">
+    <div className="absolute -z-10 w-full">
         <footer className="flex flex-col items-center justify-center w-full bg-riviera-green text-[#111111] bg-footer font-editorial">
       <div className="grid-cols-1 sm:flex sm:flex-row sm:place-items-start justify-between w-full space-y-4">
         <img
@@ -26,7 +26,7 @@ const Footer = () => {
               className="w-[40%] z-10 my-[2.5rem] h-auto self-center md:w-[80%]"
             >
               <img
-                src="/Riviera'24 black.svg"
+                src="/images/footer-logo-25.svg"
                 className="w-auto h-auto"
                 alt="VIT Logo"
               />
@@ -88,10 +88,10 @@ const Footer = () => {
               Home
             </Link>
             <Link
-              href="/team"
+              href="/events"
               className={`${styles.link} mb-4 w-fit pointer-cursor-element`}
             >
-              Team
+              Events
             </Link>
             <Link
               href="/faq"
