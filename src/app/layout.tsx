@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner"
+// import Footer from "@/components/Footer";
 
 
 //todo: change default font's using next/font once we get the font files
@@ -88,7 +89,7 @@ export default function RootLayout({
             {children}
           </div>
         </div>
-        {/* <Footer /> */}
+        <Footer />
         <Toaster />
       </body>
     </html>

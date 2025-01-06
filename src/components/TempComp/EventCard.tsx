@@ -96,7 +96,7 @@ export default function EventCard({ event }: { event: any }) {
               {event.club}
             </p>
           </div>
-          {/* <div className="hidden md:block md:pr-8" onClick={handleEventClick}>
+          <div className="hidden md:block md:pr-8" onClick={handleEventClick}>
             <div
             // target="_blank"
             // rel="noopener noreferrer"
@@ -104,19 +104,18 @@ export default function EventCard({ event }: { event: any }) {
             // href={`/eventDetails?eventPid=${event.pid}`}
             >
               <div
-                className={`pr-20 text-center absolute pointer-cursor-element text-[#181717] text-[1.5rem] font-[700] font-fk-trial leading-[100%] bg-primary py-[1.5rem] px-[2rem] ${styles.register}`}
+                className={`w-[10rem] text-center absolute pointer-cursor-element text-primary-foreground text-[1.2rem] font-[700] font-editorial leading-[100%] bg-primary py-[1.5rem] px-[2rem] ${styles.register}`}
               >
                 More Info
               </div>
             </div>
             <div
-              className={`mx-[-0.5rem] my-[0.5rem] pointer-cursor-element text-[#0d0f04] text-[1.5rem] whitespace-nowrap font-[700] border font-fk-trial leading-[100%] bg-[#0D0F04] py-[1.5rem] px-[2rem] ${
-                space_grotesk.className
+              className={`w-[10rem] mx-[-0.5rem] my-[0.5rem] pointer-cursor-element text-primary-foreground text-[1.2rem] whitespace-nowrap font-[700] border  leading-[100%] bg-background py-[1.5rem] px-[2rem] font-editorial
               } ${event.featured ? `border-slate-300` : "border-slate-300"}`}
             >
               More Info
             </div>
-          </div> */}
+          </div>
         </div>
         <div
           className={`text-[0.7rem] md:text-[1rem] w-full lg:text-[1.25rem] overflow-hidden m-auto text-[#fff] leading-[140%] p-2 lg:pb-4 md:px-6 lg:px-10 md:py-0`}
@@ -141,7 +140,8 @@ export default function EventCard({ event }: { event: any }) {
             <p
               className={`text-[1rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {startTimeString} - {endTimeString}
+              {/* {startTimeString} - {endTimeString} */}
+              TBD
             </p>
           </div>
           <div
@@ -153,7 +153,8 @@ export default function EventCard({ event }: { event: any }) {
             <p
               className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {startDate}
+              {/* {startDate} */}
+              TBD
               {/* - {endDate} */}
             </p>
           </div>
