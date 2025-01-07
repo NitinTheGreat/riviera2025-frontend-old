@@ -16,6 +16,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  cursor: none !important;
 }
 body {
   color: var(--foreground);
@@ -72,4 +73,9 @@ body {
   }
 }
 
-/* For not found page */
+/* For custom cursor */
+
+a, button, [role="button"] {
+  cursor: none !important;
+}
+

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner"
 // import Footer from "@/components/Footer";
+import EnhancedCustomCursor from '../components/EnhancedCustomCursor'
 
 
 //todo: change default font's using next/font once we get the font files
@@ -87,6 +88,7 @@ export default function RootLayout({
         <div className="relative">
           <div className="flex min-h-screen mx-auto flex-col max-w-[90rem] bg-background px-4 md:px-6">
             {children}
+            <EnhancedCustomCursor />
           </div>
         </div>
         <Footer />
