@@ -198,7 +198,7 @@ export default async function EventsPage({
 
   const headerProps = {
     backgroundImage: "/images/heroimg.png",
-    title: "Events",
+    title: "External Events",
     description: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
   }
 
