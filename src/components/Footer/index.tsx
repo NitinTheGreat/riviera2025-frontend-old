@@ -10,12 +10,12 @@ import { div } from "motion/react-client";
 
 const Footer = () => {
   return (
-    <div className="absolute -z-10 w-full">
+    // <div className="absolute -z-10 w-full">
         <footer className="flex flex-col items-center justify-center w-full bg-riviera-green text-[#111111] bg-footer font-editorial">
       <div className="grid-cols-1 sm:flex sm:flex-row sm:place-items-start justify-between w-full space-y-4">
         <img
-          src="/Riviera green logo.svg"
-          className="hidden absolute aspect-square ml-0 h-max max-h-[20rem] w-full sm:w-auto z-0 md:ml-8 md:inline"
+          src="/images/footer-icon.svg"
+          className="hidden absolute aspect-square ml-0 h-max min-h-[20rem] w-full sm:w-auto z-0 md:ml-8 md:inline"
         ></img>
         <div className="min-h-full max-w-[100%] sm:max-w-[30%] flex flex-col items-center justify-center">
           <div className="h-[12vh] w-full bg-no-repeat bg-cover bg-center flex flex-row items-center justify-center md:min-h-[20rem]">
@@ -126,7 +126,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-    </div>
+    // </div>
   );
 };
 

@@ -242,7 +242,7 @@ export default function Page() {
         </div>
       </div> */}
       <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
-        <div className="h-full w-full max-w-[70vw] md:max-w-7xl mx-auto flex flex-row border-2 border-foreground bg-background ">
+        <div className="h-full w-full  max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background ">
           <div className="hidden md:flex flex-col justify-center items-start pl-4 w-1/4 border-r-2 border-foreground">
             <h1 className="font-bold text-lg text-foreground truncate">
               {data?.name}
