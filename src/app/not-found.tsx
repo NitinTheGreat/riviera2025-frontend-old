@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { Rocket, Satellite, User as Planet, Star, Zap } from 'lucide-react'
+import { Rocket, Satellite, User as  Star, Zap } from 'lucide-react'
 
 export default function Custom404() {
   const [text, setText] = useState('')
-  const fullText = "Houston, we have a problem. The page you're looking for has floated away into space."
+  const fullText = "Hoouston, we have a problem. The page you're looking for has floated away into space."
   const [showStars, setShowStars] = useState(false)
 
   useEffect(() => {
