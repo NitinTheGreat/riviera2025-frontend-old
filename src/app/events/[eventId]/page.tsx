@@ -25,45 +25,81 @@ export default function Page() {
   const slug = params.eventId;
   const [data, setData] = useState<EventDetail | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
+    const baseUrl = "https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events"
+    
     const fetchData = async () => {
+      setLoading(true)
       try {
-        // Simulate API call with setTimeout
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        const eventData = {
-          category: "external",
-          club: "Anchoring Club",
-          description:
-            "Join the exciting world of AdZap 2025, where creativity knows no limits! This fun-filled competition challenges participants to use humor, catchy jingles, and engaging stories to transform the art of advertising.",
-          featured: false,
-          image: "https://i.imgur.com/8tCPoSy.png",
-          judgement_criteria:
-            "Participants will be judged on basis of their creativity, originality, humour, clarity, and content.",
-          name: "AdZap 2025",
-          number_of_participants: "3 - 5 Members",
-          pid: "external_misc",
-          points: "",
-          price_per_ticket: 0,
-          prizes: "",
-          slot_details: [],
-          rules:
-            "1. Time Limit: Each team will get 2-3 minutes to present their advertisement. 2. Exceeding the time limit will result in negative marking. 3. Content Guidelines: Advertisements must be original and not copied from any existing sources. The content should be appropriate for all audiences (no use of offensive language, sensitive topics, or indecent visuals). 4. Advertisements should be delivered in English or Hindi. 5. Props and Visual Aids: Teams are allowed to use handmade props or placards during their performance. No pre-recorded audio or video presentations are permitted. 6. Teams must avoid excessive use of slogans or mimicking existing ads. 7. Disqualification Criteria: Plagiarism or inappropriate content will lead to immediate disqualification. Failure to follow the rules or disrespecting event coordinators will also lead to disqualification. 8. Teams must register by the deadline. Late entries will not be entertained. Only the team leader should register on behalf of the team.",
-          short_description:
-            "Join the exciting world of AdZap 2025, where creativity knows no limits! This fun-filled competition challenges participants to use humor, catchy jingles, and engaging stories to transform the art of advertising.",
-          is_a_team_event: true,
-          event_type: "Informal",
-        };
-        setData(eventData);
-        setLoading(false);
+        console.log(`Fetching event data for slug: ${slug}`)
+        const url = `${baseUrl}/${slug}`
+        console.log(`Full URL: ${url}`)
+
+        const response = await fetch(url)
+        console.log(`Response status: ${response.status}`)
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          console.error(`Error response body: ${errorText}`)
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        const eventData = await response.json()
+        console.log('Received event data:', eventData)
+        setData(eventData)
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
+        console.error('Error fetching data:', error)
+        toast.error("Failed to fetch event data. Please try again later.")
+      } finally {
+        setLoading(false)
       }
-    };
-    fetchData();
-  }, [slug]);
+    }
+
+    fetchData()
+  }, [slug])
+
+  if (!data) {
+    return <div className="p-8">Loading...</div>;
+  }
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Simulate API call with setTimeout
+  //       await new Promise(resolve => setTimeout(resolve, 2000));
+
+  //       const eventData = {
+  //         category: "external",
+  //         club: "Anchoring Club",
+  //         description:
+  //           "Join the exciting world of AdZap 2025, where creativity knows no limits! This fun-filled competition challenges participants to use humor, catchy jingles, and engaging stories to transform the art of advertising.",
+  //         featured: false,
+  //         image: "https://i.imgur.com/8tCPoSy.png",
+  //         judgement_criteria:
+  //           "Participants will be judged on basis of their creativity, originality, humour, clarity, and content.",
+  //         name: "AdZap 2025",
+  //         number_of_participants: "3 - 5 Members",
+  //         pid: "external_misc",
+  //         points: "",
+  //         price_per_ticket: 0,
+  //         prizes: "",
+  //         slot_details: [],
+  //         rules:
+  //           "1. Time Limit: Each team will get 2-3 minutes to present their advertisement. 2. Exceeding the time limit will result in negative marking. 3. Content Guidelines: Advertisements must be original and not copied from any existing sources. The content should be appropriate for all audiences (no use of offensive language, sensitive topics, or indecent visuals). 4. Advertisements should be delivered in English or Hindi. 5. Props and Visual Aids: Teams are allowed to use handmade props or placards during their performance. No pre-recorded audio or video presentations are permitted. 6. Teams must avoid excessive use of slogans or mimicking existing ads. 7. Disqualification Criteria: Plagiarism or inappropriate content will lead to immediate disqualification. Failure to follow the rules or disrespecting event coordinators will also lead to disqualification. 8. Teams must register by the deadline. Late entries will not be entertained. Only the team leader should register on behalf of the team.",
+  //         short_description:
+  //           "Join the exciting world of AdZap 2025, where creativity knows no limits! This fun-filled competition challenges participants to use humor, catchy jingles, and engaging stories to transform the art of advertising.",
+  //         is_a_team_event: true,
+  //         event_type: "Informal",
+  //       };
+  //       setData(eventData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [slug]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -206,11 +242,10 @@ export default function Page() {
           </div>
 
           <Link
-            href={`${
-              data?.event_type === "internal"
+            href={`${data?.event_type === "internal"
                 ? "https://web.vit.ac.in/rivierainternal"
                 : "https://web.vit.ac.in/riviera"
-            }`}
+              }`}
             className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
           >
             REGISTER &gt;
