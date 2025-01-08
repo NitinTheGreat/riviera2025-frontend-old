@@ -48,7 +48,7 @@ const EnhancedCustomCursor: React.FC = () => {
 
   return (
     <div
-      className={`fixed pointer-events-none z-50 transition-opacity duration-300 ${
+      className={`fixed z-[999] pointer-events-none transition-opacity duration-300 ${
         isHidden ? 'opacity-0' : 'opacity-100'
       }`}
       style={{
@@ -59,7 +59,7 @@ const EnhancedCustomCursor: React.FC = () => {
     >
       <div
         className={`w-8 h-8 transition-transform duration-150 ${
-          isPointer ? 'scale-150' : 'scale-100'
+          isPointer ? 'scale-150 transform-y-10' : 'scale-100 translate-y-0'
         } ${isClicked ? 'scale-75' : ''}`}
       >
         <Image
