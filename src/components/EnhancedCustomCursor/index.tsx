@@ -1,35 +1,83 @@
 'use client'
 
-import React from 'react'
-import { useOptimizedCursor } from '../../../hooks/useCursor'
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 
-const EnhancedCustomCursor: React.FC = () => {
-  const { cursorRef, isPointer, isClicked } = useOptimizedCursor()
+const CustomCursor: React.FC = () => {
+  const [position, setPosition] = useState({ x: -100, y: -100 })
+  const [isPointer, setIsPointer] = useState(false)
+  const [isClicked, setIsClicked] = useState(false)
+  const [isHidden, setIsHidden] = useState(false)
+  const [isVertical, setIsVertical] = useState(false)
+
+  useEffect(() => {
+    const hasMouse = window.matchMedia('(pointer:fine)').matches
+
+    if (hasMouse) {
+      const updatePosition = (e: MouseEvent) => {
+        setPosition({ x: e.clientX, y: e.clientY })
+      }
+
+      const checkIfPointer = (e: MouseEvent) => {
+        const target = e.target as Element
+        setIsPointer(target.classList.contains('pointer-cursor-element'))
+        setIsHidden(target.classList.contains('cursor-none'))
+        setIsVertical(target.tagName === 'A' || target.tagName === 'BUTTON' || target.classList.contains('vertical-cursor-element'))
+      }
+
+      const handleClick = () => {
+        setIsClicked(true)
+        setTimeout(() => setIsClicked(false), 200)
+      }
+
+      document.addEventListener('mousemove', updatePosition)
+      document.addEventListener('mouseover', checkIfPointer)
+      document.addEventListener('mouseout', checkIfPointer)
+      document.addEventListener('click', handleClick)
+
+      return () => {
+        document.removeEventListener('mousemove', updatePosition)
+        document.removeEventListener('mouseover', checkIfPointer)
+        document.removeEventListener('mouseout', checkIfPointer)
+        document.removeEventListener('click', handleClick)
+      }
+    }
+  }, [])
+
+  // Don't render the custom cursor on touch devices
+  if (typeof window !== 'undefined' && !window.matchMedia('(pointer:fine)').matches) {
+    return null
+  }
 
   return (
     <div
-      ref={cursorRef}
-      className={`fixed pointer-events-none z-50 transition-transform duration-75 ease-out
-                  ${isPointer ? 'cursor-pointer' : ''}
-                  ${isClicked ? 'cursor-clicked' : ''}`}
+      className={`fixed pointer-events-none z-50 transition-all duration-300 ${
+        isHidden ? 'opacity-0' : 'opacity-100'
+      }`}
       style={{
-        width: '28px',
-        height: '28px',
-        marginLeft: '-14px',
-        marginTop: '-14px',
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        transform: 'translate(-50%, -50%)'
       }}
     >
-      <img 
-        src="/images/customCursor.svg" 
-        alt="Custom Cursor" 
-        className="w-full h-full transition-transform duration-150 ease-out"
-        style={{
-          transform: `scale(${isClicked ? 0.9 : isPointer ? 1.1 : 1})`,
-        }}
-      />
+      <div
+        className={`w-8 h-8 transition-all duration-150 ${
+          isPointer ? 'scale-150' : 'scale-100'
+        } ${isClicked ? 'scale-75' : ''} ${
+          isVertical ? 'rotate-90 scale-y-150 scale-x-75' : ''
+        }`}
+      >
+        <Image
+          src="/images/customCursor.svg"
+          alt="Custom Cursor"
+          width={32}
+          height={32}
+          className="w-full h-full"
+        />
+      </div>
     </div>
   )
 }
 
-export default EnhancedCustomCursor
+export default CustomCursor
 

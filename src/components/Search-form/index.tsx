@@ -53,7 +53,13 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
       >
         <option value="all">All Events</option>
         <option value="premium">Premium</option>
-        <option value="external">External</option>
+        {/* <option value="external">External</option> */}
+        <option value="art_drama">Art Drama</option>
+        <option value="adventure_sports">Adventure Sports</option>
+        <option value="music">Music</option>
+        <option value="quiz_words_worth">Quiz</option>
+        
+
       </select>
       
       <div className="relative">
