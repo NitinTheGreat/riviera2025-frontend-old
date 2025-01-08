@@ -1,11 +1,11 @@
 import { Suspense } from 'react'
-// import { EventCard } from '@/components/EventCard'
 import { Pagination } from '@/components/Pagination'
 import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
 import { SearchForm } from '@/components/Search-form'
 import { Events, EventsResponse } from '@/types/events'
 import EventList from '@/components/TempComp/EventList'
+import BufferSection from '@/components/Header'
 
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
@@ -13,10 +13,6 @@ async function getEvents(page: number, category: string, search: string): Promis
   const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
 
   let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
-
-  if (category && category !== 'all') {
-    url += `&category=${category}`
-  }
 
   const response = await fetch(url, { cache: 'no-store' })
   if (!response.ok) {
@@ -26,10 +22,24 @@ async function getEvents(page: number, category: string, search: string): Promis
   const data = await response.json()
 
   // Client-side filtering for more accurate results
-  let filteredEvents = data.events
+  const cleanedEvents = data.events.map((event: Events) => ({
+    ...event,
+    image: event.image.trim()
+  }))
+  
+  let filteredEvents = cleanedEvents
+
+
+  // Filter for premium events if category is 'premium'
+  if (category === 'premium') {
+    filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
+  } else if (category && category !== 'all') {
+    filteredEvents = filteredEvents.filter((event: Events) => event.category === category)
+  }
+
   if (search && search.length >= 3) {
     const searchLower = search.toLowerCase()
-    filteredEvents = data.events.filter((event: Events) =>
+    filteredEvents = filteredEvents.filter((event: Events) =>
       event.name.toLowerCase().includes(searchLower) ||
       event.description.toLowerCase().includes(searchLower) ||
       event.club.toLowerCase().includes(searchLower)
@@ -51,7 +61,7 @@ async function getEvents(page: number, category: string, search: string): Promis
     })
   }
 
-  // Apply pagination to filtered results
+  //  pagination
   const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
   return {
@@ -61,14 +71,20 @@ async function getEvents(page: number, category: string, search: string): Promis
   }
 }
 
+const bufferProps = {
+  backgroundImage: "/images/eventsHeader.png",
+  title: "EVENTS",
+  description: "Discover the latest events happening around you. Stay updated and never miss out!",
+}
+
 export default async function EventsPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  // Simulating async derivation of searchParams
+
   const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
-    setTimeout(() => resolve(searchParams), 100) // Example async delay
+    setTimeout(() => resolve(searchParams), 100) 
   })
 
   const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
@@ -80,48 +96,43 @@ export default async function EventsPage({
   const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
-    <div className="min-h-screen bg-background px-4 py-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold text-center text-primary m-12 font-fk-trial">
-          EVENTS
-        </h1>
-
-        <SearchForm defaultCategory={category} defaultSearch={search} />
-
-        <Suspense fallback={
-          <div className="space-y-8">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <EventCardSkeleton key={index} />
-            ))}
+    <>
+      <BufferSection {...bufferProps} />
+      <div className="min-h-screen bg-background px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto mt-[100vh]">
           </div>
-        }>
-          {/* <div className="space-y-8">
-            {events.map((event, index) => (
-              <EventCard key={event.pid} event={event} index={index} />
-            ))}
-          </div> */}
-          <EventList events={events} />
-        </Suspense>
 
-        <Suspense fallback={<PaginationSkeleton />}>
-          <Pagination
-            currentPage={page}
-            totalPages={total_pages}
-            totalEvents={total_events}
-            baseUrl={baseUrl}
-          />
-        </Suspense>
+          <SearchForm defaultCategory={category} defaultSearch={search} />
+
+          <Suspense fallback={
+            <div className="space-y-8">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <EventCardSkeleton key={index} />
+              ))}
+            </div>
+          }>
+            {events.length > 0 ? (
+              <EventList events={events} />
+            ) : (
+              <div className="text-center py-8">
+                <h2 className="text-2xl font-semibold text-primary-foreground">No events found</h2>
+                <p className="text-muted-foreground mt-2">Try adjusting your search or filter criteria</p>
+              </div>
+            )}
+          </Suspense>
+
+          <Suspense fallback={<PaginationSkeleton />}>
+            <Pagination
+              currentPage={page}
+              totalPages={total_pages}
+              totalEvents={total_events}
+              baseUrl={baseUrl}
+            />
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
-// import Index from "@/components/TempComp/EventPage";
-
-// function page() {
-//   return (
-//     <Index />
-//   )
-// }
-
-// export default page

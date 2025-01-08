@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useState, useEffect } from 'react'
 import debounce from 'lodash/debounce'
 
@@ -11,20 +11,21 @@ interface SearchFormProps {
 
 export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [search, setSearch] = useState(defaultSearch)
   const [category, setCategory] = useState(defaultCategory)
 
   const createQueryString = useCallback((name: string, value: string) => {
-    const params = new URLSearchParams({ category, search })
+    const params = new URLSearchParams(searchParams)
     params.set(name, value)
     params.set('page', '1') // Reset to first page on new search/filter
     return params.toString()
-  }, [category, search])
+  }, [searchParams])
 
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       if (term.length >= 3 || term.length === 0) {
-        router.push(`/events?${createQueryString('search', term)}`)
+        router.push(`/events?${createQueryString('search', term)}`, { scroll: false })
       }
     }, 300),
     [createQueryString, router]
@@ -41,7 +42,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value
     setCategory(newCategory)
-    router.push(`/events?${createQueryString('category', newCategory)}`)
+    router.push(`/events?${createQueryString('category', newCategory)}`, { scroll: false })
   }
 
   return (
@@ -53,13 +54,10 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
       >
         <option value="all">All Events</option>
         <option value="premium">Premium</option>
-        {/* <option value="external">External</option> */}
         <option value="art_drama">Art Drama</option>
         <option value="adventure_sports">Adventure Sports</option>
-        <option value="music">Music</option>
+        <option value="Music">Music</option>
         <option value="quiz_words_worth">Quiz</option>
-        
-
       </select>
       
       <div className="relative">
@@ -88,4 +86,3 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
     </div>
   )
 }
-
