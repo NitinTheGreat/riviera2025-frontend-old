@@ -18,7 +18,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const createQueryString = useCallback((name: string, value: string) => {
     const params = new URLSearchParams(searchParams)
     params.set(name, value)
-    params.set('page', '1') // Reset to first page on new search/filter
+   
     return params.toString()
   }, [searchParams])
 

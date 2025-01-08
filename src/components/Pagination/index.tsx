@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
@@ -13,6 +13,7 @@ interface PaginationProps {
 
 export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: PaginationProps) {
   const [visiblePages, setVisiblePages] = useState<(number | string)[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     const calculateVisiblePages = () => {
@@ -52,14 +53,20 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
     calculateVisiblePages()
   }, [currentPage, totalPages])
 
+  const handlePageChange = (page: number) => {
+    if (page !== currentPage) {
+      router.push(`${baseUrl}page=${page}`, { scroll: false })
+    }
+  }
+
   return (
     <div className="flex flex-col items-center justify-between gap-4 mt-8">
       <div className="text-zinc-400 text-sm text-center">
         Showing {Math.min((currentPage - 1) * 10 + 1, totalEvents)} - {Math.min(currentPage * 10, totalEvents)} of {totalEvents} events
       </div>
       <div className="flex flex-wrap items-center justify-between sm:flex-nowrap sm:gap-4 w-full ">
-        <Link
-          href={`${baseUrl}page=${Math.max(1, currentPage - 1)}`}
+        <button
+          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
           className={`order-1 mb-6 lg:mb-0 sm:order-none px-4 py-2 border border-zinc-700 rounded-lg  transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
             currentPage === 1 ? 'pointer-events-none opacity-50' : ''
           }`}
@@ -78,7 +85,7 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
             />
           </svg>
           <span className="hidden sm:inline">Previous</span>
-        </Link>
+        </button>
         
         <motion.div 
           className="flex flex-wrap justify-center gap-2 order-3 sm:order-none w-full sm:w-auto sm:mx-auto"
@@ -98,8 +105,8 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link
-                  href={`${baseUrl}page=${page}`}
+                <button
+                  onClick={() => handlePageChange(page as number)}
                   className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-sm flex items-center justify-center transition-colors ${
                     currentPage === page
                       ? 'bg-primary text-primary-foreground'
@@ -107,14 +114,14 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
                   }`}
                 >
                   {page}
-                </Link>
+                </button>
               </motion.div>
             )
           ))}
         </motion.div>
 
-        <Link
-          href={`${baseUrl}page=${Math.min(totalPages, currentPage + 1)}`}
+        <button
+          onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
           className={`order-2 mb-6 lg:mb-0 sm:order-none px-4 py-2 border border-zinc-700 rounded-lg transition-colors hover:bg-zinc-800 flex items-center gap-2 ${
             currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
           }`}
@@ -133,8 +140,9 @@ export function Pagination({ currentPage, totalPages, totalEvents, baseUrl }: Pa
               d="M9 5l7 7-7 7"
             />
           </svg>
-        </Link>
+        </button>
       </div>
     </div>
   )
 }
+
