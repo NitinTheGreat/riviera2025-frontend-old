@@ -3,12 +3,11 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-const CustomCursor: React.FC = () => {
+const EnhancedCustomCursor: React.FC = () => {
   const [position, setPosition] = useState({ x: -100, y: -100 })
   const [isPointer, setIsPointer] = useState(false)
   const [isClicked, setIsClicked] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
-  const [isVertical, setIsVertical] = useState(false)
 
   useEffect(() => {
     const hasMouse = window.matchMedia('(pointer:fine)').matches
@@ -19,10 +18,8 @@ const CustomCursor: React.FC = () => {
       }
 
       const checkIfPointer = (e: MouseEvent) => {
-        const target = e.target as Element
-        setIsPointer(target.classList.contains('pointer-cursor-element'))
-        setIsHidden(target.classList.contains('cursor-none'))
-        setIsVertical(target.tagName === 'A' || target.tagName === 'BUTTON' || target.classList.contains('vertical-cursor-element'))
+        setIsPointer((e.target as Element).classList.contains('pointer-cursor-element'))
+        setIsHidden((e.target as Element).classList.contains('cursor-none'))
       }
 
       const handleClick = () => {
@@ -51,7 +48,7 @@ const CustomCursor: React.FC = () => {
 
   return (
     <div
-      className={`fixed pointer-events-none z-50 transition-all duration-300 ${
+      className={`fixed pointer-events-none z-50 transition-opacity duration-300 ${
         isHidden ? 'opacity-0' : 'opacity-100'
       }`}
       style={{
@@ -61,11 +58,9 @@ const CustomCursor: React.FC = () => {
       }}
     >
       <div
-        className={`w-8 h-8 transition-all duration-150 ${
+        className={`w-8 h-8 transition-transform duration-150 ${
           isPointer ? 'scale-150' : 'scale-100'
-        } ${isClicked ? 'scale-75' : ''} ${
-          isVertical ? 'rotate-90 scale-y-150 scale-x-75' : ''
-        }`}
+        } ${isClicked ? 'scale-75' : ''}`}
       >
         <Image
           src="/images/customCursor.svg"
@@ -79,5 +74,5 @@ const CustomCursor: React.FC = () => {
   )
 }
 
-export default CustomCursor
+export default EnhancedCustomCursor
 
