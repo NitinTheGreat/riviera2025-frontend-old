@@ -24,42 +24,38 @@ const Footer = () => {
           animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 100, damping: 15 }}
         >
-          <motion.img
-            src="/Riviera green logo.svg"
+          <img
+            src="/images/rivieraPurple.svg"
             className="hidden absolute aspect-square ml-0 h-max max-h-[20rem] w-full sm:w-auto z-0 md:ml-8 md:inline"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+            alt="Riviera Logo"
           />
-          <motion.div 
+          <div 
             className="min-h-full max-w-[100%] sm:max-w-[30%] flex flex-col items-center justify-center"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
+
           >
             <div className="h-[12vh] w-full bg-no-repeat bg-cover bg-center flex flex-row items-center justify-center md:min-h-[20rem]">
-              <motion.a 
+              <a 
                 href="https://riviera.vit.ac.in"
                 target="_blank"
                 rel="noreferrer"
                 className="w-[40%] z-10 my-[2.5rem] h-auto self-center md:w-[80%]"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+               
               >
                 <img
                   src="/images/footer-logo-25.svg"
                   className="w-auto h-auto"
                   alt="VIT Logo"
                 />
-              </motion.a>
+              </a>
             </div>
-          </motion.div>
+          </div>
           <motion.div 
             className="flex flex-row sm:w-[35%] justify-around"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            <div className={`font-oddval font-[400] z-10 flex flex-col sm:pt-8 mb-4 md:mb-0`}>
+            <div className={`font-editorial font-[400] z-10 flex flex-col sm:pt-8 mb-4 md:mb-0`}>
               <motion.h1 
                 className="font-oddval font-semibold text-2xl mb-6"
                 initial={{ opacity: 0 }}
@@ -82,9 +78,11 @@ const Footer = () => {
                 </motion.a>
               ))}
             </div>
-            <div className={`font-oddval font-[400] z-10 flex flex-col sm:pt-8 pb-[3rem] h-min`}>
+
+            
+            <div className={`font-editorial font-[400] z-10 flex flex-col sm:pt-8 mb-4 md:mb-0`}>
               <motion.h1 
-                className="font-semibold mb-6 text-2xl"
+                className="font-oddval font-semibold text-2xl mb-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
@@ -97,21 +95,24 @@ const Footer = () => {
                 { href: "/faq", text: "Accommodation" },
                 { href: "/faq", text: "FAQs" }
               ].map((link, index) => (
-                <motion.div
+               
+                <motion.a
                   key={link.text}
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${styles.link} mb-4 w-fit pointer-cursor-element ${index === 3 ? 'sm:mb-0' : ''}`}
                   whileHover={{ scale: 1.05, x: 5 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  <Link
-                    href={link.href}
-                    className={`${styles.link} mb-4 w-fit pointer-cursor-element`}
-                  >
-                    {link.text}
-                  </Link>
-                </motion.div>
+                  {link.text}
+                </motion.a>
               ))}
             </div>
           </motion.div>
+
+
+
           <motion.div
             className={`font-oddval font-[400] z-10 flex flex-col sm:justify-around sm:mr-[5%] sm:pt-8`}
             initial={{ opacity: 0, x: 50 }}

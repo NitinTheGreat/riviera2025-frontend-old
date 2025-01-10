@@ -38,7 +38,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--secondary)
+  background-color: #5e05ee
 }
 /* For not found page */
 .stars {
