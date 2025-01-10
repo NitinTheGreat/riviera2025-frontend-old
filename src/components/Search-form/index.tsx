@@ -25,7 +25,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       if (term.length >= 3 || term.length === 0) {
-        router.push(`/events?${createQueryString('search', term)}`, { scroll: false })
+        router.push(`/externalEvents?${createQueryString('search', term)}`, { scroll: false })
       }
     }, 300),
     [createQueryString, router]
@@ -42,7 +42,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value
     setCategory(newCategory)
-    router.push(`/events?${createQueryString('category', newCategory)}`, { scroll: false })
+    router.push(`/externalEvents?${createQueryString('category', newCategory)}`, { scroll: false })
   }
 
   return (

@@ -48,7 +48,7 @@ export async function generateMetadata(
       locale: 'en_US',
       type: 'website',
       siteName: 'Riviera 2025',
-      url: `https://riviera.vit.ac.in/events/${eventId}`,
+      url: `https://riviera.vit.ac.in/externalEvents/${eventId}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -62,7 +62,7 @@ export async function generateMetadata(
     authors: [{ name: 'VIT University' }],
     category: 'Event',
     alternates: {
-      canonical: `https://riviera.vit.ac.in/events/${eventId}`,
+      canonical: `https://riviera.vit.ac.in/externalEvents/${eventId}`,
     },
   }
 }

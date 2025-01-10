@@ -6,6 +6,7 @@ import { SearchForm } from '@/components/Search-form'
 import { Events, EventsResponse } from '@/types/events'
 import EventList from '@/components/TempComp/EventList'
 import BufferSection from '@/components/Header'
+import { HeaderSkeleton } from '@/components/HeaderSkeleton'
 
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
@@ -14,7 +15,7 @@ async function getEvents(page: number, category: string, search: string): Promis
 
   let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
 
-  const response = await fetch(url, { cache: 'no-store' })
+  const response = await fetch(url)
   if (!response.ok) {
     throw new Error('Failed to fetch events')
   }
@@ -28,7 +29,6 @@ async function getEvents(page: number, category: string, search: string): Promis
   }))
   
   let filteredEvents = cleanedEvents
-
 
   // Filter for premium events if category is 'premium'
   if (category === 'premium') {
@@ -73,7 +73,7 @@ async function getEvents(page: number, category: string, search: string): Promis
 
 const bufferProps = {
   backgroundImage: "/images/eventsHeader.png",
-  title: "EVENTS",
+  title: "EXTERNAL EVENTS",
   description: "Discover the latest events happening around you. Stay updated and never miss out!",
 }
 
@@ -82,7 +82,6 @@ export default async function EventsPage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-
   const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
     setTimeout(() => resolve(searchParams), 100) 
   })
@@ -93,11 +92,13 @@ export default async function EventsPage({
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
-  const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
+  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
     <>
-      <BufferSection {...bufferProps} />
+      <Suspense fallback={<HeaderSkeleton />}>
+        <BufferSection {...bufferProps} />
+      </Suspense>
       <div className="min-h-screen bg-background px-4 py-8">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-7xl mx-auto mt-[100vh]">
@@ -135,4 +136,3 @@ export default async function EventsPage({
     </>
   )
 }
-

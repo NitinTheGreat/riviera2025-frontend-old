@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 export default function ClientWrapper({ eventSlug }: { eventSlug: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
-  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/events/${eventSlug}`
+  const shareUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/externalEvents/${eventSlug}`
 
   const handleShare = () => {
     setIsShareModalOpen(true)
