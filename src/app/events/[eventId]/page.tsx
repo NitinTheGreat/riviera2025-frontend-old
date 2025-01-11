@@ -82,15 +82,16 @@ export default async function Page({ params }: { params: { eventId: string } }) 
   return (
     <div className="flex flex-col mt-24">
       <div className="flex flex-col sm:flex-row sm:justify-start sm:gap-12 gap-2">
-        <div className="flex flex-col items-start gap-2 h-auto sm:min-w-[25rem] relative">
-          <Image
-            src={data.image}
-            alt={`${data.name} Event Poster`}
-            width={1000}
-            height={1000}
-            layout="responsive"
-            className="max-w-[25rem] border-foreground border-2"
-          />
+      <div className="w-full mb-0 lg:max-h-[65vh] md:max-h-[35vh] max-w-md h-auto mx-auto p-4 border-4 border-primary rounded-lg overflow-hidden relative">
+            <Image
+              src={data.image}
+              alt={`${data.name} Event Poster`}
+              width={1000}
+              height={1000}
+              layout="responsive"
+              objectFit="cover"
+              className="w-full h-auto pt-2"
+            />
           <ClientWrapper eventSlug={eventId} />
           {data.category === "external" && (
             <h1 className="font-editorial text-center">
