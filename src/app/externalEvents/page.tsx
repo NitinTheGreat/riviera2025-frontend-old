@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import axios from 'axios'
 import { Pagination } from '@/components/Pagination'
 import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
@@ -12,25 +11,26 @@ import { HeaderSkeleton } from '@/components/HeaderSkeleton'
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
-  // const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
-  const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
+  const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
+  // const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
 
   try {
-    const response = await axios.get(`${baseUrl}`, {
-      params: {
-        offset: 0,
-        limit: 1000, // Fetch all events for client-side filtering
-      }
-    })
+    let url = `${baseUrl}?offset=0&limit=1000` // Fetching all events for search
+    const response = await fetch(url,  { next: { revalidate:90 }})
+    if (!response.ok) {
+      throw new Error('Failed to fetch events')
+    }
+  
+    const data = await response.json()
 
-    const cleanedEvents = response.data.events.map((event: Events) => ({
+    const cleanedEvents = data.events.map((event: Events) => ({
       ...event,
       image: event.image.trim()
     }))
 
     let filteredEvents = cleanedEvents
 
-    // Filter for premium events if category is 'premium'
+    // Filtering for premium events if category is 'premium'
     if (category === 'premium') {
       filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
     } else if (category && category !== 'all') {
@@ -80,15 +80,20 @@ const bufferProps = {
   title: "EXTERNAL EVENTS",
   description: "Discover the latest events happening around you. Stay updated and never miss out!",
 }
-
 export default async function EventsPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1
-  const category = (searchParams.category as string) || 'all'
-  const search = (searchParams.search as string) || ''
+
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) 
+  })
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
+
 
   const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
 

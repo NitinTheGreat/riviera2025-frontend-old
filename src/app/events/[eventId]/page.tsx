@@ -14,7 +14,7 @@ function numberWithCommas(x: number) {
 }
 
 async function getEventData(slug: string): Promise<EventDetail> {
-  const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate: 3600 } })
+  const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate:90 } })
   if (!res.ok) throw new Error('Failed to fetch event data')
   return res.json()
 }
