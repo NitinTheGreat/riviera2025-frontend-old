@@ -6,11 +6,29 @@ import { Calendar, Clock, IndianRupee } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordian"
 import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
+import EventHeader from '@/components/SlotCard'
 
 const baseUrl = "https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events"
 
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+function formatDateTime(isoString: string) {
+  const date = new Date(isoString);
+  
+  const timeString = date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true
+  });
+
+  const dateString = date.toLocaleDateString('en-US', {
+    day: 'numeric',
+    month: 'short'
+  });
+
+  return { time: timeString, date: dateString };
 }
 
 async function getEventData(slug: string): Promise<EventDetail> {
@@ -27,8 +45,6 @@ export async function generateMetadata(
   const data = await getEventData(eventId);
 
   const previousImages = (await parent).openGraph?.images || [];
-
-
 
   return {
     title: `${data.name} - Riviera 2025`,
@@ -71,7 +87,6 @@ export default async function Page({ params }: { params: { eventId: string } }) 
   const { eventId } = await params; 
   let data: EventDetail;
 
-
   try {
     data = await getEventData(eventId)
   } catch (error) {
@@ -82,18 +97,18 @@ export default async function Page({ params }: { params: { eventId: string } }) 
   return (
     <div className="flex flex-col mt-24">
       <div className="flex flex-col sm:flex-row sm:justify-start sm:gap-12 gap-2">
-      <div className="w-full mb-0 lg:max-h-[65vh] md:max-h-[35vh] max-w-md h-auto mx-auto p-4 border-4 border-primary rounded-lg overflow-hidden relative">
-            <Image
-              src={data.image}
-              alt={`${data.name} Event Poster`}
-              width={1000}
-              height={1000}
-              layout="responsive"
-              objectFit="cover"
-              className="w-full h-auto pt-2"
-            />
+        <div className="w-full mb-0 lg:max-h-[65vh] md:max-h-[35vh] max-w-md h-auto mx-auto p-4 border-4 border-primary rounded-lg overflow-hidden relative">
+          <Image
+            src={data.image}
+            alt={`${data.name} Event Poster`}
+            width={1000}
+            height={1000}
+            layout="responsive"
+            objectFit="cover"
+            className="w-full h-auto pt-2"
+          />
           <ClientWrapper eventSlug={eventId} />
-          {data.category === "external" && (
+          {data.event_type === "external_misc" && (
             <h1 className="font-editorial text-center">
               *Only for external participants
             </h1>
@@ -115,15 +130,32 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             </span>
           </div>
           <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
-          <p className="my-3 font-editorial">{data.short_description}</p>
           <p className="my-3 font-editorial">{data.description}</p>
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
             <div className="flex flex-col sm:col-span-3">
               <h3 className="font-fk-trial text-2xl font-bold text-primary">
-                TOTAL PARTICIPANTS
+                TEAM SIZE
               </h3>
               <h3 className="font-editorial">{data.number_of_participants}</h3>
             </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            {data.slot_details && data.slot_details.length > 0 ? (
+              data.slot_details.map((slot, index) => {
+                const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
+                const { time: endTime } = formatDateTime(slot.end_date);
+                return (
+                  <EventHeader
+                    key={`${slot.venue}-${index}`}
+                    venue={slot.venue}
+                    time={`${startTime} - ${endTime}`}
+                    date={startDate}
+                  />
+                );
+              })
+            ) : (
+              <p className="text-primary font-editorial">No venues specified</p>
+            )}
           </div>
           <Accordion type="single" collapsible>
             <AccordionItem value="rules">
@@ -131,7 +163,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
                 Rules
               </AccordionTrigger>
               <AccordionContent>
-                <p className="text-sm font-editorial">{data.rules}</p>
+                <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="judgement">
@@ -140,7 +172,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               </AccordionTrigger>
               <AccordionContent>
                 <p className="text-sm font-editorial">
-                  {data.judgement_criteria}
+                  {data.judgement_criteria || "No judgement criteria specified."}
                 </p>
               </AccordionContent>
             </AccordionItem>
@@ -156,15 +188,21 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             <p className="text-sm text-primary truncate">{data?.club}</p>
           </div>
 
-          <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-            <Calendar className="text-primary" size={20} />
-            <p className="text-foreground leading-none">TBD</p>
-          </div>
+          {data.slot_details && data.slot_details.length > 0 && (
+            <>
+              <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
+                <Calendar className="text-primary" size={20} />
+                <p className="text-foreground leading-none">{formatDateTime(data.slot_details[0].start_date).date}</p>
+              </div>
 
-          <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-            <Clock className="text-primary" size={20} />
-            <p className="text-foreground">TBD</p>
-          </div>
+              <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
+                <Clock className="text-primary" size={20} />
+                <p className="text-foreground">
+                  {`${formatDateTime(data.slot_details[0].start_date).time} - ${formatDateTime(data.slot_details[0].end_date).time}`}
+                </p>
+              </div>
+            </>
+          )}
 
           <div className="flex items-center justify-center w-1/2 md:w-1/5 border-r-2 border-foreground gap-2">
             <IndianRupee className="text-primary" size={20} />
