@@ -11,8 +11,8 @@ import { HeaderSkeleton } from '@/components/HeaderSkeleton'
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
-  const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
-  // const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
+  // const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
+  const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
 
   try {
     let url = `${baseUrl}?offset=0&limit=1000` // Fetching all events for search

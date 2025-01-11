@@ -8,7 +8,7 @@ import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
 
-const baseUrl = "https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events"
+const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
 
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -64,7 +64,7 @@ export async function generateMetadata(
       locale: 'en_US',
       type: 'website',
       siteName: 'Riviera 2025',
-      url: `https://riviera.vit.ac.in/externalEvents/${eventId}`,
+      url: `https://riviera.vit.ac.in/events/${eventId}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -78,7 +78,7 @@ export async function generateMetadata(
     authors: [{ name: 'VIT University' }],
     category: 'Event',
     alternates: {
-      canonical: `https://riviera.vit.ac.in/externalEvents/${eventId}`,
+      canonical: `https://riviera.vit.ac.in/events/${eventId}`,
     },
   }
 }
