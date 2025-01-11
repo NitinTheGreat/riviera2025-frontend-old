@@ -140,8 +140,8 @@ export default function EventCard({ event }: { event: any }) {
             <p
               className={`text-[1rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {/* {startTimeString} - {endTimeString} */}
-              TBD
+              {startTimeString} - {endTimeString}
+              {/* TBD */}
             </p>
           </div>
           <div
@@ -153,8 +153,8 @@ export default function EventCard({ event }: { event: any }) {
             <p
               className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {/* {startDate} */}
-              TBD
+              {startDate}
+              {/* TBD */}
               {/* - {endDate} */}
             </p>
           </div>

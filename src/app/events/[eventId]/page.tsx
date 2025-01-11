@@ -95,9 +95,9 @@ export default async function Page({ params }: { params: { eventId: string } }) 
   }
 
   return (
-    <div className="flex flex-col mt-24">
-      <div className="flex flex-col sm:flex-row sm:justify-start sm:gap-12 gap-2">
-        <div className="w-full mb-0 lg:max-h-[65vh] md:max-h-[35vh] max-w-md h-auto mx-auto p-4 border-4 border-primary rounded-lg overflow-hidden relative">
+    <div className="flex flex-col my-24">
+      <div className="flex flex-col md:flex-row md:justify-start md:gap-12 gap-2">
+        <div className="w-full mb-0 max-w-md h-auto mx-auto px-4 rounded-lg relative">
           <Image
             src={data.image}
             alt={`${data.name} Event Poster`}
@@ -105,11 +105,11 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             height={1000}
             layout="responsive"
             objectFit="cover"
-            className="w-full h-auto pt-2"
+            className="w-full aspect-square h-auto"
           />
           <ClientWrapper eventSlug={eventId} />
           {data.event_type === "external_misc" && (
-            <h1 className="font-editorial text-center">
+            <h1 className="font-editorial mt-1 text-center">
               *Only for external participants
             </h1>
           )}
@@ -120,7 +120,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             {data.club}
           </h2>
           <hr className="mt-5" />
-          <div className="flex items-center mt-2">
+          <div className="flex items-center mt-4">
             <IndianRupee />
             <h3 className="text-2xl font-editorial ">{` ${numberWithCommas(
               data.price_per_ticket
@@ -130,7 +130,9 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             </span>
           </div>
           <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
+          <p className="my-3 font-editorial">{data.short_description}</p>
           <p className="my-3 font-editorial">{data.description}</p>
+          
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
             <div className="flex flex-col sm:col-span-3">
               <h3 className="font-fk-trial text-2xl font-bold text-primary">
@@ -138,8 +140,11 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               </h3>
               <h3 className="font-editorial">{data.number_of_participants}</h3>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+            <div className="flex flex-col sm:col-span-3">
+              <h3 className="font-fk-trial uppercase text-2xl font-bold text-primary">
+                slots
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
             {data.slot_details && data.slot_details.length > 0 ? (
               data.slot_details.map((slot, index) => {
                 const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
@@ -157,7 +162,11 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               <p className="text-primary font-editorial">No venues specified</p>
             )}
           </div>
-          <Accordion type="single" collapsible>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Accordion type="single" collapsible>
             <AccordionItem value="rules">
               <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
                 Rules
@@ -177,15 +186,13 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </div>
-      </div>
       <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
         <div className="h-full w-full max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background">
-          <div className="hidden md:flex flex-col justify-center items-start pl-4 w-1/4 border-r-2 border-foreground">
-            <h1 className="font-bold text-lg text-foreground truncate">
+          <div className="hidden md:flex flex-col justify-center items-start pl-2 w-1/4 border-r-2 border-foreground overflow-clip">
+            <h1 className="font-bold text-lg text-foreground truncate text-ellipses w-full">
               {data?.name}
             </h1>
-            <p className="text-sm text-primary truncate">{data?.club}</p>
+            <p className="text-sm text-primary truncate text-ellipses w-full">{data?.club}</p>
           </div>
 
           {data.slot_details && data.slot_details.length > 0 && (

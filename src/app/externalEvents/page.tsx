@@ -15,8 +15,8 @@ async function getEvents(page: number, category: string, search: string): Promis
    const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
 
   try {
-    let url = `${baseUrl}?offset=0&limit=1000` // Fetching all events for search
-    const response = await fetch(url,  { next: { revalidate:90 }})
+    let url = `${baseUrl}?event_type=external&offset=0&limit=1000` // Fetching all events for search
+    const response = await fetch(url)
     if (!response.ok) {
       throw new Error('Failed to fetch events')
     }
@@ -40,26 +40,10 @@ async function getEvents(page: number, category: string, search: string): Promis
     if (search && search.length >= 3) {
       const searchLower = search.toLowerCase()
       filteredEvents = filteredEvents.filter((event: Events) =>
-        event.name.toLowerCase().includes(searchLower) ||
-        event.description.toLowerCase().includes(searchLower) ||
-        event.club.toLowerCase().includes(searchLower)
-      ).sort((a: Events, b: Events) => {
-        const aTitle = a.name.toLowerCase().includes(searchLower)
-        const bTitle = b.name.toLowerCase().includes(searchLower)
-        const aDescription = a.description.toLowerCase().includes(searchLower)
-        const bDescription = b.description.toLowerCase().includes(searchLower)
-        const aClub = a.club.toLowerCase().includes(searchLower)
-        const bClub = b.club.toLowerCase().includes(searchLower)
-
-        if (aTitle && !bTitle) return -1
-        if (!aTitle && bTitle) return 1
-        if (aDescription && !bDescription) return -1
-        if (!aDescription && bDescription) return 1
-        if (aClub && !bClub) return -1
-        if (!aClub && bClub) return 1
-        return 0
-      })
+        event.name.toLowerCase().includes(searchLower))
     }
+
+    console.log(filteredEvents)
 
     //  pagination
     const paginatedEvents = filteredEvents.slice(offset, offset + limit)
@@ -95,7 +79,7 @@ export default async function EventsPage({
   const search = (asyncSearchParams.search as string) || ''
 
 
-  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
+  const baseUrl = `${process.env.BASE_URL}/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
     <>
