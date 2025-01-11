@@ -49,7 +49,7 @@ export function EventCard({ event, index }: { event: Events; index: number }) {
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="relative cursor-pointer"
-      onClick={() => router.push(`/events/${event.pid}`)}
+      onClick={() => router.push(`/externalEvents/${event.pid}`)}
       id={index.toString()}
     >
       {/* Decorative border pattern */}

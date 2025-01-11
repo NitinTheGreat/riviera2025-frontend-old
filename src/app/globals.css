@@ -16,9 +16,66 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  cursor: none !important;
 }
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #5e05ee
+}
+/* For not found page */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--secondary), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 40px 70px, var(--primary), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 50px 160px, var(--secondary), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 90px 40px, var(--primary), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, var(--secondary), rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 160px 120px, var(--primary), rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: zoom 5s infinite;
+  opacity: 0.5;
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* For custom cursor */
+
+a, button, [role="button"] {
+  cursor: none !important;
+}
+

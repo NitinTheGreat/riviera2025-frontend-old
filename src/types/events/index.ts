@@ -48,4 +48,9 @@ export type EventDetail = {
   short_description: string;
   is_a_team_event: boolean;
   event_type: string;
+  start_date: string;
+  end_date: string;
+  on_hold: boolean;
+  venues: string[];
+  team_size: string;
 }

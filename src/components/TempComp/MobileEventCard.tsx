@@ -122,19 +122,14 @@ export default function MobileEventCard({ event }: { event: any }) {
               {startTimeString} - {endTimeString}
             </p>
           </div>
-          <div className={`flex flex-row w-full lg:max-w-[20%] h-full gap-[0.5rem] justify-center items-center border-r ${event.featured ? "border-foreground" :"border-[#fff]}"}`}>
-            <Image
-              className="w-[0.8rem] md:w-[1.2rem] lg:w-[1.5rem] h-auto aspect-square object-fill object-center"
-              src="/events/calender.svg"
-              alt="Calendar Icon"
-              width={50}
-              height={50}
-            />
+          <div className={`flex flex-row w-full py-1 lg:max-w-[20%] h-full gap-[0.5rem] justify-center items-center border-r ${event.featured ? "border-foreground" :"border-[#fff]}"}`}>
+          <Calendar  className="text-primary size-4"/>
+
             <p
               className={`text-[0.6rem] md:text-[1.25rem] text-center text-[#fff] font-editorial mt-1`}
             >
-              {/* {startDate} */}
-              TBD
+              {startDate}
+              {/* TBD */}
               {/* - {endDate} */}
             </p>
           </div>
@@ -148,7 +143,7 @@ export default function MobileEventCard({ event }: { event: any }) {
           </div>
           <div className="w-full lg:max-w-[30%] h-full gap-[0.5rem] flex flex-row justify-center items-center">
             
-            <IndianRupee className="text-primary w-[1 rem]"/>
+            <IndianRupee className="text-primary size-4"/>
 
             {/* <Link
             target="_blank"

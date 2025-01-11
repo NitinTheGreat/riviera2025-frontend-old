@@ -6,7 +6,6 @@ import { Space_Grotesk } from "next/font/google";
 // import EventCard from "@/components/EventCard";\
 import EventList from "@/components/TempComp/EventList";
 import axios from "axios";
-import dotenv from "dotenv";
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -30,7 +29,6 @@ interface Event {
 
 export default function Index() {
   // require("dotenv").config();
-  dotenv.config();
   const [width, setWidth] = useState("100%");
   const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
