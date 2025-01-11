@@ -8,7 +8,7 @@ import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
 
-const baseUrl = "const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'"
+const baseUrl = "const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
 
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
