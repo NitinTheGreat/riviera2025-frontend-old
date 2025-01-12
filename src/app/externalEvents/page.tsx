@@ -1,5 +1,4 @@
 import { Suspense } from 'react'
-import axios from 'axios'
 import { Pagination } from '@/components/Pagination'
 import { EventCardSkeleton } from '@/components/EventCardSkeleton'
 import { PaginationSkeleton } from '@/components/PaginationSkeleton'
@@ -7,6 +6,7 @@ import { SearchForm } from '@/components/Search-form'
 import { Events, EventsResponse } from '@/types/events'
 import EventList from '@/components/TempComp/EventList'
 import BufferSection from '@/components/Header'
+import axios from 'axios'
 
 async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
   const limit = 10
@@ -18,22 +18,42 @@ async function getEvents(page: number, category: string, search: string): Promis
       params: {
         event_type: 'external',
         event: search,
-        limit: limit,
+        limit: 1000, // Fetch all events
         ...(category && category !== 'all' ? { category: category } : {}),
-        offset: offset,
+        offset: 0,
       },
     })
 
     const data = response.data
-    console.log(data)
+
+    // Check if events array is empty or undefined
+    if (!data.events || data.events.length === 0) {
+      return {
+        events: [],
+        total_pages: 0,
+        total_events: 0
+      }
+    }
+
+    // Clean the events data
+    const cleanedEvents = data.events.map((event: Events) => ({
+      ...event,
+      image: event.image.trim()
+    }))
+
+    // Filter for premium events if category is 'premium'
+    let filteredEvents = cleanedEvents
+    if (category === 'premium') {
+      filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
+    }
+
+    // Paginate the events
+    const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
     return {
-      events: data.events.map((event: Events) => ({
-        ...event,
-        image: event.image.trim()
-      })),
-      total_pages: data.total_pages,
-      total_events: data.events.length
+      events: paginatedEvents,
+      total_pages: Math.ceil(filteredEvents.length / limit),
+      total_events: filteredEvents.length
     }
   } catch (error) {
     console.error('Failed to fetch events:', error)
@@ -43,20 +63,23 @@ async function getEvents(page: number, category: string, search: string): Promis
 
 const bufferProps = {
   backgroundImage: "/images/eventsHeader.png",
-  title: "EVENTS",
+  title: "EXTERNAL EVENTS",
   description: "Discover the latest events happening around you. Stay updated and never miss out!",
 }
-
-export const revalidate = 90 // Revalidate every 90 seconds
 
 export default async function EventsPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
-  const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1
-  const category = (searchParams.category as string) || 'all'
-  const search = (searchParams.search as string) || ''
+
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) 
+  })
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
@@ -89,14 +112,16 @@ export default async function EventsPage({
             )}
           </Suspense>
 
-          <Suspense fallback={<PaginationSkeleton />}>
-            <Pagination
-              currentPage={page}
-              totalPages={total_pages}
-              totalEvents={total_events}
-              baseUrl={baseUrl}
-            />
-          </Suspense>
+          {total_pages > 0 && (
+            <Suspense fallback={<PaginationSkeleton />}>
+              <Pagination
+                currentPage={page}
+                totalPages={total_pages}
+                totalEvents={total_events}
+                baseUrl={baseUrl}
+              />
+            </Suspense>
+          )}
         </div>
       </div>
     </>
