@@ -10,8 +10,8 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", text: "HOME" },
     { href: "/#about", text: "ABOUT" },
-    { href: "/externalEvents", text: "EVENTS" },
-    // { href: "#", text: "TEAM" },
+    { href: "/externalEvents", text: "EXTERNAL EVENTS" },
+    { href: "/events", text: "INTERNAL EVENTS" },
     { href: "/faq", text: "FAQs" }
   ];
 

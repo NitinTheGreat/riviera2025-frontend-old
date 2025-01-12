@@ -16,9 +16,9 @@ async function getEvents(page: number, category: string, search: string): Promis
   try {
     const response = await axios.get(`${baseUrl}`, {
       params: {
-        event_type: 'external',
+        event_type: 'internal', 
         event: search,
-        limit: 1000, // Fetch all events
+        limit: 1000,
         ...(category && category !== 'all' ? { category: category } : {}),
         offset: 0,
       },
@@ -26,7 +26,6 @@ async function getEvents(page: number, category: string, search: string): Promis
 
     const data = response.data
 
-    // Check if events array is empty or undefined
     if (!data.events || data.events.length === 0) {
       return {
         events: [],
@@ -35,19 +34,17 @@ async function getEvents(page: number, category: string, search: string): Promis
       }
     }
 
-    // Clean the events data
     const cleanedEvents = data.events.map((event: Events) => ({
       ...event,
       image: event.image.trim()
     }))
 
-    // Filter for premium events if category is 'premium'
+ 
     let filteredEvents = cleanedEvents
     if (category === 'premium') {
       filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
     }
 
-    // Paginate the events
     const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
     return {
@@ -62,12 +59,12 @@ async function getEvents(page: number, category: string, search: string): Promis
 }
 
 const bufferProps = {
-  backgroundImage: "/images/eventsHeader.png",
-  title: "EXTERNAL EVENTS",
-  description: "Discover the latest events happening around you. Stay updated and never miss out!",
+  backgroundImage: "/images/internalEventsHeader.png", 
+  title: "INTERNAL EVENTS", 
+  description: "Discover the latest internal events happening in our organization. Stay connected and engaged!", 
 }
 
-export default async function EventsPage({
+export default async function InternalEventsPage({ 
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -83,7 +80,7 @@ export default async function EventsPage({
 
   const { events, total_pages, total_events } = await getEvents(page, category, search)
 
-  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
+  const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&` 
 
   return (
     <>
@@ -106,7 +103,7 @@ export default async function EventsPage({
               <EventList events={events} />
             ) : (
               <div className="text-center py-8">
-                <h2 className="text-2xl font-semibold text-primary-foreground">No events found</h2>
+                <h2 className="text-2xl font-semibold text-primary-foreground">No internal events found</h2>
                 <p className="text-muted-foreground mt-2">Try adjusting your search or filter criteria</p>
               </div>
             )}

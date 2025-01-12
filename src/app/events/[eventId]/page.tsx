@@ -8,7 +8,7 @@ import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
 
-const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
+const baseUrl = process.env.Base_URL
 
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -16,23 +16,28 @@ function numberWithCommas(x: number) {
 
 function formatDateTime(isoString: string) {
   const date = new Date(isoString);
-  
-  const timeString = date.toLocaleTimeString('en-US', {
+
+  const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+
+  const timeString = istDate.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true
+    hour12: true,
+    timeZone: 'Asia/Kolkata'
   });
 
-  const dateString = date.toLocaleDateString('en-US', {
+  const dateString = istDate.toLocaleDateString('en-US', {
     day: 'numeric',
-    month: 'short'
+    month: 'short',
+    timeZone: 'Asia/Kolkata'
   });
 
   return { time: timeString, date: dateString };
 }
 
+
 async function getEventData(slug: string): Promise<EventDetail> {
-  const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate:90 } })
+  const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate: 90 } })
   if (!res.ok) throw new Error('Failed to fetch event data')
   return res.json()
 }
@@ -41,7 +46,7 @@ export async function generateMetadata(
   { params }: { params: { eventId: string } },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { eventId } = await params; 
+  const { eventId } = await params;
   const data = await getEventData(eventId);
 
   const previousImages = (await parent).openGraph?.images || [];
@@ -84,7 +89,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { eventId: string } }) {
-  const { eventId } = await params; 
+  const { eventId } = await params;
   let data: EventDetail;
 
   try {
@@ -132,7 +137,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
           <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
           <p className="my-3 font-editorial">{data.short_description}</p>
           <p className="my-3 font-editorial">{data.description}</p>
-          
+
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
             <div className="flex flex-col sm:col-span-3">
               <h3 className="font-fk-trial text-2xl font-bold text-primary">
@@ -145,47 +150,48 @@ export default async function Page({ params }: { params: { eventId: string } }) 
                 slots
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-            {data.slot_details && data.slot_details.length > 0 ? (
-              data.slot_details.map((slot, index) => {
-                const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
-                const { time: endTime } = formatDateTime(slot.end_date);
-                return (
-                  <EventHeader
-                    key={`${slot.venue}-${index}`}
-                    venue={slot.venue}
-                    time={`${startTime} - ${endTime}`}
-                    date={startDate}
-                  />
-                );
-              })
-            ) : (
-              <p className="text-primary font-editorial">No venues specified</p>
-            )}
-          </div>
+                {data.slot_details && data.slot_details.length > 0 ? (
+                  data.slot_details.map((slot, index) => {
+                    const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
+                    const { time: endTime } = formatDateTime(slot.end_date);
+                    return (
+                      <EventHeader
+                        key={`${slot.venue}-${index}`}
+                        venue={slot.venue}
+                        time={`${startTime} - ${endTime} IST`}
+                        date={startDate}
+                      />
+                    );
+                  })
+                ) : (
+                  <p className="text-primary font-editorial">No venues specified</p>
+                )}
+
+              </div>
             </div>
           </div>
         </div>
       </div>
       <Accordion type="single" collapsible>
-            <AccordionItem value="rules">
-              <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
-                Rules
-              </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="judgement">
-              <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
-                Judgement Criteria
-              </AccordionTrigger>
-              <AccordionContent>
-                <p className="text-sm font-editorial">
-                  {data.judgement_criteria || "No judgement criteria specified."}
-                </p>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+        <AccordionItem value="rules">
+          <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
+            Rules
+          </AccordionTrigger>
+          <AccordionContent>
+            <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="judgement">
+          <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
+            Judgement Criteria
+          </AccordionTrigger>
+          <AccordionContent>
+            <p className="text-sm font-editorial">
+              {data.judgement_criteria || "No judgement criteria specified."}
+            </p>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
         <div className="h-full w-full max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background">
           <div className="hidden md:flex flex-col justify-center items-start pl-2 w-1/4 border-r-2 border-foreground overflow-clip">
@@ -219,11 +225,10 @@ export default async function Page({ params }: { params: { eventId: string } }) 
           </div>
 
           <Link
-            href={`${
-              data?.event_type === "internal"
+            href={`${data?.event_type === "internal"
                 ? "https://web.vit.ac.in/rivierainternal"
                 : "https://web.vit.ac.in/riviera"
-            }`}
+              }`}
             className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
           >
             REGISTER &gt;
@@ -233,4 +238,3 @@ export default async function Page({ params }: { params: { eventId: string } }) 
     </div>
   )
 }
-
