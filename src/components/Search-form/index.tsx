@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback, useState, useEffect } from 'react'
 import debounce from 'lodash/debounce'
 
@@ -12,6 +12,7 @@ interface SearchFormProps {
 export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const pathname = usePathname()
   const [search, setSearch] = useState(defaultSearch)
   const [category, setCategory] = useState(defaultCategory)
 
@@ -25,10 +26,10 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       if (term.length >= 3 || term.length === 0) {
-        router.push(`/externalEvents?${createQueryString('search', term)}`, { scroll: false })
+        router.push(`${pathname}?${createQueryString('search', term)}`, { scroll: false })
       }
     }, 300),
-    [createQueryString, router]
+    [createQueryString, router, pathname]
   )
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value
     setCategory(newCategory)
-    router.push(`/externalEvents?${createQueryString('category', newCategory)}`, { scroll: false })
+    router.push(`${pathname}?${createQueryString('category', newCategory)}`, { scroll: false })
   }
 
   return (
@@ -86,3 +87,4 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
     </div>
   )
 }
+
