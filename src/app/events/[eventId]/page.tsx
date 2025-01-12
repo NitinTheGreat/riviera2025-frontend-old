@@ -17,19 +17,24 @@ function numberWithCommas(x: number) {
 function formatDateTime(isoString: string) {
   const date = new Date(isoString);
   
-  const timeString = date.toLocaleTimeString('en-US', {
+  const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  
+  const timeString = istDate.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
-    hour12: true
+    hour12: true,
+    timeZone: 'Asia/Kolkata'
   });
 
-  const dateString = date.toLocaleDateString('en-US', {
+  const dateString = istDate.toLocaleDateString('en-US', {
     day: 'numeric',
-    month: 'short'
+    month: 'short',
+    timeZone: 'Asia/Kolkata'
   });
 
   return { time: timeString, date: dateString };
 }
+
 
 async function getEventData(slug: string): Promise<EventDetail> {
   const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate:90 } })
@@ -145,22 +150,23 @@ export default async function Page({ params }: { params: { eventId: string } }) 
                 slots
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-            {data.slot_details && data.slot_details.length > 0 ? (
-              data.slot_details.map((slot, index) => {
-                const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
-                const { time: endTime } = formatDateTime(slot.end_date);
-                return (
-                  <EventHeader
-                    key={`${slot.venue}-${index}`}
-                    venue={slot.venue}
-                    time={`${startTime} - ${endTime}`}
-                    date={startDate}
-                  />
-                );
-              })
-            ) : (
-              <p className="text-primary font-editorial">No venues specified</p>
-            )}
+              {data.slot_details && data.slot_details.length > 0 ? (
+  data.slot_details.map((slot, index) => {
+    const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
+    const { time: endTime } = formatDateTime(slot.end_date);
+    return (
+      <EventHeader
+        key={`${slot.venue}-${index}`}
+        venue={slot.venue}
+        time={`${startTime} - ${endTime} IST`}
+        date={startDate}
+      />
+    );
+  })
+) : (
+  <p className="text-primary font-editorial">No venues specified</p>
+)}
+
           </div>
             </div>
           </div>
