@@ -147,7 +147,7 @@ export default function AboutSections() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.2 }}
-                 className="mt-8 text-lg md:text-xl xl:mb-28 md:mb-16 leading-relaxed font-editorial text-background max-w-2xl text-justify px-4 md:px-0  [word-spacing:0.2em] md:[word-spacing:normal]"
+                  className="mt-8 text-lg md:text-xl xl:mb-28 md:mb-16 leading-relaxed font-editorial text-background max-w-2xl text-justify px-4 md:px-0 [text-align-last:center] md:[text-align-last:left] [word-spacing:0.2em] md:[word-spacing:normal]"
                 >
                 Welcome to Riviera, VIT's heart—a 4-day explosion of sports, culture, and
                 unbridled enthusiasm! 30,000+ students, 650+ colleges, and a whirlwind of

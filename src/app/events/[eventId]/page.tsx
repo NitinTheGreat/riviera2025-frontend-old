@@ -1,239 +1,137 @@
-import { Metadata, ResolvingMetadata } from 'next'
-import { notFound } from 'next/navigation'
-import Image from "next/image"
-import Link from "next/link"
-import { Calendar, Clock, IndianRupee } from 'lucide-react'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordian"
-import ClientWrapper from './ClientWrapper'
-import { EventDetail } from "@/types"
-import EventHeader from '@/components/SlotCard'
+import { Suspense } from 'react'
+import { Pagination } from '@/components/Pagination'
+import { EventCardSkeleton } from '@/components/EventCardSkeleton'
+import { PaginationSkeleton } from '@/components/PaginationSkeleton'
+import { SearchForm } from '@/components/Search-form'
+import { Events, EventsResponse } from '@/types/events'
+import EventList from '@/components/TempComp/EventList'
+import BufferSection from '@/components/Header'
 
-const baseUrl = 'https://riviera.vit.ac.in/api/v1/events/'
+async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+  const limit = 10
+  const offset = (page - 1) * limit
+  const baseUrl = 'https://slight-devina-aditya-riviera25-0e83fb11.koyeb.app/v1/events/'
 
-function numberWithCommas(x: number) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
+  let url = `${baseUrl}?offset=0&limit=1000` // Fetch all events
 
-function formatDateTime(isoString: string) {
-  const date = new Date(isoString);
+  const response = await fetch(url, { cache: 'no-store' })
+  if (!response.ok) {
+    throw new Error('Failed to fetch events')
+  }
 
-  const timeString = date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true
-  });
+  const data = await response.json()
 
-  const dateString = date.toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'short'
-  });
+  // Client-side filtering for more accurate results
+  const cleanedEvents = data.events.map((event: Events) => ({
+    ...event,
+    image: event.image.trim()
+  }))
+  
+  let filteredEvents = cleanedEvents
 
-  return { time: timeString, date: dateString };
-}
 
-async function getEventData(slug: string): Promise<EventDetail> {
-  const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate: 90 } })
-  if (!res.ok) throw new Error('Failed to fetch event data')
-  return res.json()
-}
+  // Filter for premium events if category is 'premium'
+  if (category === 'premium') {
+    filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
+  } else if (category && category !== 'all') {
+    filteredEvents = filteredEvents.filter((event: Events) => event.category === category)
+  }
 
-export async function generateMetadata(
-  { params }: { params: { eventId: string } },
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const { eventId } = await params;
-  const data = await getEventData(eventId);
+  if (search && search.length >= 3) {
+    const searchLower = search.toLowerCase()
+    filteredEvents = filteredEvents.filter((event: Events) =>
+      event.name.toLowerCase().includes(searchLower) ||
+      event.description.toLowerCase().includes(searchLower) ||
+      event.club.toLowerCase().includes(searchLower)
+    ).sort((a: Events, b: Events) => {
+      const aTitle = a.name.toLowerCase().includes(searchLower)
+      const bTitle = b.name.toLowerCase().includes(searchLower)
+      const aDescription = a.description.toLowerCase().includes(searchLower)
+      const bDescription = b.description.toLowerCase().includes(searchLower)
+      const aClub = a.club.toLowerCase().includes(searchLower)
+      const bClub = b.club.toLowerCase().includes(searchLower)
 
-  const previousImages = (await parent).openGraph?.images || [];
+      if (aTitle && !bTitle) return -1
+      if (!aTitle && bTitle) return 1
+      if (aDescription && !bDescription) return -1
+      if (!aDescription && bDescription) return 1
+      if (aClub && !bClub) return -1
+      if (!aClub && bClub) return 1
+      return 0
+    })
+  }
+
+  //  pagination
+  const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
   return {
-    title: `${data.name} - Riviera 2025`,
-    description: data.short_description,
-    openGraph: {
-      title: `${data.name} - Riviera 2025`,
-      description: data.short_description,
-      images: [
-        {
-          url: data.image,
-          width: 1200,
-          height: 630,
-          alt: `${data.name} - Event Poster`,
-        },
-        ...previousImages
-      ],
-      locale: 'en_US',
-      type: 'website',
-      siteName: 'Riviera 2025',
-      url: `https://riviera.vit.ac.in/events/${eventId}`,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${data.name} - Riviera 2025`,
-      description: data.short_description,
-      images: [data.image],
-      creator: '@RivieraVIT',
-      site: '@RivieraVIT',
-    },
-    keywords: [`Riviera, VIT, ${data.name}, ${data.club}, event, college fest`],
-    authors: [{ name: 'VIT University' }],
-    category: 'Event',
-    alternates: {
-      canonical: `https://riviera.vit.ac.in/events/${eventId}`,
-    },
+    events: paginatedEvents,
+    total_pages: Math.ceil(filteredEvents.length / limit),
+    total_events: filteredEvents.length
   }
 }
 
-export default async function Page({ params }: { params: { eventId: string } }) {
-  const { eventId } = await params;
-  let data: EventDetail;
+const bufferProps = {
+  backgroundImage: "/images/eventsHeader.png",
+  title: "EVENTS",
+  description: "Discover the latest events happening around you. Stay updated and never miss out!",
+}
 
-  try {
-    data = await getEventData(eventId)
-  } catch (error) {
-    console.error('Error fetching event data:', error)
-    notFound()
-  }
+export default async function EventsPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+
+  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
+    setTimeout(() => resolve(searchParams), 100) 
+  })
+
+  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
+  const category = (asyncSearchParams.category as string) || 'all'
+  const search = (asyncSearchParams.search as string) || ''
+
+  const { events, total_pages, total_events } = await getEvents(page, category, search)
+
+  const baseUrl = `/events?${new URLSearchParams({ category, search }).toString()}&`
 
   return (
-    <div className="flex flex-col mt-24">
-      <div className="flex flex-col sm:flex-row sm:justify-start sm:gap-12 gap-2">
-        <div className="w-full mb-0 lg:max-h-[65vh] md:max-h-[35vh] max-w-md h-auto mx-auto p-4 border-4 border-primary rounded-lg overflow-hidden relative">
-          <Image
-            src={data.image}
-            alt={`${data.name} Event Poster`}
-            width={1000}
-            height={1000}
-            layout="responsive"
-            objectFit="cover"
-            className="w-full aspect-square h-auto"
-          />
-          <ClientWrapper eventSlug={eventId} />
-          {data.event_type === "external_misc" && (
-            <h1 className="font-editorial text-center mt-1">
-              *Only for external participants
-            </h1>
-          )}
-        </div>
-        <div className="w-full">
-          <h1 className="font-fk-trial text-5xl font-extrabold">{data.name}</h1>
-          <h2 className="font-fk-trial text-xl font-extrabold text-primary">
-            {data.club}
-          </h2>
-          <hr className="mt-5" />
-          <div className="flex items-center mt-4">
-            <IndianRupee />
-            <h3 className="text-2xl font-editorial ">{` ${numberWithCommas(
-              data.price_per_ticket
-            )} `}</h3>
-            <span className="text-primary ml-2">
-              {data.is_a_team_event ? "(per team)" : "(per person)"}
-            </span>
+    <>
+      <BufferSection {...bufferProps} />
+      <div className="min-h-screen bg-background px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="max-w-7xl mx-auto mt-[100vh]">
           </div>
-          <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
-          <p className="my-3 font-editorial">{data.short_description}</p>
-          <p className="my-3 font-editorial">{data.description}</p>
-          <div className="grid sm:grid-cols-4 grid-cols-2 ">
-            <div className="flex flex-col sm:col-span-3">
-              <h3 className="font-fk-trial text-2xl font-bold text-primary">
-                TEAM SIZE
-              </h3>
-              <h3 className="font-editorial">{data.number_of_participants}</h3>
-            </div>
-          </div>
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-          <h3 className="font-fk-trial uppercase text-2xl font-bold text-primary"> Slots </h3>
-            {data.slot_details && data.slot_details.length > 0 ? (
-              data.slot_details.map((slot, index) => {
-                const { time: startTime, date: startDate } = formatDateTime(slot.start_date); */}
-          <div className="flex flex-col sm:col-span-3">
-            <h3 className="font-fk-trial uppercase text-2xl font-bold text-primary">
-              slots
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              {data.slot_details && data.slot_details.length > 0 ? (
-                data.slot_details.map((slot, index) => {
-                  const { time: startTime, date: startDate } = formatDateTime(slot.start_date);
-                  const { time: endTime } = formatDateTime(slot.end_date);
-                  return (
-                    <EventHeader
-                      key={`${slot.venue}-${index}`}
-                      venue={slot.venue}
-                      time={`${startTime} - ${endTime}`}
-                      date={startDate}
-                    />
-                  );
-                })
-              ) : (
-                <p className="text-primary font-editorial">No venues specified</p>
-              )}
-            </div>
-          </div>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="rules">
-                <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
-                  Rules
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="judgement">
-                <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
-                  Judgement Criteria
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm font-editorial">
-                    {data.judgement_criteria || "No judgement criteria specified."}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </div>
-        <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
-          <div className="h-full w-full max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background">
-            <div className="hidden md:flex flex-col justify-center items-start pl-4 w-1/4 border-r-2 border-foreground">
-              <h1 className="font-bold text-lg text-foreground truncate">
-                {data?.name}
-              </h1>
-              <p className="text-sm text-primary truncate text-ellipses w-full">{data?.club}</p>
-            </div>
 
-            {data.slot_details && data.slot_details.length > 0 && (
-              <>
-                <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-                  <Calendar className="text-primary" size={20} />
-                  <p className="text-foreground leading-none">{formatDateTime(data.slot_details[0].start_date).date}</p>
-                </div>
+          <SearchForm defaultCategory={category} defaultSearch={search} />
 
-                <div className="hidden md:flex items-center justify-center w-1/5 border-r-2 border-foreground gap-2">
-                  <Clock className="text-primary" size={20} />
-                  <p className="text-foreground">
-                    {`${formatDateTime(data.slot_details[0].start_date).time} - ${formatDateTime(data.slot_details[0].end_date).time}`}
-                  </p>
-                </div>
-              </>
+          <Suspense fallback={
+            <div className="space-y-8">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <EventCardSkeleton key={index} />
+              ))}
+            </div>
+          }>
+            {events.length > 0 ? (
+              <EventList events={events} />
+            ) : (
+              <div className="text-center py-8">
+                <h2 className="text-2xl font-semibold text-primary-foreground">No events found</h2>
+                <p className="text-muted-foreground mt-2">Try adjusting your search or filter criteria</p>
+              </div>
             )}
+          </Suspense>
 
-            <div className="flex items-center justify-center w-1/2 md:w-1/5 border-r-2 border-foreground gap-2">
-              <IndianRupee className="text-primary" size={20} />
-              <p className="text-foreground">
-                {numberWithCommas(data.price_per_ticket)}/-
-              </p>
-            </div>
-
-            <Link
-              href={`${data?.event_type === "internal"
-                  ? "https://web.vit.ac.in/rivierainternal"
-                  : "https://web.vit.ac.in/riviera"
-                }`}
-              className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
-            >
-              REGISTER &gt;
-            </Link>
-          </div>
+          <Suspense fallback={<PaginationSkeleton />}>
+            <Pagination
+              currentPage={page}
+              totalPages={total_pages}
+              totalEvents={total_events}
+              baseUrl={baseUrl}
+            />
+          </Suspense>
         </div>
       </div>
-      )
+    </>
+  )
 }
-
