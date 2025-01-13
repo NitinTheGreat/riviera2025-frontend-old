@@ -36,15 +36,25 @@ async function getEvents(page: number, category: string, event_type: string): Pr
 
     const cleanedEvents: Events[] = data.events.map((event: Events) => ({
       ...event,
-      image: event.image.trim(),
-      event_type: event_type
+      category: event.category || 'Uncategorized',
+      club: event.club || 'TBA',
+      description: event.description || '',
+      end_date: event.end_date || 'TBA',
+      featured: event.featured || false,
+      image: event.image ? event.image.trim() : '/placeholder-event-image.jpg',
+      name: event.name || 'Untitled Event',
+      on_hold: event.on_hold || false,
+      pid: event.pid || '',
+      price_per_ticket: event.price_per_ticket || 0,
+      start_date: event.start_date || 'TBA',
+      team_size: event.team_size || 'N/A',
+      total_prize: event.total_prize ,
+      venues: event.venues || ['TBA'],
+      event_type: event_type,
+      searchTerm: ''
     }))
 
     let filteredEvents = cleanedEvents
-
-    // if (category === 'premium') {
-    //   filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
-    // }
 
     const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
@@ -83,7 +93,21 @@ async function searchEvents(search: string): Promise<EventsResponse> {
 
     const cleanedEvents: Events[] = data.events.map((event: Events) => ({
       ...event,
-      image: event.image.trim(),
+      category: event.category || 'Uncategorized',
+      club: event.club || 'TBA',
+      description: event.description || '',
+      end_date: event.end_date || 'TBA',
+      featured: event.featured || false,
+      image: event.image ? event.image.trim() : '/images/riviera.png',
+      name: event.name || 'Untitled Event',
+      on_hold: event.on_hold || false,
+      pid: event.pid || '',
+      price_per_ticket: event.price_per_ticket || 0,
+      start_date: event.start_date || 'TBA',
+      team_size: event.team_size || 'N/A',
+      total_prize: event.total_prize,
+      venues: event.venues || ['TBA'],
+      event_type: '',
       searchTerm: search
     }))
 
@@ -104,15 +128,6 @@ const bufferProps = {
   description: "Discover the latest events happening around you. Stay updated and never miss out!",
 }
 
-// export default async function EventsPage({
-//   searchParams,
-// }: {
-//   searchParams: { [key: string]: string | string[] | undefined }
-// }) {
-//   const page = searchParams.page ? parseInt(searchParams.page as string, 10) : 1
-//   const category = (searchParams.category as string) || 'all'
-//   const search = (searchParams.search as string) || ''
-//   const event_type = (searchParams.event_type as string) || 'external'
 export default async function EventsPage({
   searchParams,
 }: {
@@ -187,3 +202,4 @@ export default async function EventsPage({
     </>
   )
 }
+

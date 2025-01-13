@@ -54,4 +54,5 @@ export type EventDetail = {
   on_hold: boolean;
   venues: string[];
   team_size: string;
+  total_prize: string;
 }
