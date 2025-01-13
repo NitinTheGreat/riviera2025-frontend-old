@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 export const EventTabs = ({ category, search, event_type }: { category: string, search: string, event_type: string }) => {
   const router = useRouter()
@@ -23,8 +24,15 @@ export const EventTabs = ({ category, search, event_type }: { category: string, 
     router.push(`/externalEvents?${params.toString()}`, { scroll: false })
   }
 
-  // If no event_type is provided, default to 'external_misc' (Competitions)
-  const currentEventType = event_type || 'external_misc'
+  // If no event_type is provided or if it's not one of the valid types, default to 'external_misc' (Competitions)
+  const currentEventType = tabs.some(tab => tab.type === event_type) ? event_type : 'external_misc'
+
+  // Set default tab on initial render
+  useEffect(() => {
+    if (!event_type) {
+      handleTabClick('external_misc')
+    }
+  }, [])
 
   return (
     <div className="border-b mb-8">

@@ -127,7 +127,7 @@ export default async function EventsPage({
     : 1;
   const category = (resolvedSearchParams.category as string) || 'all';
   const search = (resolvedSearchParams.search as string) || '';
-  const event_type = (resolvedSearchParams.event_type as string) || 'external';
+  const event_type = (resolvedSearchParams.event_type as string) || 'external_misc';
   let events, total_pages, total_events
 
   if (search) {
