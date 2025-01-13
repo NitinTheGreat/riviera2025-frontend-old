@@ -15,17 +15,23 @@ function numberWithCommas(x: number) {
 }
 
 function formatDateTime(isoString: string) {
+  // Create a date object in UTC
   const date = new Date(isoString);
 
-  const timeString = date.toLocaleTimeString('en-US', {
+  // Convert to IST (UTC+5:30)
+  const istDate = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
+
+  const timeString = istDate.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
+    timeZone: 'UTC'
   });
 
-  const dateString = date.toLocaleDateString('en-US', {
+  const dateString = istDate.toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'short',
+    timeZone: 'UTC'
   });
 
   return { time: timeString, date: dateString };
