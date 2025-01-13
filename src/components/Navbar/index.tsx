@@ -195,7 +195,8 @@ const Navbar = () => {
                       >
                         <Link 
                           href={link.href} 
-                          className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
+                          // className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
+                          className='text-[4rem] xl:text-[6rem] font-fk-trial tracking-wide leading-[4rem] xl:leading-[6rem] font-bold'
                           onClick={()=>{setMenu(false)}}
                         >
                           {link.text}

@@ -12,7 +12,7 @@ import { EventTabs } from './EventTabs'
 async function getEvents(page: number, category: string, event_type: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
-  const baseUrl = process.env.Base_URL
+  const baseUrl = process.env.Base_URL + 'events/'
 
   try {
     const response = await axios.get(`${baseUrl}`, {
