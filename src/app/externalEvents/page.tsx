@@ -7,8 +7,9 @@ import { Events, EventsResponse } from '@/types/events'
 import EventList from '@/components/TempComp/EventList'
 import BufferSection from '@/components/Header'
 import axios from 'axios'
+import { EventTabs } from './EventTabs'
 
-async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+async function getEvents(page: number, category: string, event_type: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
   const baseUrl = process.env.Base_URL
@@ -16,9 +17,8 @@ async function getEvents(page: number, category: string, search: string): Promis
   try {
     const response = await axios.get(`${baseUrl}`, {
       params: {
-        event_type: 'external',
-        event: search,
-        limit: 1000, // Fetch all events
+        event_type: event_type,
+        limit: 1000,
         ...(category && category !== 'all' ? { category: category } : {}),
         offset: 0,
       },
@@ -26,7 +26,6 @@ async function getEvents(page: number, category: string, search: string): Promis
 
     const data = response.data
 
-    // Check if events array is empty or undefined
     if (!data.events || data.events.length === 0) {
       return {
         events: [],
@@ -35,19 +34,28 @@ async function getEvents(page: number, category: string, search: string): Promis
       }
     }
 
-    // Clean the events data
-    const cleanedEvents = data.events.map((event: Events) => ({
+    const cleanedEvents: Events[] = data.events.map((event: Events) => ({
       ...event,
-      image: event.image.trim()
+      category: event.category || 'Uncategorized',
+      club: event.club || 'TBA',
+      description: event.description || '',
+      end_date: event.end_date || 'TBA',
+      featured: event.featured || false,
+      image: event.image ? event.image.trim() : '/placeholder-event-image.jpg',
+      name: event.name || 'Untitled Event',
+      on_hold: event.on_hold || false,
+      pid: event.pid || '',
+      price_per_ticket: event.price_per_ticket || 0,
+      start_date: event.start_date || 'TBA',
+      team_size: event.team_size || 'N/A',
+      total_prize: event.total_prize ,
+      venues: event.venues || ['TBA'],
+      event_type: event_type,
+      searchTerm: ''
     }))
 
-    // Filter for premium events if category is 'premium'
     let filteredEvents = cleanedEvents
-    if (category === 'premium') {
-      filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
-    }
 
-    // Paginate the events
     const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
     return {
@@ -61,6 +69,59 @@ async function getEvents(page: number, category: string, search: string): Promis
   }
 }
 
+async function searchEvents(search: string): Promise<EventsResponse> {
+  const baseUrl = process.env.Base_URL
+
+  try {
+    const response = await axios.get(`${baseUrl}`, {
+      params: {
+        event: search,
+        limit: 1000,
+        offset: 0,
+      },
+    })
+
+    const data = response.data
+
+    if (!data.events || data.events.length === 0) {
+      return {
+        events: [],
+        total_pages: 0,
+        total_events: 0
+      }
+    }
+
+    const cleanedEvents: Events[] = data.events.map((event: Events) => ({
+      ...event,
+      category: event.category || 'Uncategorized',
+      club: event.club || 'TBA',
+      description: event.description || '',
+      end_date: event.end_date || 'TBA',
+      featured: event.featured || false,
+      image: event.image ? event.image.trim() : '/images/riviera.png',
+      name: event.name || 'Untitled Event',
+      on_hold: event.on_hold || false,
+      pid: event.pid || '',
+      price_per_ticket: event.price_per_ticket || 0,
+      start_date: event.start_date || 'TBA',
+      team_size: event.team_size || 'N/A',
+      total_prize: event.total_prize,
+      venues: event.venues || ['TBA'],
+      event_type: '',
+      searchTerm: search
+    }))
+
+    return {
+      events: cleanedEvents,
+      total_pages: 1,
+      total_events: cleanedEvents.length
+    }
+  } catch (error) {
+    console.error('Failed to search events:', error)
+    throw new Error('Failed to search events')
+  }
+}
+
 const bufferProps = {
   backgroundImage: "/images/eventsHeader.png",
   title: "EXTERNAL EVENTS",
@@ -70,20 +131,33 @@ const bufferProps = {
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
 
-  const asyncSearchParams = await new Promise<{ [key: string]: string | string[] | undefined }>((resolve) => {
-    setTimeout(() => resolve(searchParams), 100) 
-  })
+  const resolvedSearchParams: { [key: string]: string | string[] | undefined } =
+    await Promise.resolve(searchParams);
 
-  const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
-  const category = (asyncSearchParams.category as string) || 'all'
-  const search = (asyncSearchParams.search as string) || ''
+  const page = resolvedSearchParams.page
+    ? parseInt(resolvedSearchParams.page as string, 10)
+    : 1;
+  const category = (resolvedSearchParams.category as string) || 'all';
+  const search = (resolvedSearchParams.search as string) || '';
+  const event_type = (resolvedSearchParams.event_type as string) || 'external_misc';
+  let events, total_pages, total_events
 
-  const { events, total_pages, total_events } = await getEvents(page, category, search)
+  if (search) {
+    const searchResults = await searchEvents(search)
+    events = searchResults.events
+    total_pages = searchResults.total_pages
+    total_events = searchResults.total_events
+  } else {
+    const eventResults = await getEvents(page, category, event_type)
+    events = eventResults.events
+    total_pages = eventResults.total_pages
+    total_events = eventResults.total_events
+  }
 
-  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
+  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search, event_type }).toString()}&`
 
   return (
     <>
@@ -92,8 +166,9 @@ export default async function EventsPage({
         <div className="max-w-7xl mx-auto">
           <div className="max-w-7xl mx-auto mt-[100vh]">
           </div>
-
           <SearchForm defaultCategory={category} defaultSearch={search} />
+
+          {!search && <EventTabs category={category} search={search} event_type={event_type} />}
 
           <Suspense fallback={
             <div className="space-y-8">
@@ -112,7 +187,7 @@ export default async function EventsPage({
             )}
           </Suspense>
 
-          {total_pages > 0 && (
+          {total_pages > 0 && !search && (
             <Suspense fallback={<PaginationSkeleton />}>
               <Pagination
                 currentPage={page}

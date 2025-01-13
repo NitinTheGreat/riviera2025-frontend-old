@@ -1,44 +1,53 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from 'next/font/google';
 import Image from "next/image";
 import styles from "./index.module.css"
-import { Calendar, Clock, IndianRupee, UsersRound } from "lucide-react";
-
+import { Calendar, Clock, IndianRupee, UsersRound } from 'lucide-react';
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
 export default function EventCard({ event }: { event: any }) {
-  const startTime = new Date(event.start_date);
-  const endTime = new Date(event.end_date);
-  const startDate = startTime.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-  const endDate = endTime.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-  const startTimeString = startTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
-  const endTimeString = endTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
+  const startTime = event.start_date ? new Date(event.start_date) : null;
+  const endTime = event.end_date ? new Date(event.end_date) : null;
+  const startDate = startTime
+    ? startTime.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      })
+    : "TBA";
+  const endDate = endTime
+    ? endTime.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      })
+    : "TBA";
+  const startTimeString = startTime
+    ? startTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      })
+    : "TBA";
+  const endTimeString = endTime
+    ? endTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      })
+    : "TBA";
 
   const handleEventClick = () => {
     window.location.href = `/events/${event.pid}`;
   };
-  const formattedPrize = Number(event.total_prize).toLocaleString("hi");
-  const formattedPrizePerTicket = Number(event.price_per_ticket).toLocaleString(
-    "hi"
-  );
+  const formattedPrize = event.total_prize
+    ? Number(event.total_prize).toLocaleString("hi")
+    : "TBA";
+  const formattedPrizePerTicket = event.price_per_ticket
+    ? Number(event.price_per_ticket).toLocaleString("hi")
+    : "TBA";
 
   return (
     <div
@@ -74,7 +83,6 @@ export default function EventCard({ event }: { event: any }) {
                 <p
                   className={`text-[#080c0b] font-editorial inline-flex md:text-[0.8rem] lg:text-[1rem] font-[700] py-[0.5rem] px-[0.7rem] justify-center whitespace-nowrap items-center leading-[100%] bg-foreground rounded-[4.75rem]`}
                 >
-                  {/* <img src="/events/trophy.svg" className="h-[1rem] mr-1 w-auto" /> - &#x20B9;{" "} */}
                   Cash Prize - &#x20B9; {formattedPrize}
                 </p>
               )}
@@ -86,9 +94,6 @@ export default function EventCard({ event }: { event: any }) {
                   Premium Event
                 </p>
               )}
-              {/* <sup>
-                * only for external participants
-              </sup> */}
             </div>
             <p
               className={` w-full text-primary font-editorial  text-[0.6875rem] md:text-[1rem] lg:text-[1.5rem] md:text-left`}
@@ -97,12 +102,7 @@ export default function EventCard({ event }: { event: any }) {
             </p>
           </div>
           <div className="hidden md:block md:pr-8" onClick={handleEventClick}>
-            <div
-            // target="_blank"
-            // rel="noopener noreferrer"
-            // href="https://vtop.vit.ac.in/vtop/"
-            // href={`/eventDetails?eventPid=${event.pid}`}
-            >
+            <div>
               <div
                 className={`w-[10rem] text-center absolute pointer-cursor-element text-primary-foreground text-[1.2rem] font-[700] font-editorial leading-[100%] bg-primary py-[1.5rem] px-[2rem] ${styles.register}`}
               >
@@ -141,7 +141,6 @@ export default function EventCard({ event }: { event: any }) {
               className={`text-[1rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
               {startTimeString} - {endTimeString}
-              {/* TBD */}
             </p>
           </div>
           <div
@@ -154,8 +153,6 @@ export default function EventCard({ event }: { event: any }) {
               className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
               {startDate}
-              {/* TBD */}
-              {/* - {endDate} */}
             </p>
           </div>
           <div
@@ -167,18 +164,11 @@ export default function EventCard({ event }: { event: any }) {
             <p
               className={`text-[1rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {event.team_size}
+              {event.team_size || "TBA"}
             </p>
           </div>
           <div className="w-auto lg:w-full pb-2 lg:pb-0 lg:max-w-[30%] h-full gap-[0.5rem] flex flex-row justify-center items-center">
             <IndianRupee className="text-primary"/>
-            {/* <Link
-            target="_blank"
-              href="https://pravega.com"
-              className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial pointer-cursor-element`}
-            >
-              www.pravega.com
-            </Link> */}
             <p
               className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
@@ -190,3 +180,4 @@ export default function EventCard({ event }: { event: any }) {
     </div>
   );
 }
+

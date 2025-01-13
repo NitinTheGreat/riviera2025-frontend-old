@@ -1,45 +1,54 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from 'next/font/google';
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./index.module.css"
-import { Calendar, IndianRupee } from "lucide-react";
-
+import { Calendar, IndianRupee } from 'lucide-react';
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
 export default function MobileEventCard({ event }: { event: any }) {
-  const startTime = new Date(event.start_date);
-  const endTime = new Date(event.end_date);
-  const startDate = startTime.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-  const endDate = endTime.toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-  const startTimeString = startTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
-  const endTimeString = endTime.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "numeric",
-  });
+  const startTime = event.start_date ? new Date(event.start_date) : null;
+  const endTime = event.end_date ? new Date(event.end_date) : null;
+  const startDate = startTime
+    ? startTime.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      })
+    : "TBA";
+  const endDate = endTime
+    ? endTime.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      })
+    : "TBA";
+  const startTimeString = startTime
+    ? startTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      })
+    : "TBA";
+  const endTimeString = endTime
+    ? endTime.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+      })
+    : "TBA";
 
   const handleEventClick = () => {
     window.location.href = `/events/${event.pid}`;
   };
-  const formattedPrize = Number(event.total_prize).toLocaleString("hi");
-  const formattedPrizePerTicket = Number(event.price_per_ticket).toLocaleString(
-    "hi"
-  );
+  const formattedPrize = event.total_prize
+    ? Number(event.total_prize).toLocaleString("hi")
+    : "TBA";
+  const formattedPrizePerTicket = event.price_per_ticket
+    ? Number(event.price_per_ticket).toLocaleString("hi")
+    : "TBA";
 
   return (
     <div
@@ -129,8 +138,6 @@ export default function MobileEventCard({ event }: { event: any }) {
               className={`text-[0.6rem] md:text-[1.25rem] text-center text-[#fff] font-editorial mt-1`}
             >
               {startDate}
-              {/* TBD */}
-              {/* - {endDate} */}
             </p>
           </div>
           <div className="hidden lg:flex border-r w-full lg:max-w-[30%] h-full border-[#fff] gap-[0.5rem] flex-row justify-center items-center">
@@ -138,20 +145,13 @@ export default function MobileEventCard({ event }: { event: any }) {
             <p
               className={`text-[1rem] md:text-[1.25rem] text-[#fff] font-editorial`}
             >
-              {event.team_size}
+              {event.team_size || "TBA"}
             </p>
           </div>
           <div className="w-full lg:max-w-[30%] h-full gap-[0.5rem] flex flex-row justify-center items-center">
             
             <IndianRupee className="text-primary size-4"/>
 
-            {/* <Link
-            target="_blank"
-              href="https://pravega.com"
-              className={`text-[0.6rem] md:text-[1.25rem] text-[#fff] font-editorial pointer-cursor-element`}
-            >
-              www.pravega.com
-            </Link> */}
             <p
               className={`text-[0.6rem]  md:text-[1.25rem] text-[#fff] font-editorial`}
             >
@@ -163,3 +163,4 @@ export default function MobileEventCard({ event }: { event: any }) {
     </div>
   );
 }
+

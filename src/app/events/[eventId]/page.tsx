@@ -15,26 +15,27 @@ function numberWithCommas(x: number) {
 }
 
 function formatDateTime(isoString: string) {
+  // Create a date object in UTC
   const date = new Date(isoString);
 
-  const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  // Convert to IST (UTC+5:30)
+  const istDate = new Date(date.getTime() + (5.5 * 60 * 60 * 1000));
 
   const timeString = istDate.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
-    timeZone: 'Asia/Kolkata'
+    timeZone: 'UTC'
   });
 
   const dateString = istDate.toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'short',
-    timeZone: 'Asia/Kolkata'
+    timeZone: 'UTC'
   });
 
   return { time: timeString, date: dateString };
 }
-
 
 async function getEventData(slug: string): Promise<EventDetail> {
   const res = await fetch(`${baseUrl}/${slug}`, { next: { revalidate: 90 } })
@@ -52,17 +53,17 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
-    title: `${data.name} - Riviera 2025`,
-    description: data.short_description,
+    title: `${data.name || 'Event'} - Riviera 2025`,
+    description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
     openGraph: {
-      title: `${data.name} - Riviera 2025`,
-      description: data.short_description,
+      title: `${data.name || 'Event'} - Riviera 2025`,
+      description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
       images: [
         {
-          url: data.image,
+          url: data.image || '/default-event-image.jpg',
           width: 1200,
           height: 630,
-          alt: `${data.name} - Event Poster`,
+          alt: `${data.name || 'Event'} - Event Poster`,
         },
         ...previousImages
       ],
@@ -73,13 +74,13 @@ export async function generateMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${data.name} - Riviera 2025`,
-      description: data.short_description,
-      images: [data.image],
+      title: `${data.name || 'Event'} - Riviera 2025`,
+      description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+      images: [data.image || '/default-event-image.jpg'],
       creator: '@RivieraVIT',
       site: '@RivieraVIT',
     },
-    keywords: [`Riviera, VIT, ${data.name}, ${data.club}, event, college fest`],
+    keywords: [`Riviera, VIT, ${data.name || 'Event'}, ${data.club || 'VIT Club'}, event, college fest`],
     authors: [{ name: 'VIT University' }],
     category: 'Event',
     alternates: {
@@ -104,8 +105,8 @@ export default async function Page({ params }: { params: { eventId: string } }) 
       <div className="flex flex-col md:flex-row md:justify-start md:gap-12 gap-2">
         <div className="w-full mb-0 max-w-md h-auto mx-auto px-4 rounded-lg relative">
           <Image
-            src={data.image}
-            alt={`${data.name} Event Poster`}
+            src={data.image || '/default-event-image.jpg'}
+            alt={`${data.name || 'Event'} Poster`}
             width={1000}
             height={1000}
             layout="responsive"
@@ -120,30 +121,30 @@ export default async function Page({ params }: { params: { eventId: string } }) 
           )}
         </div>
         <div className="w-full">
-          <h1 className="font-fk-trial text-5xl font-extrabold">{data.name}</h1>
+          <h1 className="font-fk-trial text-5xl font-extrabold">{data.name || 'Event Name'}</h1>
           <h2 className="font-fk-trial text-xl font-extrabold text-primary">
-            {data.club}
+            {data.club || 'VIT Club'}
           </h2>
           <hr className="mt-5" />
           <div className="flex items-center mt-4">
             <IndianRupee />
             <h3 className="text-2xl font-editorial ">{` ${numberWithCommas(
-              data.price_per_ticket
+              data.price_per_ticket || 0
             )} `}</h3>
             <span className="text-primary ml-2">
               {data.is_a_team_event ? "(per team)" : "(per person)"}
             </span>
           </div>
           <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
-          <p className="my-3 font-editorial">{data.short_description}</p>
-          <p className="my-3 font-editorial">{data.description}</p>
+          <p className="my-3 font-editorial">{data.short_description || 'No short description available.'}</p>
+          <p className="my-3 font-editorial">{data.description || 'No detailed description available.'}</p>
 
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
             <div className="flex flex-col sm:col-span-3">
               <h3 className="font-fk-trial text-2xl font-bold text-primary">
                 TEAM SIZE
               </h3>
-              <h3 className="font-editorial">{data.number_of_participants}</h3>
+              <h3 className="font-editorial">{data.number_of_participants || 'Not specified'}</h3>
             </div>
             <div className="flex flex-col sm:col-span-3">
               <h3 className="font-fk-trial uppercase text-2xl font-bold text-primary">
@@ -157,7 +158,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
                     return (
                       <EventHeader
                         key={`${slot.venue}-${index}`}
-                        venue={slot.venue}
+                        venue={slot.venue || 'TBA'}
                         time={`${startTime} - ${endTime} IST`}
                         date={startDate}
                       />
@@ -166,9 +167,16 @@ export default async function Page({ params }: { params: { eventId: string } }) 
                 ) : (
                   <p className="text-primary font-editorial">No venues specified</p>
                 )}
-
               </div>
             </div>
+            {data.total_prize && (
+              <div className="flex flex-col sm:col-span-3">
+                <h3 className="font-fk-trial text-2xl font-bold text-primary">
+                  CASH PRIZE
+                </h3>
+                <h3 className="font-editorial">{data.total_prize}</h3>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -196,9 +204,9 @@ export default async function Page({ params }: { params: { eventId: string } }) 
         <div className="h-full w-full max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background">
           <div className="hidden md:flex flex-col justify-center items-start pl-2 w-1/4 border-r-2 border-foreground overflow-clip">
             <h1 className="font-bold text-lg text-foreground truncate text-ellipses w-full">
-              {data?.name}
+              {data?.name || 'Event Name'}
             </h1>
-            <p className="text-sm text-primary truncate text-ellipses w-full">{data?.club}</p>
+            <p className="text-sm text-primary truncate text-ellipses w-full">{data?.club || 'VIT Club'}</p>
           </div>
 
           {data.slot_details && data.slot_details.length > 0 && (
@@ -220,7 +228,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
           <div className="flex items-center justify-center w-1/2 md:w-1/5 border-r-2 border-foreground gap-2">
             <IndianRupee className="text-primary" size={20} />
             <p className="text-foreground">
-              {numberWithCommas(data.price_per_ticket)}/-
+              {numberWithCommas(data.price_per_ticket || 0)}/-
             </p>
           </div>
 
@@ -238,3 +246,4 @@ export default async function Page({ params }: { params: { eventId: string } }) 
     </div>
   )
 }
+
