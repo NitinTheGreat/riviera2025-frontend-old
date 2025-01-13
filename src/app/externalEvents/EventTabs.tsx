@@ -17,13 +17,14 @@ export const EventTabs = ({ category, search, event_type }: { category: string, 
     params.set('event_type', tabType)
     params.set('page', '1') 
   
-   
     if (category) params.set('category', category)
     if (search) params.set('search', search)
   
-    
     router.push(`/externalEvents?${params.toString()}`, { scroll: false })
   }
+
+  // If no event_type is provided, default to 'external_misc' (Competitions)
+  const currentEventType = event_type || 'external_misc'
 
   return (
     <div className="border-b mb-8">
@@ -33,7 +34,7 @@ export const EventTabs = ({ category, search, event_type }: { category: string, 
             key={tab.name}
             onClick={() => handleTabClick(tab.type)}
             className={`py-4 px-1 border-b-2 text-lg md:text-xl xl:text-2xl font-medium transition-colors hover:border-primary/50 ${
-              event_type === tab.type
+              currentEventType === tab.type
                 ? "border-primary text-primary"
                 : "border-transparent text-muted-foreground hover:text-foreground"
             }`}
