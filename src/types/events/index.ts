@@ -14,6 +14,7 @@ export type Events = {
   total_prize: string;
   venues: string[];
   searchTerm: string
+  event_type: string
 }
 
 export interface EventsResponse {
