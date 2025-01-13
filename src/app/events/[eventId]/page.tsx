@@ -17,19 +17,15 @@ function numberWithCommas(x: number) {
 function formatDateTime(isoString: string) {
   const date = new Date(isoString);
 
-  const istDate = new Date(date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-
-  const timeString = istDate.toLocaleTimeString('en-US', {
+  const timeString = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: 'numeric',
     hour12: true,
-    timeZone: 'Asia/Kolkata'
   });
 
-  const dateString = istDate.toLocaleDateString('en-US', {
+  const dateString = date.toLocaleDateString('en-US', {
     day: 'numeric',
     month: 'short',
-    timeZone: 'Asia/Kolkata'
   });
 
   return { time: timeString, date: dateString };

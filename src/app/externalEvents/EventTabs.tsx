@@ -15,13 +15,13 @@ export const EventTabs = ({ category, search, event_type }: { category: string, 
   const handleTabClick = (tabType: string) => {
     const params = new URLSearchParams(searchParams)
     params.set('event_type', tabType)
-    params.set('page', '1') // Reset to first page when changing tabs
+    params.set('page', '1') 
   
-    // Preserve category and search parameters
+   
     if (category) params.set('category', category)
     if (search) params.set('search', search)
   
-    // Update the URL without triggering a page reload
+    
     router.push(`/externalEvents?${params.toString()}`, { scroll: false })
   }
 

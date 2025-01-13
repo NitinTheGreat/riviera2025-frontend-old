@@ -42,9 +42,9 @@ async function getEvents(page: number, category: string, event_type: string): Pr
 
     let filteredEvents = cleanedEvents
 
-    if (category === 'premium') {
-      filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
-    }
+    // if (category === 'premium') {
+    //   filteredEvents = filteredEvents.filter((event: Events) => event.featured === true)
+    // }
 
     const paginatedEvents = filteredEvents.slice(offset, offset + limit)
 
