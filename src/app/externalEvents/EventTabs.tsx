@@ -7,9 +7,9 @@ export const EventTabs = ({ category, search, event_type }: { category: string, 
   const searchParams = useSearchParams()
 
   const tabs = [
-    { name: 'Competitions', type: 'external' },
+    { name: 'Competitions', type: 'external_misc' },
     { name: 'Sports', type: 'external_sports' },
-    { name: 'Informal', type: 'external_misc' },
+    { name: 'Informal', type: 'external' },
   ]
 
   const handleTabClick = (tabType: string) => {
