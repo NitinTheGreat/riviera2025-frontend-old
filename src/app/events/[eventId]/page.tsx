@@ -46,6 +46,51 @@ async function getEventData(slug: string): Promise<EventDetail> {
   return res.json()
 }
 
+// export async function generateMetadata(
+//   { params }: { params: { eventId: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const { eventId } = await params;
+//   const data = await getEventData(eventId);
+
+//   const previousImages = (await parent).openGraph?.images || [];
+
+//   return {
+//     title: `${data.name || 'Event'} - Riviera 2025`,
+//     description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//     openGraph: {
+//       title: `${data.name || 'Event'} - Riviera 2025`,
+//       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//       images: [
+//         {
+//           url: data.image || '/images/riviera.png',
+//           width: 1200,
+//           height: 630,
+//           alt: `${data.name || 'Event'} - Event Poster`,
+//         },
+//         ...previousImages
+//       ],
+//       locale: 'en_US',
+//       type: 'website',
+//       siteName: 'Riviera 2025',
+//       url: `https://riviera.vit.ac.in/events/${eventId}`,
+//     },
+//     twitter: {
+//       card: 'summary_large_image',
+//       title: `${data.name || 'Event'} - Riviera 2025`,
+//       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//       images: [data.image || '/images/riviera.png'],
+//       creator: '@RivieraVIT',
+//       site: '@RivieraVIT',
+//     },
+//     keywords: [`Riviera, VIT, ${data.name || 'Event'}, ${data.club || 'VIT Club'}, event, college fest`],
+//     authors: [{ name: 'VIT University' }],
+//     category: 'Event',
+//     alternates: {
+//       canonical: `https://riviera.vit.ac.in/events/${eventId}`,
+//     },
+//   }
+// }
 export async function generateMetadata(
   { params }: { params: { eventId: string } },
   parent: ResolvingMetadata
@@ -63,7 +108,7 @@ export async function generateMetadata(
       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
       images: [
         {
-          url: data.image || '/images/riviera.png',
+          url: data.image || '/default-event-image.jpg',
           width: 1200,
           height: 630,
           alt: `${data.name || 'Event'} - Event Poster`,
@@ -79,7 +124,7 @@ export async function generateMetadata(
       card: 'summary_large_image',
       title: `${data.name || 'Event'} - Riviera 2025`,
       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
-      images: [data.image || '/images/riviera.png'],
+      images: [data.image || '/default-event-image.jpg'],
       creator: '@RivieraVIT',
       site: '@RivieraVIT',
     },
@@ -91,6 +136,7 @@ export async function generateMetadata(
     },
   }
 }
+
 
 export default async function Page({ params }: { params: { eventId: string } }) {
   const { eventId } = await params;
