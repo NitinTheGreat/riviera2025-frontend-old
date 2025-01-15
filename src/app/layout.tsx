@@ -93,14 +93,14 @@ export const metadata: Metadata = {
     description: "Join the excitement at Riviera 2025, VIT Vellore's flagship event featuring international sports competitions, cultural performances, and innovative showcases. Register now for three days of non-stop action and creativity!",
     url: 'https://riviera.vit.ac.in',
     siteName: 'Riviera 2025',
-    images: [
-      {
-        url: '/image/riviera.png',
-        width: 1200,
-        height: 630,
-        alt: 'Riviera 2025 - VIT Vellore',
-      },
-    ],
+    // images: [
+    //   {
+    //     url: '/image/riviera.png',
+    //     width: 1200,
+    //     height: 630,
+    //     alt: 'Riviera 2025 - VIT Vellore',
+    //   },
+    // ],
     locale: 'en_US',
     type: 'website',
   },
