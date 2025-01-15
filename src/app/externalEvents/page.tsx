@@ -8,7 +8,7 @@ import EventList from '@/components/TempComp/EventList'
 import BufferSection from '@/components/Header'
 import axios from 'axios'
 import { EventTabs } from './EventTabs'
-
+import {Metadata} from 'next'
 async function getEvents(page: number, category: string, event_type: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
@@ -69,6 +69,7 @@ async function getEvents(page: number, category: string, event_type: string): Pr
   }
 }
 
+
 async function searchEvents(search: string): Promise<EventsResponse> {
   const baseUrl = process.env.Base_URL
 
@@ -126,6 +127,39 @@ const bufferProps = {
   backgroundImage: "/images/eventsHeader.png",
   title: "EXTERNAL EVENTS",
   description: "Discover the latest events happening around you. Stay updated and never miss out!",
+}
+export const metadata: Metadata = {
+  title: 'External Events - Riviera 2025',
+  description: 'Explore and participate in exciting internal events at Riviera 2025, VIT Vellore\'s annual techno-cultural fest.',
+  openGraph: {
+    title: 'External Events - Riviera 2025',
+    description: 'Discover and join thrilling internal events at Riviera 2025, VIT Vellore\'s premier annual festival.',
+    images: [
+      {
+        url: '/image/riviera.png',
+        width: 1200,
+        height: 630,
+        alt: 'Riviera 2025 External Events',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+    siteName: 'Riviera 2025',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Internal Events - Riviera 2025',
+    description: 'Explore exciting External events at Riviera 2025, VIT Vellore\'s annual techno-cultural extravaganza.',
+    images: ['/image/riviera.png'],
+    creator: '@RivieraVIT',
+    site: '@RivieraVIT',
+  },
+  keywords: ['Riviera 2025', 'VIT Vellore', 'External events', 'college fest', 'techno-cultural events', 'student activities'],
+  authors: [{ name: 'VIT University' }],
+  category: 'Events',
+  alternates: {
+    canonical: 'https://riviera.vit.ac.in/events',
+  },
 }
 
 export default async function EventsPage({

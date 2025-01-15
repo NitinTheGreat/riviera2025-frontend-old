@@ -6,7 +6,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function calculateDaysToEvent() {
-  const eventDate = new Date("2025-02-23");
+  const eventDate = new Date("2025-02-20");
+  // const eventDateString = process.env.EVENT_DATE;
+  // if (!eventDateString) {
+  //   return 0; // or handle the error as needed
+  // }
+  // const eventDate = new Date(eventDateString);
   const today = new Date();
   const diffTime = eventDate.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
