@@ -6,7 +6,7 @@ const faqItems = [
   {
     id: 1,
     question: "Are there accommodation facilities available for outstation participants?",
-    answer: "Yes, accommodation is provided for outstation participants in VIT hostels on a paid and first come first served basis. The cost will be minimal, inclusive of breakfast and lunch served in the regular hostel mess.",
+    answer: "Yes, accommodation is provided for outstation participants in VIT hostels on a paid and first come first served basis. The cost will be minimal, exclusive of breakfast and lunch served in the regular hostel mess.",
   },
   {
     id: 2,
