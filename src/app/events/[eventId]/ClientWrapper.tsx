@@ -78,7 +78,7 @@ export default function ClientWrapper({ eventSlug }: { eventSlug: string }) {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-bold text-primary-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-500">
+                <h2 className="text-3xl font-bold text-primary-foreground bg-clip-text  bg-gradient-to-r from-primary to-purple-500">
                   Share this event
                 </h2>
                 <button
