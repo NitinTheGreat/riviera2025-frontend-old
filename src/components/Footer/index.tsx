@@ -32,10 +32,10 @@ export default function Footer() {
 
           <div className="flex items-center justify-center gap-6 w-full">
             {[
-              { icon: Instagram, href: "#" },
-              { icon: Linkedin, href: "#" },
-              { icon: Youtube, href: "#" },
-              { icon: Facebook, href: "#" },
+              { icon: Instagram, href: "https://www.instagram.com/in/rivieravituniversity/" },
+              { icon: Linkedin, href: "https://www.linkedin.com/rivieravituniversity/" },
+              { icon: Youtube, href: "https://www.youtube.com/@RivieraVITUniversity" },
+              { icon: Facebook, href: "https://www.facebook.com/rivieravituniversity/" },
             ].map((social, index) => (
               <Link
                 key={index}

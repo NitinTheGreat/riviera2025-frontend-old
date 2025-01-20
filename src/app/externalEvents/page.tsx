@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     description: 'Discover and join thrilling external events at Riviera 2025, VIT Vellore\'s premier annual festival.',
     images: [
       {
-        url: '/image/riviera.png',
+        url: '/images/riviera.png',
         width: 1200,
         height: 630,
         alt: 'Riviera 2025 External Events',
