@@ -1,10 +1,12 @@
+import { Metadata } from 'next'
 import BufferSection from "@/components/Header"
 import FAQSection from "@/components/FAQ"
+
 const faqItems = [
   {
     id: 1,
     question: "Are there accommodation facilities available for outstation participants?",
-answer: " Yes, accommodation is provided for outstation participants in VIT hostels on a paid and first come first served basis. The cost will be minimal, inclusive of breakfast and lunch served in the regular hostel mess.",
+    answer: "Yes, accommodation is provided for outstation participants in VIT hostels on a paid and first come first served basis. The cost will be minimal, exclusive of breakfast and lunch served in the regular hostel mess.",
   },
   {
     id: 2,
@@ -24,7 +26,7 @@ answer: " Yes, accommodation is provided for outstation participants in VIT host
   {
     id: 5,
     question: "Is there a provision for on-spot registrations for events?",
-    answer: "Registration or events IS exclusively through the official Riviera website, and on-spot registrations will not be available.",
+    answer: "Registration for events is exclusively through the official Riviera website, and on-spot registrations will not be available.",
   },
   {
     id: 6,
@@ -41,13 +43,37 @@ answer: " Yes, accommodation is provided for outstation participants in VIT host
 const bufferProps = {
   backgroundImage: "/images/heroimg.png",
   title: "Frequently Asked Questions",
-  description: "Advocating For Artists' Rights & New Standards For Ethical AI",
+  description: "Answers to common questions about Riviera'25 events and participation",
+}
+
+export const metadata: Metadata = {
+  title: 'FAQ - Riviera 2025 | VIT Vellore',
+  description: 'Find answers to frequently asked questions about Riviera 2025, VIT Vellore\'s annual techno-cultural fest. Learn about accommodation, transportation, registration, and more.',
+  openGraph: {
+    title: 'FAQ - Riviera 2025 | VIT Vellore',
+    description: 'Find answers to frequently asked questions about Riviera 2025, VIT Vellore\'s annual techno-cultural fest. Learn about accommodation, transportation, registration, and more.',
+    images: [
+      {
+        url: '/image/riviera.png',
+        width: 1200,
+        height: 630,
+        alt: 'Riviera 2025 - VIT Vellore',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FAQ - Riviera 2025 | VIT Vellore',
+    description: 'Find answers to frequently asked questions about Riviera 2025, VIT Vellore\'s annual techno-cultural fest. Learn about accommodation, transportation, registration, and more.',
+    images: ['/image/riviera.png'],
+  },
 }
 
 export default function Page() {
   return (
-    <main className=" bg-background">
-     
+    <main className="bg-background"> 
       <BufferSection {...bufferProps} />
       <div className="h-screen"></div>
       <FAQSection items={faqItems} />

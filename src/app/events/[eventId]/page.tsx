@@ -8,8 +8,11 @@ import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
 
-const baseUrl = process.env.Base_URL
+//Base_URL = https://abcd.com
 
+const baseUrl = process.env.Base_URL+'events/'
+const on_hold_internal = process.env.isIntRegsOpen
+const on_hold_external = process.env.isExtRegsOpen
 function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
@@ -43,6 +46,51 @@ async function getEventData(slug: string): Promise<EventDetail> {
   return res.json()
 }
 
+// export async function generateMetadata(
+//   { params }: { params: { eventId: string } },
+//   parent: ResolvingMetadata
+// ): Promise<Metadata> {
+//   const { eventId } = await params;
+//   const data = await getEventData(eventId);
+
+//   const previousImages = (await parent).openGraph?.images || [];
+
+//   return {
+//     title: `${data.name || 'Event'} - Riviera 2025`,
+//     description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//     openGraph: {
+//       title: `${data.name || 'Event'} - Riviera 2025`,
+//       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//       images: [
+//         {
+//           url: data.image || '/images/riviera.png',
+//           width: 1200,
+//           height: 630,
+//           alt: `${data.name || 'Event'} - Event Poster`,
+//         },
+//         ...previousImages
+//       ],
+//       locale: 'en_US',
+//       type: 'website',
+//       siteName: 'Riviera 2025',
+//       url: `https://riviera.vit.ac.in/events/${eventId}`,
+//     },
+//     twitter: {
+//       card: 'summary_large_image',
+//       title: `${data.name || 'Event'} - Riviera 2025`,
+//       description: data.short_description || 'Join us for this exciting event at Riviera 2025!',
+//       images: [data.image || '/images/riviera.png'],
+//       creator: '@RivieraVIT',
+//       site: '@RivieraVIT',
+//     },
+//     keywords: [`Riviera, VIT, ${data.name || 'Event'}, ${data.club || 'VIT Club'}, event, college fest`],
+//     authors: [{ name: 'VIT University' }],
+//     category: 'Event',
+//     alternates: {
+//       canonical: `https://riviera.vit.ac.in/events/${eventId}`,
+//     },
+//   }
+// }
 export async function generateMetadata(
   { params }: { params: { eventId: string } },
   parent: ResolvingMetadata
@@ -89,6 +137,7 @@ export async function generateMetadata(
   }
 }
 
+
 export default async function Page({ params }: { params: { eventId: string } }) {
   const { eventId } = await params;
   let data: EventDetail;
@@ -105,7 +154,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
       <div className="flex flex-col md:flex-row md:justify-start md:gap-12 gap-2">
         <div className="w-full mb-0 max-w-md h-auto mx-auto px-4 rounded-lg relative">
           <Image
-            src={data.image || '/default-event-image.jpg'}
+            src={data.image || '/images/riviera.png'}
             alt={`${data.name || 'Event'} Poster`}
             width={1000}
             height={1000}
@@ -232,7 +281,8 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             </p>
           </div>
 
-          <Link
+          {/* <Link
+
             href={`${data?.event_type === "internal"
                 ? "https://web.vit.ac.in/rivierainternal"
                 : "https://web.vit.ac.in/riviera"
@@ -240,7 +290,22 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             className="flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90"
           >
             REGISTER &gt;
+          </Link> */}
+       
+          <Link
+            href={`${data?.event_type === "internal"
+              ? on_hold_internal
+                ? "#"
+                : "https://web.vit.ac.in/rivierainternal"
+              : on_hold_external
+                ? "#"
+                : "https://web.vit.ac.in/riviera"
+            }`} 
+            className={`flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90 ${on_hold_internal || on_hold_external ? "cursor-not-allowed" : ""}`}
+          >
+            {on_hold_internal || on_hold_external ? "ON HOLD" : "REGISTER >"}
           </Link>
+         
         </div>
       </div>
     </div>

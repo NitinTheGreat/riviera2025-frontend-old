@@ -58,7 +58,7 @@ export default function AboutSections() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="relative w-full lg:w-1/2 aspect-square max-w-[400px] lg:max-w-[600px] mb-24 lg:mb-0"
             >
-              <div className="relative w-full h-full animate-[spin_20s_linear_infinite]">
+              <div className={`relative w-full h-full ${isPlaying ? 'animate-[spin_20s_linear_infinite]' : ''}`}>
                 <Image
                   src="/images/aboutVinyl.png"
                   alt="Vinyl record"
@@ -70,7 +70,7 @@ export default function AboutSections() {
                 <div className="absolute left-1/2 top-1/2 h-[98%] w-[98%] -translate-x-1/2 -translate-y-1/2 transform rounded-full border-4 border-zinc-800">
                   <div className="absolute left-1/2 top-1/2 h-2/3 w-2/3 -translate-x-1/2 -translate-y-1/2 transform rounded-full border border-zinc-800 overflow-hidden">
                     <Image
-                      src={carouselImages[currentImageIndex].src}
+                      src={carouselImages[currentImageIndex].src || "/placeholder.svg"}
                       alt={carouselImages[currentImageIndex].alt}
                       fill
                       className="rounded-full object-cover"
@@ -91,9 +91,9 @@ export default function AboutSections() {
                 </button>
                 <button
                   onClick={previousImage}
-                  className="p-2 rounded-full hover:bg-primary-foreground transition-colors group"
+                  className="p-2 rounded-full hover:bg-primary transition-colors group"
                 >
-                  <SkipBack className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-black" />
+                  <SkipBack className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-primary-foreground" />
                 </button>
                 {/* Can be removed later */}
                 <button
@@ -109,9 +109,9 @@ export default function AboutSections() {
                  {/* Can be removed later */}
                 <button
                   onClick={nextImage}
-                  className="p-2 rounded-full hover:bg-primary-foreground transition-colors group"
+                  className="p-2 rounded-full hover:bg-primary transition-colors group"
                 >
-                  <SkipForward className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-black" />
+                  <SkipForward className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-primary-foreground" />
                 </button>
               </div>
             </motion.div>

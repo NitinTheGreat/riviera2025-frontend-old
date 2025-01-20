@@ -3,9 +3,11 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false)
+  const router = useRouter()
   
   const navLinks = [
     { href: "/", text: "HOME" },
@@ -106,6 +108,11 @@ const Navbar = () => {
       transition: { duration: 0.3, ease: "easeInOut" }
     }
   };
+
+  const handleClickLogo = () => {
+    router.push("https://vit.ac.in/");
+    setMenu(false);
+  };
   
   return (
     <>
@@ -115,13 +122,20 @@ const Navbar = () => {
         transition={{ duration: 1 }} 
         className='fixed top-0 left-0 right-0 flex justify-between items-center w-full h-20 z-[101] p-4 mx-2'
       >
-        <div className='flex items-center h-full w-auto'>
+        <div className='flex items-center h-full w-auto' onClick={handleClickLogo}>
           <Image 
             src="/images/nav-logo-comb.svg" 
             alt='vit logo' 
-            width={1} 
-            height={1} 
-            className='w-auto h-full object-contain'
+            width={1000} 
+            height={1000}
+            className='w-auto h-full object-contain hidden sm:block'
+          />
+          <Image 
+            src="/images/nav-40.svg" 
+            alt='vit logo' 
+            width={1000} 
+            height={1000} 
+            className='w-auto h-full object-contain sm:hidden p-1'
           />
         </div>
         <Link className='h-20 py-4' href="/">
@@ -195,7 +209,8 @@ const Navbar = () => {
                       >
                         <Link 
                           href={link.href} 
-                          className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
+                          // className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
+                          className='text-[4rem] xl:text-[6rem] font-fk-trial tracking-wide leading-[4rem] xl:leading-[6rem] font-bold'
                           onClick={()=>{setMenu(false)}}
                         >
                           {link.text}
