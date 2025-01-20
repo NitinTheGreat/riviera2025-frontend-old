@@ -7,9 +7,10 @@ import { Events, EventsResponse } from '@/types/events'
 import EventList from '@/components/TempComp/EventList'
 import BufferSection from '@/components/Header'
 import axios from 'axios'
+import { EventTabs } from './EventTabs'
 import { Metadata } from 'next'
 
-async function getEvents(page: number, category: string, search: string): Promise<EventsResponse> {
+async function getEvents(page: number, category: string, search: string, event_type: string): Promise<EventsResponse> {
   const limit = 10
   const offset = (page - 1) * limit
   const baseUrl = process.env.Base_URL + 'events/'
@@ -17,7 +18,7 @@ async function getEvents(page: number, category: string, search: string): Promis
   try {
     const response = await axios.get(`${baseUrl}`, {
       params: {
-        event_type: 'external_misc',
+        event_type: event_type,
         event: search,
         limit: 1000,
         ...(category && category !== 'all' ? { category: category } : {}),
@@ -49,10 +50,10 @@ async function getEvents(page: number, category: string, search: string): Promis
       price_per_ticket: event.price_per_ticket || 0,
       start_date: event.start_date || 'TBA',
       team_size: event.team_size || 'N/A',
-      total_prize: event.total_prize ,
+      total_prize: event.total_prize,
       venues: event.venues || ['TBA'],
-      event_type: 'external_misc',
-      searchTerm: ''
+      event_type: event_type,
+      searchTerm: search
     }))
 
     let filteredEvents = cleanedEvents
@@ -126,10 +127,11 @@ export default async function ExternalEventsPage({
   const page = asyncSearchParams.page ? parseInt(asyncSearchParams.page as string, 10) : 1
   const category = (asyncSearchParams.category as string) || 'all'
   const search = (asyncSearchParams.search as string) || ''
+  const event_type = (asyncSearchParams.event_type as string) || 'external_misc'
 
-  const { events, total_pages, total_events } = await getEvents(page, category, search)
+  const { events, total_pages, total_events } = await getEvents(page, category, search, event_type)
 
-  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search }).toString()}&`
+  const baseUrl = `/externalEvents?${new URLSearchParams({ category, search, event_type }).toString()}&`
 
   return (
     <>
@@ -140,6 +142,8 @@ export default async function ExternalEventsPage({
           </div>
 
           <SearchForm defaultCategory={category} defaultSearch={search} />
+          
+          {!search && <EventTabs category={category} search={search} event_type={event_type} />}
 
           <Suspense fallback={
             <div className="space-y-8">
