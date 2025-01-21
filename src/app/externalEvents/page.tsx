@@ -102,7 +102,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'External Events - Riviera 2025',
     description: 'Explore exciting external events at Riviera 2025, VIT Vellore\'s annual techno-cultural extravaganza.',
-    images: ['/image/riviera.png'],
+    images: ['/images/riviera.png'],
     creator: '@RivieraVIT',
     site: '@RivieraVIT',
   },
