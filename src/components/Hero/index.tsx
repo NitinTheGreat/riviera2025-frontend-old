@@ -108,18 +108,24 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1.4 }}
           >
             <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-6xl font-medium uppercase tracking-wide font-fk-trial md:ml-20 lg:ml-40">
-              RAISE THE CRAZE
+              RHYTHM OF REALM
             </h1>
             <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-2xl font-normal font-editorial md:ml-8 lg:ml-24">
               Get ready to move, groove and shine
             </h2>
             <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start lg:translate-x-10">
-              <Link href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view" target="_blank">
+              <Link
+                href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view"
+                target="_blank"
+              >
                 <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   Events Brochure
                 </button>
               </Link>
-              <Link href="https://www.youtube.com/watch?v=7Qp0XHHiU-0" target="_blank">
+              <Link
+                href="https://www.youtube.com/watch?v=7Qp0XHHiU-0"
+                target="_blank"
+              >
                 <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   2024 Aftermovie
                 </button>
@@ -160,4 +166,3 @@ export default function Hero() {
 }
 
 export { Hero };
-
