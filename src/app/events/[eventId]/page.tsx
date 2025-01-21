@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
-
+import { EventBreadcrumb } from '@/components/BreadCrumbs'
 //Base_URL = https://abcd.com
 
 const baseUrl = process.env.Base_URL+'events/'
@@ -151,6 +151,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
 
   return (
     <div className="flex flex-col my-24">
+      <EventBreadcrumb eventName={data.name} eventType={data.event_type as "internal" | "external" | "external_misc"} />
       <div className="flex flex-col md:flex-row md:justify-start md:gap-12 gap-2">
         <div className="w-full mb-0 max-w-md h-auto mx-auto px-4 rounded-lg relative">
           <Image
@@ -163,7 +164,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             className="w-full aspect-square h-auto"
           />
           <ClientWrapper eventSlug={eventId} />
-          {data.event_type === "external_misc" && (
+          {(data.event_type === "external_misc" || data.event_type==="external" || data.event_type==="external_sports") && (
             <h1 className="font-editorial mt-1 text-center">
               *Only for external participants
             </h1>

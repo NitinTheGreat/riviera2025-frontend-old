@@ -136,7 +136,7 @@ export default async function ExternalEventsPage({
   return (
     <>
       <BufferSection {...bufferProps} />
-      <div className="min-h-screen bg-background px-4 py-8">
+      <div className="min-h-screen bg-background px-4 py-8" id="container">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-7xl mx-auto mt-[100vh]">
           </div>
