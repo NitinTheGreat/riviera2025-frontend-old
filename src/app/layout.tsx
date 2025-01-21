@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import type { Metadata } from "next"
+import localFont from "next/font/local"
+import "./globals.css"
+import Footer from "@/components/Footer"
+import Navbar from "@/components/Navbar"
 import { Toaster } from "@/components/ui/sonner"
-import EnhancedCustomCursor from '../components/EnhancedCustomCursor'
+import EnhancedCustomCursor from "../components/EnhancedCustomCursor"
+import { GoogleAnalytics } from "@/components/GoogleAnalytics"
 
 const fkTrial = localFont({
   src: [
@@ -28,7 +29,7 @@ const fkTrial = localFont({
     },
   ],
   variable: "--fk-trial",
-});
+})
 
 const editorial = localFont({
   src: [
@@ -64,21 +65,42 @@ const editorial = localFont({
     },
   ],
   variable: "--editorial",
-});
+})
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://riviera.vit.ac.in'),
+  metadataBase: new URL("https://riviera.vit.ac.in"),
   title: {
     default: "Riviera 2025 | VIT Vellore's Annual International Sports and Cultural Festival",
-    template: "%s | Riviera 2025"
+    template: "%s | Riviera 2025",
   },
-  description: "Experience Riviera 2025, VIT Vellore's premier Annual International Sports and Cultural Festival. Join thousands of participants from colleges worldwide for three days of exhilarating events, competitions, and performances. Register now for an unforgettable celebration of talent and diversity!",
+  description:
+    "Experience Riviera 2025, VIT Vellore's premier Annual International Sports and Cultural Festival. Join thousands of participants from colleges worldwide for three days of exhilarating events, competitions, and performances. Register now for an unforgettable celebration of talent and diversity!",
   keywords: [
-    "Riviera 2025", "VIT Vellore", "cultural festival", "sports festival", "college fest",
-    "international festival", "student events", "competitions", "performances", "talent showcase",
-    "cultural diversity", "sports competitions", "art exhibitions", "music concerts", "dance performances",
-    "literary events", "technical competitions", "workshops", "seminars", "guest lectures",
-    "college life", "student activities", "youth festival", "inter-college events", "academic conferences"
+    "Riviera 2025",
+    "VIT Vellore",
+    "cultural festival",
+    "sports festival",
+    "college fest",
+    "international festival",
+    "student events",
+    "competitions",
+    "performances",
+    "talent showcase",
+    "cultural diversity",
+    "sports competitions",
+    "art exhibitions",
+    "music concerts",
+    "dance performances",
+    "literary events",
+    "technical competitions",
+    "workshops",
+    "seminars",
+    "guest lectures",
+    "college life",
+    "student activities",
+    "youth festival",
+    "inter-college events",
+    "academic conferences",
   ],
   authors: [{ name: "VIT Vellore" }],
   creator: "VIT Vellore",
@@ -90,26 +112,20 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Riviera 2025 | VIT Vellore's Annual International Sports and Cultural Festival",
-    description: "Join the excitement at Riviera 2025, VIT Vellore's flagship event featuring international sports competitions, cultural performances, and innovative showcases. Register now for three days of non-stop action and creativity!",
-    url: 'https://riviera.vit.ac.in',
-    siteName: 'Riviera 2025',
-    // images: [
-    //   {
-    //     url: '/image/riviera.png',
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Riviera 2025 - VIT Vellore',
-    //   },
-    // ],
-    locale: 'en_US',
-    type: 'website',
+    description:
+      "Join the excitement at Riviera 2025, VIT Vellore's flagship event featuring international sports competitions, cultural performances, and innovative showcases. Register now for three days of non-stop action and creativity!",
+    url: "https://riviera.vit.ac.in",
+    siteName: "Riviera 2025",
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: "Riviera 2025 | VIT Vellore's Annual Festival",
-    description: "Experience the thrill of Riviera 2025, VIT's international sports and cultural extravaganza. Join us for three days of competitions, performances, and unforgettable memories!",
-    images: ['/image/riviera.png'],
-    creator: '@VIT_univ',
+    description:
+      "Experience the thrill of Riviera 2025, VIT's international sports and cultural extravaganza. Join us for three days of competitions, performances, and unforgettable memories!",
+    images: ["/image/riviera.png"],
+    creator: "@VIT_univ",
   },
   robots: {
     index: true,
@@ -117,20 +133,20 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   alternates: {
-    canonical: 'https://riviera.vit.ac.in',
+    canonical: "https://riviera.vit.ac.in",
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -140,6 +156,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${fkTrial.variable} ${editorial.variable} antialiased`}>
+        <GoogleAnalytics />
         <Navbar />
         <div className="relative">
           <div className="flex min-h-screen mx-auto flex-col max-w-[90rem] bg-background px-4 md:px-6">
@@ -151,6 +168,6 @@ export default function RootLayout({
         <Toaster />
       </body>
     </html>
-  );
+  )
 }
 

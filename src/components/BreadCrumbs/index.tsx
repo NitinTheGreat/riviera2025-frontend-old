@@ -68,13 +68,13 @@ const Popover: React.FC<{ trigger: React.ReactNode; content: React.ReactNode }> 
 
 export function EventBreadcrumb({ eventName, eventType }: EventBreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex items-center space-x-1">
+    <nav aria-label="Breadcrumb" className="mb-6 ml-4 md:ml-4">
+      <ol className="flex items-center space-x-1 font-editorial text-sm md:text-xl ">
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
         
-        <BreadcrumbSeparator />
+        <BreadcrumbSeparator /> 
         
         <BreadcrumbItem>
           <Popover
