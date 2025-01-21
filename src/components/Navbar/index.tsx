@@ -1,14 +1,26 @@
 'use client'
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  const [menu, setMenu] = useState(false)
-  const router = useRouter()
+  const [menu, setMenu] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
   
+  useEffect(() => {
+    const handleScroll = () => {
+      // Change background after scrolling 100px
+      const isScrolled = window.scrollY > 100;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const navLinks = [
     { href: "/", text: "HOME" },
     { href: "/#about", text: "ABOUT" },
@@ -120,7 +132,9 @@ const Navbar = () => {
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 
         transition={{ duration: 1 }} 
-        className='fixed top-0 left-0 right-0 flex justify-between items-center w-full h-20 z-[101] p-4 mx-2'
+        className={`fixed top-0 left-0 right-0 flex justify-between items-center w-full h-20 z-[101] p-4 transition-colors duration-300 ${
+          scrolled ? 'bg-primary' : ''
+        }`}
       >
         <div className='flex items-center h-full w-auto' onClick={handleClickLogo}>
           <Image 
@@ -151,7 +165,6 @@ const Navbar = () => {
         </motion.button>
       </motion.div>
 
-      
       {/* Menu overlay */}
       <AnimatePresence mode="wait">
         {menu && (
@@ -209,7 +222,6 @@ const Navbar = () => {
                       >
                         <Link 
                           href={link.href} 
-                          // className='text-[6rem] font-fk-trial tracking-wide leading-[5rem] font-bold'
                           className='text-[4rem] xl:text-[6rem] font-fk-trial tracking-wide leading-[4rem] xl:leading-[6rem] font-bold'
                           onClick={()=>{setMenu(false)}}
                         >
