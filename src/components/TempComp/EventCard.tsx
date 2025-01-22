@@ -66,7 +66,7 @@ export default function EventCard({ event }: { event: any }) {
       >
         <Image
           className="h-full w-auto aspect-square object-fill object-center "
-          src={event.image}
+          src={event.image || "/placeholder.svg"}
           alt="Event Image"
           width={500}
           height={500}
@@ -76,7 +76,7 @@ export default function EventCard({ event }: { event: any }) {
         <div className="flex flex-row justify-between items-center p-2 pb-0 md:p-6 lg:pl-10 w-full h-auto">
           <div className=" flex flex-col justify-between w-full items-center">
             <div className="flex flex-row w-full justify-start items-center gap-4 ">
-              <h1 className="text-[#fff] text-[1rem] text-left w-fit whitespace-nowrap md:w-auto md:text-[1.5rem] lg:text-[2.25rem] font-[700] font-fk-trial">
+              <h1 className="text-[#fff] text-[1rem] text-left w-fit whitespace-nowrap md:w-auto md:text-[1.5rem] lg:text-[2.25rem] font-[700] font-fk-trial line-clamp-2">
                 {event.name}
               </h1>
               {event.total_prize && (
@@ -96,7 +96,7 @@ export default function EventCard({ event }: { event: any }) {
               )}
             </div>
             <p
-              className={` w-full text-primary font-editorial  text-[0.6875rem] md:text-[1rem] lg:text-[1.5rem] md:text-left`}
+              className={`w-full text-primary font-editorial text-[0.6875rem] md:text-[1rem] lg:text-[1.5rem] md:text-left overflow-hidden overflow-ellipsis`}
             >
               {event.club}
             </p>
@@ -180,4 +180,3 @@ export default function EventCard({ event }: { event: any }) {
     </div>
   );
 }
-
