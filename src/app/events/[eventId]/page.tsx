@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import ClientWrapper from './ClientWrapper'
 import { EventDetail } from "@/types"
 import EventHeader from '@/components/SlotCard'
-
+import { EventBreadcrumb } from '@/components/BreadCrumbs'
 //Base_URL = https://abcd.com
 
 const baseUrl = process.env.Base_URL+'events/'
@@ -151,6 +151,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
 
   return (
     <div className="flex flex-col my-24">
+      <EventBreadcrumb eventName={data.name} eventType={data.event_type as "internal" | "external" | "external_misc"} />
       <div className="flex flex-col md:flex-row md:justify-start md:gap-12 gap-2">
         <div className="w-full mb-0 max-w-md h-auto mx-auto px-4 rounded-lg relative">
           <Image
@@ -163,7 +164,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             className="w-full aspect-square h-auto"
           />
           <ClientWrapper eventSlug={eventId} />
-          {data.event_type === "external_misc" && (
+          {(data.event_type === "external_misc" || data.event_type==="external" || data.event_type==="external_sports") && (
             <h1 className="font-editorial mt-1 text-center">
               *Only for external participants
             </h1>
@@ -230,15 +231,15 @@ export default async function Page({ params }: { params: { eventId: string } }) 
         </div>
       </div>
       <Accordion type="single" collapsible>
-        <AccordionItem value="rules">
+        {data.rules && <AccordionItem value="rules">
           <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
             Rules
           </AccordionTrigger>
           <AccordionContent>
             <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
           </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="judgement">
+        </AccordionItem>}
+        {data.judgement_criteria && <AccordionItem value="judgement">
           <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
             Judgement Criteria
           </AccordionTrigger>
@@ -247,7 +248,7 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               {data.judgement_criteria || "No judgement criteria specified."}
             </p>
           </AccordionContent>
-        </AccordionItem>
+        </AccordionItem>}
       </Accordion>
       <div className="fixed bottom-[7vh] left-0 w-full h-16 z-50 font-editorial">
         <div className="h-full w-full max-w-[70vw] md:max-w-[90%] mx-auto flex flex-row border-2 border-foreground bg-background">

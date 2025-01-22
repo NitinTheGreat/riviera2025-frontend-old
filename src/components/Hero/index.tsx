@@ -65,7 +65,7 @@ export default function Hero() {
         <div className="relative flex-grow flex flex-col items-center justify-start md:items-start pt-[30vh] px-4 sm:px-6 md:px-12 lg:px-24">
           {/* Background logo (rivieralogolight.png) */}
           <motion.div
-            className="absolute inset-0 z-0"
+            className="absolute inset-0 z-0 bottom-48 md:bottom-0"
             initial="hidden"
             animate="visible"
             variants={fadeIn}
@@ -75,7 +75,7 @@ export default function Hero() {
               src="/images/rivieralogolight.png"
               alt="Riviera Logo 2025 Background"
               fill
-              className="object-cover md:object-contain md:object-left-bottom"
+              className="object-contain scale-150 md:scale-100 md:object-contain md:object-left-bottom"
               quality={100}
               priority
             />
@@ -108,19 +108,25 @@ export default function Hero() {
             transition={{ duration: 1, delay: 1.4 }}
           >
             <h1 className="text-primary-foreground text-4xl sm:text-4xl md:text-4xl lg:text-4xl xl:text-6xl font-medium uppercase tracking-wide font-fk-trial md:ml-20 lg:ml-40">
-              RAISE THE CRAZE
+              RHYTHM OF REALM
             </h1>
             <h2 className="text-primary-foreground text-xl sm:text-xl md:text-lg lg:text-lg xl:text-2xl font-normal font-editorial md:ml-8 lg:ml-24">
               Get ready to move, groove and shine
             </h2>
-            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-10 items-center justify-center md:justify-start lg:translate-x-10">
-              <Link href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view" target="_blank">
-                <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
+            <div className="flex flex-col sm:flex-row w-full gap-4 mt-4 sm:gap-10 items-center justify-center md:justify-start lg:translate-x-10">
+              <Link
+                href="https://drive.google.com/file/d/1qOPvZi4Pzkh8caPdenV80OsU0jHufen0/view"
+                target="_blank"
+              >
+                <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-lg sm:text-xl md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   Events Brochure
                 </button>
               </Link>
-              <Link href="https://www.youtube.com/watch?v=7Qp0XHHiU-0" target="_blank">
-                <button className="w-full sm:w-fit justify-center rounded-xl text-foreground text-center text-sm sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
+              <Link
+                href="https://www.youtube.com/watch?v=7Qp0XHHiU-0"
+                target="_blank"
+              >
+                <button className="w-full sm:w-fit text-lg justify-center rounded-xl text-foreground text-center  sm:text-base md:text-[1.3rem] whitespace-nowrap font-editorial leading-[100%] bg-primary p-4 sm:p-6 px-6 sm:px-8">
                   2024 Aftermovie
                 </button>
               </Link>
@@ -160,4 +166,3 @@ export default function Hero() {
 }
 
 export { Hero };
-

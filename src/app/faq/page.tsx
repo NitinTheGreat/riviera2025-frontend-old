@@ -36,7 +36,39 @@ const faqItems = [
   {
     id: 7,
     question: "How does the rolling trophy and ranking system work?",
-    answer: "Each event within the fest is assigned a specific point value. When a team or a participant secures a victory in any event, the corresponding points are added to their college's overall tally. The college accumulating the highest total points across all events will be honored with the prestigious rolling trophy. This system aims to recognize and reward the college that demonstrates the most exceptional performance and participation throughout the fest.",
+    answer: <>
+      <h1>Riviera Rolling Trophy</h1>
+    <p>The most prestigious award of Riviera, recognizing the collective excellence of participating colleges across a variety of cultural, literary, artistic, and musical events. This coveted trophy symbolizes teamwork, versatility, and exceptional talent displayed during the festival.</p>
+    
+    <h2>Eligibility and Highlights:</h2>
+    <h3>1. Participation Criteria:</h3>
+    <ul>
+        <li>A team must participate in a minimum of <span className="highlight">15 out of 25</span> events listed in the competition lineup.</li>
+        <li>Events span categories such as Quiz, Informal Activities, Art/Drama, and Music, offering a platform for all kinds of talents.</li>
+        <li>A team must participate in at least one event from each category: <span className="highlight">Quiz, Informal, Art & Drama, and Music</span>.</li>
+    </ul>
+    
+    <h3>2. Scoring System:</h3>
+    <ul>
+        <li>Points are awarded for 1st, 2nd, and 3rd positions in each event, with varying weightage depending on the event's significance.</li>
+        <li>Total points determine the winning team, encouraging participants to perform consistently across multiple events.</li>
+    </ul>
+    
+    <h3>3. Category Balance:</h3>
+    <ul>
+        <li>To promote balanced representation, teams are required to participate in events across all categories, showcasing their versatility.</li>
+    </ul>
+    
+    <h3>4. Competition Spirit:</h3>
+    <ul>
+        <li>The Rolling Trophy is a celebration of camaraderie, creativity, and competition, fostering an environment where participants push their limits and inspire others.</li>
+    </ul>
+
+    <h2>Why Compete?</h2>
+    <p>Winning the Riviera Rolling Trophy is not just about points—it's about earning the distinction of being the most versatile and talented team in one of India's largest and most vibrant cultural fests. Competing teams will create memories, forge friendships, and leave a lasting mark in Riviera’s history.</p>
+    
+    <p><strong>Gear up and compete for glory—claim the Rolling Trophy and etch your name among the legends of Riviera!</strong></p>
+    </>,
   },
 ]
 

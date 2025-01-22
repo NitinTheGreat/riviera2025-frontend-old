@@ -122,7 +122,7 @@ export default async function InternalEventsPage({
       <BufferSection {...bufferProps} />
       <div className="min-h-screen bg-background px-4 py-8">
         <div className="max-w-7xl mx-auto">
-          <div className="max-w-7xl mx-auto mt-[100vh]">
+          <div className="max-w-7xl mx-auto mt-[100vh]" id="container">
           </div>
 
           <SearchForm defaultCategory={category} defaultSearch={search} />

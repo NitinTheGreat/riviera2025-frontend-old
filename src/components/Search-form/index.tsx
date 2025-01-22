@@ -23,6 +23,13 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
     return params.toString()
   }, [searchParams])
 
+  const createQueryStringCat = useCallback((name: string, value: string) => {
+    const params = new URLSearchParams(searchParams)
+    params.set(name, value)
+    params.set('page','1')
+    return params.toString()
+  }, [searchParams])
+
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       if (term.length >= 3 || term.length === 0) {
@@ -43,7 +50,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value
     setCategory(newCategory)
-    router.push(`${pathname}?${createQueryString('category', newCategory)}`, { scroll: false })
+    router.push(`${pathname}?${createQueryStringCat('category', newCategory)}`, { scroll: false })
   }
 
   return (
@@ -51,7 +58,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
       <select
         value={category}
         onChange={handleCategoryChange}
-        className="w-full md:w-[200px] bg-zinc-900 border border-zinc-700 text-primary-foreground rounded-lg px-3 py-2"
+        className="w-full md:w-[200px] bg-zinc-900 border border-zinc-400 text-primary-foreground  px-6 py-2"
       >
         <option value="all">All Events</option>
         {/* <option value="premium">Premium</option> */}
@@ -67,7 +74,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
           value={search}
           onChange={handleSearch}
           placeholder="Search Event"
-          className="w-full md:w-[300px] bg-zinc-900 border border-zinc-700 text-primary-foreground rounded-lg px-3 py-2 pl-10"
+          className="w-full md:w-[300px] bg-zinc-900 border border-zinc-400 text-primary-foreground px-3 py-2 pl-10"
         />
         <svg
           className="absolute left-3 top-1/2 -translate-y-1/2 text-primary h-4 w-4"
