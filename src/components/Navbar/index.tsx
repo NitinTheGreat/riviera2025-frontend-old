@@ -161,7 +161,7 @@ const Navbar = () => {
             width={1000}
             height={1000}
             alt="riviera home page "
-            className="-translate-x-[65%] w-auto h-full object-contain hidden md:block"
+            className="md:-translate-x-[65%] w-auto h-full object-contain scale-75 sm:scale-100"
           />
         </Link>
         <motion.button
