@@ -23,6 +23,13 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
     return params.toString()
   }, [searchParams])
 
+  const createQueryStringCat = useCallback((name: string, value: string) => {
+    const params = new URLSearchParams(searchParams)
+    params.set(name, value)
+    params.set('page','1')
+    return params.toString()
+  }, [searchParams])
+
   const debouncedSearch = useCallback(
     debounce((term: string) => {
       if (term.length >= 3 || term.length === 0) {
@@ -43,7 +50,7 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newCategory = e.target.value
     setCategory(newCategory)
-    router.push(`${pathname}?${createQueryString('category', newCategory)}`, { scroll: false })
+    router.push(`${pathname}?${createQueryStringCat('category', newCategory)}`, { scroll: false })
   }
 
   return (
