@@ -37,7 +37,7 @@ export default function Footer() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.4,
         ease: "easeOut",
         when: "beforeChildren",
         staggerChildren: 0.2,
@@ -50,7 +50,7 @@ export default function Footer() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
+      transition: { duration: 0.3, ease: "easeOut" },
     },
   }
 
@@ -81,7 +81,7 @@ export default function Footer() {
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
-        transition={{ delay: 0.5, duration: 1 }}
+        transition={{ delay: 0.3, duration: 0.7 }}
       >
         <div className="relative w-full h-[80%] max-w-6xl max-h-[80vh]">
           <Image
