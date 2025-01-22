@@ -13,7 +13,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       // Change background after scrolling 150px
-      const isScrolled = window.scrollY > 150
+      const isScrolled = window.scrollY > 200
       setScrolled(isScrolled)
     }
 
@@ -139,7 +139,7 @@ const Navbar = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className={`fixed top-0 left-0 right-0 flex justify-between items-center w-full h-20 z-[101] p-4 transition-colors duration-300 ${
-          scrolled ? "bg-background" : ""
+          scrolled ? " backdrop-blur-md bg-opacity-40 bg-slate-950" : ""
         }`}
       >
         <div
