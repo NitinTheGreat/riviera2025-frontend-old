@@ -298,10 +298,10 @@ export default async function Page({ params }: { params: { eventId: string } }) 
             href={`${data?.event_type === "internal"
               ? on_hold_internal
                 ? "#"
-                : "https://uatweb.vit.ac.in/rivierainternal"
+                : "https://web.vit.ac.in/rivierainternal/"
               : on_hold_external
                 ? "#"
-                : "https://uatweb.vit.ac.in/riviera"
+                : "https://web.vit.ac.in/riviera/"
             }`} 
             className={`flex items-center justify-center w-1/2 md:w-1/5 bg-primary text-primary-foreground font-bold hover:opacity-90 ${on_hold_internal || on_hold_external ? "cursor-not-allowed" : ""}`}
           >
