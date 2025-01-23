@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useCallback, useState, useEffect } from 'react'
 import debounce from 'lodash/debounce'
-
+import { ChevronDown } from 'lucide-react'
 interface SearchFormProps {
   defaultCategory: string
   defaultSearch: string
@@ -55,10 +55,23 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
 
   return (
     <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
-      <select
+      {/* <select
         value={category}
         onChange={handleCategoryChange}
         className="w-full md:w-[200px] bg-zinc-900 border border-zinc-400 text-primary-foreground  px-6 py-2"
+      >
+        <option value="all">All Events</option>
+        {/* <option value="premium">Premium</option> */}
+        {/* <option value="art_drama">Art Drama</option>
+        <option value="adventure_sports">Adventure Sports</option>
+        <option value="Music">Music</option>
+        <option value="quiz_words_worth">Quiz</option>
+      </select>  */}
+      <div className="relative w-full md:w-[200px]">
+      <select
+        value={category}
+        onChange={handleCategoryChange}
+        className="w-full md:w-[200px] bg-zinc-900 border border-zinc-400 text-primary-foreground px-6 py-2 appearance-none pr-10"
       >
         <option value="all">All Events</option>
         {/* <option value="premium">Premium</option> */}
@@ -67,6 +80,10 @@ export function SearchForm({ defaultCategory, defaultSearch }: SearchFormProps) 
         <option value="Music">Music</option>
         <option value="quiz_words_worth">Quiz</option>
       </select>
+      <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+        <ChevronDown className="h-5 w-5 text-zinc-400" />
+      </div>
+    </div>
       
       <div className="relative">
         <input

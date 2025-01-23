@@ -45,7 +45,7 @@ export default function AboutSections() {
   }
 
   return (
-    <div className="relative w-full overflow-hidden mb-2 xl:mb-[-200]" id='about'>
+    <div className="relative w-full overflow-hidden mb-2 xl:mb-[-250]" id='about'>
       {/* About Riviera Section */}
       <section className="relative w-full min-h-screen bg-primary-foreground overflow-hidden py-16 md:py-24 lg:py-32">
         <div className="w-full max-w-[1400px] mx-auto px-4 md:px-6">
