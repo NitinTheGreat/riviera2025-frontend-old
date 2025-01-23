@@ -60,7 +60,7 @@ export default function Footer() {
       initial="hidden"
       animate={controls}
       variants={containerVariants}
-      className={`relative w-full overflow-hidden ${isMobileOrTablet ? "bg-[#853BFF]" : ""}`}
+      className={`relative w-full overflow-hidden mt-0 xl:mt-24 ${isMobileOrTablet ? "bg-[#853BFF]" : ""}`}
     >
       {!isMobileOrTablet && (
         <motion.svg
@@ -156,7 +156,7 @@ export default function Footer() {
             <motion.div
               key={index}
               variants={itemVariants}
-              className="text-center lg:text-left flex flex-col items-center lg:place-items-center space-y-2"
+              className="text-center lg:text-left flex flex-col items-center lg:place-items-center space-y-2 font-medium"
             >
               <h3 className="text-[#CCFF00] text-4xl md:text-5xl xl:text-6xl font-fk-trial">{contact.name}</h3>
               <p className="text-primary-foreground text-lg sm:text-xl md:text-2xl font-editorial">{contact.title}</p>

@@ -53,7 +53,7 @@ export default function ClientWrapper({ eventSlug }: { eventSlug: string }) {
     <>
       <button
         onClick={handleShare}
-        className="absolute top-10 right-8 bg-primary rounded-full p-2 cursor-pointer shadow-md hover:bg-primary/90 transition-colors duration-200"
+        className="absolute top-4 right-8 bg-primary rounded-full p-2 cursor-pointer shadow-md hover:bg-primary/90 transition-colors duration-200"
         aria-label="Share event"
       >
         <Share2 size={24} className="text-primary-foreground" />

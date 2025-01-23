@@ -76,7 +76,7 @@ export function EventBreadcrumb({ eventName, eventType }: EventBreadcrumbProps) 
         
         <BreadcrumbSeparator /> 
         
-        <BreadcrumbItem>
+        {/* <BreadcrumbItem>
           <Popover
             trigger={
               <button className="hover:text-foreground transition-colors">
@@ -100,9 +100,8 @@ export function EventBreadcrumb({ eventName, eventType }: EventBreadcrumbProps) 
               </div>
             }
           />
-        </BreadcrumbItem>
+        </BreadcrumbItem> */}
 
-        <BreadcrumbSeparator />
 
         <BreadcrumbItem>
           {/* <BreadcrumbLink href={`/events`?eventType==='internal'?'/externalEvents':'external'}> */}

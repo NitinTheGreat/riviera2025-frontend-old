@@ -45,7 +45,7 @@ export default function AboutSections() {
   }
 
   return (
-    <div className="relative w-full overflow-hidden" id='about'>
+    <div className="relative w-full overflow-hidden mb-2 xl:mb-[-200]" id='about'>
       {/* About Riviera Section */}
       <section className="relative w-full min-h-screen bg-primary-foreground overflow-hidden py-16 md:py-24 lg:py-32">
         <div className="w-full max-w-[1400px] mx-auto px-4 md:px-6">
@@ -82,12 +82,12 @@ export default function AboutSections() {
               </div>
 
               {/* Carousel Controls */}
-              <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-primary-foreground px-6 py-3 rounded-full shadow-lg">
+              <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-6 bg-primary-foreground px-6 py-3 rounded-full ">
                 <button
                   onClick={shuffleImage}
                   className="p-2 rounded-full hover:bg-primary-foreground transition-colors group"
                 >
-                  <Shuffle className="w-5 h-5 stroke-2 text-gray-700 group-hover:text-black" />
+                  <Shuffle className="w-5 h-5 stroke-2 text-gray-700   group-hover:text-primary " />
                 </button>
                 <button
                   onClick={previousImage}
@@ -98,7 +98,7 @@ export default function AboutSections() {
                 {/* Can be removed later */}
                 <button
                   onClick={togglePlayPause}
-                  className="p-3 rounded-full bg-background text-primary-foreground hover:bg-gray-800 transition-colors"
+                  className="p-3 rounded-full bg-primary-foreground text-background hover:bg-background hover:text-primary-foreground transition-colors"
                 >
                   {isPlaying ? (
                     <Pause className="w-5 h-5 fill-current" />

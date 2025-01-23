@@ -165,14 +165,14 @@ export default async function Page({ params }: { params: { eventId: string } }) 
           />
           <ClientWrapper eventSlug={eventId} />
           {(data.event_type === "external_misc" || data.event_type==="external" || data.event_type==="external_sports") && (
-            <h1 className="font-editorial mt-1 text-center">
+            <h1 className="font-editorial mt-8 text-center">
               *Only for external participants
             </h1>
           )}
         </div>
         <div className="w-full">
-          <h1 className="font-fk-trial text-5xl font-extrabold">{data.name || 'Event Name'}</h1>
-          <h2 className="font-fk-trial text-xl font-extrabold text-primary">
+          <h1 className="font-fk-trial text:3xl xl:text-6xl font-extrabold">{data.name || 'Event Name'}</h1>
+          <h2 className="font-fk-trial text-xl md:text-2xl xl:text-3xl font-extrabold text-primary">
             {data.club || 'VIT Club'}
           </h2>
           <hr className="mt-5" />
@@ -182,22 +182,23 @@ export default async function Page({ params }: { params: { eventId: string } }) 
               data.price_per_ticket || 0
             )} `}</h3>
             <span className="text-primary ml-2">
-              {data.is_a_team_event ? "(per team)" : "(per person)"}
+              {/* {data.is_a_team_event ? "(per team)" : "(per person)"} */}
+              (per person)
             </span>
           </div>
-          <h3 className="text-primary text-2xl font-editorial">+18% GST</h3>
-          <p className="my-3 font-editorial">{data.short_description || 'No short description available.'}</p>
-          <p className="my-3 font-editorial">{data.description || 'No detailed description available.'}</p>
+          <h3 className="text-primary text-sm md:text-lg xl:text-xl font-editorial">+18% GST</h3>
+          <p className="my-3 font-editorial text-xl  xl:text-2xl">{data.short_description || 'No short description available.'}</p>
+          <p className="my-3 font-editorial text-lg md:text-xl ">{data.description || 'No detailed description available.'}</p>
 
           <div className="grid sm:grid-cols-4 grid-cols-2 ">
             <div className="flex flex-col sm:col-span-3">
-              <h3 className="font-fk-trial text-2xl font-bold text-primary">
+              <h3 className="font-fk-trial text-2xl xl:text-3xl font-bold text-primary mb-2">
                 TEAM SIZE
               </h3>
-              <h3 className="font-editorial">{data.number_of_participants || 'Not specified'}</h3>
+              <h3 className="font-editorial mb-3">{data.number_of_participants || 'Not specified'}</h3>
             </div>
             <div className="flex flex-col sm:col-span-3">
-              <h3 className="font-fk-trial uppercase text-2xl font-bold text-primary">
+              <h3 className="font-fk-trial uppercase text-2xl xl:text-3xl font-bold text-primary">
                 slots
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
@@ -232,19 +233,19 @@ export default async function Page({ params }: { params: { eventId: string } }) 
       </div>
       <Accordion type="single" collapsible>
         {data.rules && <AccordionItem value="rules">
-          <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
+          <AccordionTrigger className="font-fk-trial text-2xl xl:text-3xl font-bold text-primary">
             Rules
           </AccordionTrigger>
           <AccordionContent>
-            <p className="text-sm font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
+            <p className="text-lg xl:text-xl font-editorial whitespace-pre-line">{data.rules || "No rules specified."}</p>
           </AccordionContent>
         </AccordionItem>}
         {data.judgement_criteria && <AccordionItem value="judgement">
-          <AccordionTrigger className="font-fk-trial text-2xl font-bold text-primary">
+          <AccordionTrigger className="font-fk-trial text-2xl xl:text-3xl font-bold text-primary">
             Judgement Criteria
           </AccordionTrigger>
           <AccordionContent>
-            <p className="text-sm font-editorial">
+            <p className="font-editorial text-lg xl:text-xl">
               {data.judgement_criteria || "No judgement criteria specified."}
             </p>
           </AccordionContent>
